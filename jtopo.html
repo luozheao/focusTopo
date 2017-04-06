@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>给我一块'布', 我能画出美丽的世界</title>
+    <link href="./bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./topu.css">
+</head>
+<body >
+<div class="jtp-main">
+    <div style="text-decoration:underline;" title="空格键:默认模式，删除键:删除选中的线、节点、组">快捷键(鼠标覆盖可看到)</div>
+    <div id="graph_panel" class="q-panel">
+        <div role="toolbar" class="q-toolbar">
+            <div>
+                <div id="toolbar">
+                    <div class="btn-group patternArea">
+                        <div class="btn btn-default btn-sm    active" title="默认模式">
+                            <div class="q-icon toolbar-default"></div>
+                        </div>
+                        <div class="btn btn-default btn-sm    " title="边框模式">
+                            <div class="q-icon toolbar-setBorder"></div>
+                        </div>
+                        <div class="btn btn-default btn-sm    " title="框选模式">
+                            <div class=" toolbar-select">框选</div>
+                        </div>
+                        <div class="btn btn-default btn-sm    " title="浏览模式">
+                            <div class="  toolbar-pan">浏览</div>
+                        </div>
+                    </div>
+                    <div class="btn btn-default btn-sm groupWrap none" title="组">
+                        <div class="group">组</div>
+                    </div>
+                    <div class="btn-group zoomArea">
+                        <div   class="btn btn-default btn-sm     " title="放大">
+                            <div class="q-icon toolbar-zoomin"></div>
+                        </div>
+                        <div class="btn btn-default btn-sm     " title="缩小">
+                            <div class="q-icon toolbar-zoomout"></div>
+                        </div>
+                        <div class="btn btn-default btn-sm     " title="1:1">
+                            <div class="q-icon toolbar-zoomreset"></div>
+                        </div>
+                        <div class="btn btn-default btn-sm     " title="居中">
+                            <div class=" toolbar-center">居中</div>
+                        </div>
+                        <div class="btn btn-default btn-sm     " title="全屏">
+                            <div class="q-icon toolbar-overview"></div>
+                        </div>
+                    </div>
+
+                    <div class="btn-group chooselineArea">
+                        <div class="btn btn-default btn-sm     " lineType="Link" title="实线">
+                            <div class="" >实线</div>
+                        </div>
+                        <div class="btn btn-default btn-sm     " lineType="dashed" title="虚线">
+                            <div class="">虚线</div>
+                        </div>
+                        <div class="btn btn-default btn-sm     " lineType="curve" title="曲线">
+                            <div class="">曲线</div>
+                        </div>
+                        <div class="btn btn-default btn-sm     " lineType="arrow" title="箭头">
+                            <div class="">箭头</div>
+                        </div>
+                        <div class="btn btn-default btn-sm     " lineType="dArrow" title="双箭头">
+                            <div class="">双箭头</div>
+                        </div>
+                        <div class="btn btn-default btn-sm     " lineType="flexional" title="折线">
+                            <div class=" ">折线</div>
+                        </div>
+                        <div class="btn btn-default btn-sm     " lineType="flow" title="流动">
+                            <div class=" ">流动</div>
+                        </div>
+                        <!--<div class="btn btn-default btn-sm     " title="创建多边形">-->
+                            <!--<div class="q-icon toolbar-polygon"></div>-->
+                        <!--</div>-->
+                        <!--<div class="btn btn-default btn-sm     " title="创建线条">-->
+                            <!--<div class="q-icon toolbar-line"></div>-->
+                        <!--</div>-->
+                    </div>
+                    <div class="btn-group sortArea">
+
+                        <!--<div class="btn btn-default btn-sm     "   title="圆形">-->
+                            <!--<div class="" >圆形</div>-->
+                        <!--</div>-->
+                        <!--<div class="btn btn-default btn-sm     "   title="树形">-->
+                            <!--<div class="">树形</div>-->
+                        <!--</div>-->
+                        <!--<div class="btn btn-default btn-sm     "  title="混合">-->
+                            <!--<div class="">混合</div>-->
+                        <!--</div>-->
+                        <!--<div class="btn btn-default btn-sm     "   title="全自动">-->
+                            <!--<div class="">全自动</div>-->
+                        <!--</div>-->
+                        <!--<div class="btn btn-default btn-sm     " title="创建多边形">-->
+                        <!--<div class="q-icon toolbar-polygon"></div>-->
+                        <!--</div>-->
+                        <!--<div class="btn btn-default btn-sm     " title="创建线条">-->
+                        <!--<div class="q-icon toolbar-line"></div>-->
+                        <!--</div>-->
+                    </div>
+                    <div style="display: inline-block; vertical-align: middle; width: 170px;">
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" placeholder="Name" id="search_input">
+                            <span class="input-group-btn searchWrap">
+                                <div class="btn btn-default " type="button">
+                                    <div class="q-icon toolbar-search"></div>
+                                </div>
+                             </span>
+                        </div>
+                    </div>
+                    <div class="btn btn-default btn-sm  eyesWrap " title="鹰眼">
+                        <div class=" toolbar-eyes">鹰眼</div>
+                    </div>
+                    <div class="btn-group  historyArea">
+                    <div class="btn btn-default btn-sm  backOff "   title="后退">
+                        <div class="" >后退</div>
+                    </div>
+                    <div class="btn btn-default btn-sm  forward "   title="前进">
+                        <div class="" >前进</div>
+                    </div>
+                    <div class="btn btn-default btn-sm  saveBtn "   title="保存">
+                        <div class="" >保存</div>
+                    </div>
+                    </div>
+                    <!--<div id="btnJSONShow" title="JSON Export" class="btn btn-default btn-sm">-->
+                        <!--<div class="q-icon toolbar-json"></div>-->
+                    <!--</div>-->
+                    <!--<div title="Maximize" id="maximize" class="btn btn-default btn-sm">-->
+                        <!--<div class="q-icon toolbar-max"></div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+        <div id="container" class="q-content">
+            <div id="equipmentArea" class="q-panel">
+                <div class="dropdown">
+                    <a   role="button" data-toggle="dropdown" class="btn" data-target="#"
+                       href="javascript:;">
+                        下拉选择 <span class="caret"></span>
+                    </a>
+                    <!--<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">-->
+                        <!--<li><a href="javascript:;">一级菜单</a></li>-->
+                        <!--<li><a href="javascript:;">一级菜单</a></li>-->
+                        <!--<li class="dropdown-submenu">-->
+                            <!--<a tabindex="-1" href="javascript:;">一级菜单</a>-->
+                            <!--<ul class="dropdown-menu">-->
+                                <!--<li><a tabindex="-1" href="javascript:;">二级菜单</a></li>-->
+                                <!--<li class="dropdown-submenu">-->
+                                    <!--<a href="javascript:;">二级菜单</a>-->
+                                    <!--<ul class="dropdown-menu">-->
+                                        <!--<li><a href="javascript:;">三级菜单</a></li>-->
+                                    <!--</ul>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                </div>
+            </div>
+               <canvas id="canvas" >您的浏览器不支持显示，请换非IE8及以下的浏览器！</canvas>
+        </div>
+    </div>
+    <ul id="contextmenuNode" class="contextmenu" style="display:none;">
+        <li><a>顺时针旋转</a></li>
+        <li><a>逆时针旋转</a></li>
+        <li><a>更改颜色</a></li>
+        <li><a>放大</a></li>
+        <li><a>缩小</a></li>
+        <li><a>撤销上一次操作</a></li>
+        <li><a>删除该节点</a></li>
+    </ul>
+    <ul id="contextmenuContainerNode" class="contextmenu" style="display:none;">
+        <li><a>更改颜色</a></li>
+        <li><a>删除该节点</a></li>
+    </ul>
+    <ul id="contextmenuContainer" class="contextmenu" style="display:none;">
+        <li><a>更改颜色</a></li>
+        <li><a>重命名</a></li>
+        <li><a>删除该容器</a></li>
+    </ul>
+    <ul id="contextmenuLink" class="contextmenu" style="display:none;">
+        <li><a>更改颜色</a></li>
+        <li><a>撤销上一次操作</a></li>
+        <li><a>删除该线条</a></li>
+    </ul>
+    <div id="nodeTitle" class="titleDiv">
+         什么模式下显示title，需要确定下
+    </div>
+    <div id="linkTitle" class="titleDiv">
+        hello world2 !
+    </div>
+</div>
+</body>
+<script src="./jquery-1.9.1.min.js"></script>
+<script src="./bootstrap.min.js"></script>
+<script src="./jtopo-0.4.8.js"></script>
+<script src="./drag.js"></script>
+<script src="./topo-main.js"></script>
+</html>
