@@ -2,6 +2,16 @@
     display: none;
 }
 /***********face********************/
+.topoChooseArea{
+    height: 35px;
+    background: #f8f8f8;
+    position: absolute;
+    top: 0px;
+    width: 900px;
+    z-index: 1;
+    left: 230px;
+    border-bottom: 1px solid #dad9d9;
+}
 .q-panel {
     position: relative;
     border-radius: 5px;
@@ -14,9 +24,9 @@
 }
 .q-panel .q-toolbar {
     position: absolute;
-    top: 0px;
+    top: 40px;
     height: 40px;
-    max-width: 900px;
+    width: 900px;
     z-index: 1;
     left: 230px;
 }
@@ -196,7 +206,7 @@
     float: right;
     background:url("./images/topobg.png") repeat;
     border-top: 1px solid #E7E7E7;
-    margin-top: 40px;
+    margin-top: 80px;
 }
 .contextmenu{
     border: 1px solid #ddd;
