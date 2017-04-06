@@ -1285,7 +1285,8 @@
                 }
                 if (text == '更改颜色') {
                     stateManager.currentNode.fillColor = JTopo.util.randomColor();
-                } else if (text == '顺时针旋转') {
+                }
+                else if (text == '顺时针旋转') {
                     stateManager.currentNode.rotate += 0.5;
                 } else if (text == '逆时针旋转') {
                     stateManager.currentNode.rotate -= 0.5;

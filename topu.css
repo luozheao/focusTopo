@@ -5,7 +5,7 @@
 .q-panel {
     position: relative;
     border-radius: 5px;
-    border: solid 1px #DDD;
+    /* border: solid 1px #DDD; */
 }
 .q-toolbar {
     padding: 5px;
@@ -168,7 +168,7 @@
     height: 16px;
 }
 /********************equipmentArea*********************/
-#equipmentArea{width: 225px;height: 100%;background:#f8fafb;position: absolute;left: 0;top: 0;}
+#equipmentArea{width: 225px;height: 100%;position: absolute;left: 0;top: 0;border: none;}
 .dragTag{
     width: 50px;
     height: 50px;
@@ -300,4 +300,32 @@
 }
 #equipmentArea .dropdown>.dropdown-menu{
     width: 100%;
+}
+#equipmentArea #treeArea{
+    height: 225px;
+}
+#equipmentArea #treeArea .title{
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    background: #f0f4f9;
+}
+#equipmentArea #treeArea .treeContainer{
+    height: 180px;
+    overflow-y: auto;
+    background: #f8f8f8;
+}
+#equipmentArea #iconArea{
+
+}
+#equipmentArea #iconArea .title{
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    background: #f0f4f9;
+}
+#equipmentArea #iconArea .iconContainer{
+    min-height: 400px;
+    overflow-y: auto;
+    background: #f8f8f8;
 }
