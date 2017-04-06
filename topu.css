@@ -3,28 +3,28 @@
 }
 /***********face********************/
 .q-panel {
-  position: relative;
-  border-radius: 5px;
-  border: solid 1px #DDD;
+    position: relative;
+    border-radius: 5px;
+    border: solid 1px #DDD;
 }
 .q-toolbar {
-  padding: 5px;
-  border-radius: 4px 4px 0 0;
-  background-color: #ffffff;
-  border-bottom: solid #E7E7E7 1px;
+    padding: 5px;
+    border-radius: 4px 4px 0 0;
+    background-color: #ffffff;
 }
 .q-panel .q-toolbar {
-  position: absolute;
-  top: 0px;
-  height: 40px;
-  width: 100%;
-  z-index: 1;
+    position: absolute;
+    top: 0px;
+    height: 40px;
+    max-width: 900px;
+    z-index: 1;
+    left: 230px;
 }
 .q-panel .q-content {
-  height: 100%;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  position: relative;
+    height: 100%;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    position: relative;
 }
 .jtp-main {
     background-color: transparent;
@@ -39,22 +39,21 @@
 #graph_panel {
     height: 650px;
     overflow: hidden;
-    padding-top: 40px;
 }
 /***********toolbar******************************/
 #toolbar {
-  float: left;
-  height: 30px;
+    float: left;
+    height: 30px;
 }
 #toolbar .searchArea{
     display: inline-block; vertical-align: middle; width: 130px;
 }
 #toolbar .btn,
 #toolbar .btn-group {
-  margin-right: 5px;
+    margin-right: 5px;
 }
 #toolbar .btn-group .btn {
-  margin: 0px -1px;
+    margin: 0px -1px;
 }
 #toolbar .btn, #toolbar .btn-group {
     margin-right: 5px;
@@ -121,7 +120,7 @@
 }
 .toolbar-center {
 
- }
+}
 
 .toolbar-overview {
     background-position: -240px 0px;
@@ -169,7 +168,7 @@
     height: 16px;
 }
 /********************equipmentArea*********************/
-#equipmentArea{width: 225px;height: 100%;background:#f8fafb;float: left;}
+#equipmentArea{width: 225px;height: 100%;background:#f8fafb;position: absolute;left: 0;top: 0;}
 .dragTag{
     width: 50px;
     height: 50px;
@@ -180,7 +179,7 @@
     background-position: right center !important;
 }
 .dragTag.code1{
-   background: url("./images/code1.jpg") no-repeat 100% 100%;
+    background: url("./images/code1.jpg") no-repeat 100% 100%;
 }
 .dragTag.code2{
     background: url("./images/code2.jpg") no-repeat 100% 100%;
@@ -196,6 +195,8 @@
 #canvas{
     float: right;
     background:url("./images/topobg.png") repeat;
+    border-top: 1px solid #E7E7E7;
+    margin-top: 40px;
 }
 .contextmenu{
     border: 1px solid #ddd;
@@ -209,11 +210,11 @@
 }
 .contextmenu li{
 
-padding: 5px 10px;
+    padding: 5px 10px;
 
-border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
 
-cursor: pointer;
+    cursor: pointer;
     transition: all .3s;
 }
 .contextmenu li:hover{
@@ -221,9 +222,9 @@ cursor: pointer;
 }
 .contextmenu li a{
 
-color: black;
+    color: black;
 
-text-decoration: none;
+    text-decoration: none;
 }
 .topology-container-fullscreen{
     width: 100%;

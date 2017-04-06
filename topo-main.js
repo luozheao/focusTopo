@@ -484,7 +484,7 @@
             var $dragContainer=$('#container');
             // var $equipmentArea=$('#equipmentArea');
             var fnCreateNodeOrContainerNodeByDrag=this._createNodeOrContainerNodeByDrag;
-            $('#container .dragTag').each(function() {
+            $('#equipmentArea .dragTag').each(function() {
                 $(this).dragging({
                     move: 'both', //拖动方向，x y both
                     randomPosition: false, //初始位置是否随机
@@ -779,7 +779,7 @@
             var self = canvasManager;
             var subWidth = pageX - stateManager.equipmentAreaWidth;
             var nodeX = subWidth - scene.translateX;//松开鼠标时,元素在画布上的x坐标
-            var nodeY = pageY - scene.translateY;//松开鼠标时,元素在画布上的y 坐标
+            var nodeY = pageY - scene.translateY-40;//松开鼠标时,元素在画布上的y 坐标
 
             var nodeName = 'node_name';
             var nodeWidth = thisWidth;
@@ -871,7 +871,7 @@
             var self = canvasManager;
             var subWidth = pageX - stateManager.equipmentAreaWidth;
             var nodeX = subWidth - scene.translateX;//松开鼠标时,元素在画布上的x坐标
-            var nodeY = pageY - scene.translateY;//松开鼠标时,元素在画布上的y 坐标
+            var nodeY = pageY - scene.translateY-40;//松开鼠标时,元素在画布上的y 坐标
 
             var nodeName = 'node_name';
             var nodeWidth = thisWidth;
