@@ -1372,5 +1372,7 @@ canvasManager.init();
 dragManager.init();
 toolbarManager.init();
 
+$('#jumpBox').append($('.TopujumpInstance'))
+
 
 
