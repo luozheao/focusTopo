@@ -19,7 +19,7 @@
         currentContainerNode:null,//当前容器节点
         currentContainer:null,//当前容器
         currentLink: null,//当前线条
-
+        currentTopo:[], //当前打开的拓扑图
         customAttr:[//节点、容器、线条通用保存属性
             "elementType", "x", "y", "width", "height", "visible","alpha",
             "rotate", "scaleX", "scaleY", "strokeColor","fillColor",
@@ -488,6 +488,314 @@
             ]
             return data;
         },
+        //根据id获取拓扑图数据
+        getTopoData:function () {
+           var data=[
+               {
+                   "id": "9",   //后台数据库中的ID
+                   "type": "1",  // 类型 1 系统拓扑 2 流程拓扑 3 物理拓扑 4 流程拓扑
+                   "name": "拓扑图名称22",  // 拓扑图的名字
+                   "busi_id": "12",  //API 1 中的ID，获取后传给后台即可
+                   "opr": null,  // 操作类型 add 新增 mod 修改 del 删除，这个API为获取数据库的数据，所以这个字段都为空
+                   "line": [
+                       {
+                           "id": "16",
+                           "name": "连线名称6",
+                           "from_id": "44",
+                           "to_id": "47",
+                           "opr": null,
+                           "json": "{l1:16}"
+                       },
+                       {
+                           "id": "17",
+                           "name": "连线名称",
+                           "from_id": "45",
+                           "to_id": "46",
+                           "opr": null,
+                           "json": "{l1:11}"
+                       },
+                       {
+                           "id": "18",
+                           "name": "连线名称7",
+                           "from_id": "43",
+                           "to_id": "46",
+                           "opr": null,
+                           "json": "{l1:17}"
+                       }
+                   ],
+                   "node": [
+                       {
+                           "id": "43",
+                           "name": "节点名称qqq",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n1:11}"
+                       },
+                       {
+                           "id": "44",
+                           "name": "节点id2",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n2:12}"
+                       },
+                       {
+                           "id": "45",
+                           "name": "节点名称3",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n1:11}"
+                       },
+                       {
+                           "id": "46",
+                           "name": "节点名称4",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n2:12}"
+                       },
+                       {
+                           "id": "47",
+                           "name": "节点名称6",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n1:11}"
+                       }
+                   ]
+               },
+               {
+                   "id": "19",   //后台数据库中的ID
+                   "type": "2",  // 类型 1 系统拓扑 2 流程拓扑 3 物理拓扑 4 流程拓扑
+                   "name": "拓扑图名称22",  // 拓扑图的名字
+                   "busi_id": "42",  //API 1 中的ID，获取后传给后台即可
+                   "opr": null,  // 操作类型 add 新增 mod 修改 del 删除，这个API为获取数据库的数据，所以这个字段都为空
+                   "line": [
+                       {
+                           "id": "16",
+                           "name": "连线名称6",
+                           "from_id": "44",
+                           "to_id": "47",
+                           "opr": null,
+                           "json": "{l1:16}"
+                       },
+                       {
+                           "id": "17",
+                           "name": "连线名称",
+                           "from_id": "45",
+                           "to_id": "46",
+                           "opr": null,
+                           "json": "{l1:11}"
+                       },
+                       {
+                           "id": "18",
+                           "name": "连线名称7",
+                           "from_id": "43",
+                           "to_id": "46",
+                           "opr": null,
+                           "json": "{l1:17}"
+                       }
+                   ],
+                   "node": [
+                       {
+                           "id": "43",
+                           "name": "节点名称qqq",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n1:11}"
+                       },
+                       {
+                           "id": "44",
+                           "name": "节点id2",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n2:12}"
+                       },
+                       {
+                           "id": "45",
+                           "name": "节点名称3",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n1:11}"
+                       },
+                       {
+                           "id": "46",
+                           "name": "节点名称4",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n2:12}"
+                       },
+                       {
+                           "id": "47",
+                           "name": "节点名称6",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n1:11}"
+                       }
+                   ]
+               },
+               {
+                   "id": "29",   //后台数据库中的ID
+                   "type": "3",  // 类型 1 系统拓扑 2 流程拓扑 3 物理拓扑 4 流程拓扑
+                   "name": "拓扑图名称22",  // 拓扑图的名字
+                   "busi_id": "32",  //API 1 中的ID，获取后传给后台即可
+                   "opr": null,  // 操作类型 add 新增 mod 修改 del 删除，这个API为获取数据库的数据，所以这个字段都为空
+                   "line": [
+                       {
+                           "id": "16",
+                           "name": "连线名称6",
+                           "from_id": "44",
+                           "to_id": "47",
+                           "opr": null,
+                           "json": "{l1:16}"
+                       },
+                       {
+                           "id": "17",
+                           "name": "连线名称",
+                           "from_id": "45",
+                           "to_id": "46",
+                           "opr": null,
+                           "json": "{l1:11}"
+                       },
+                       {
+                           "id": "18",
+                           "name": "连线名称7",
+                           "from_id": "43",
+                           "to_id": "46",
+                           "opr": null,
+                           "json": "{l1:17}"
+                       }
+                   ],
+                   "node": [
+                       {
+                           "id": "43",
+                           "name": "节点名称qqq",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n1:11}"
+                       },
+                       {
+                           "id": "44",
+                           "name": "节点id2",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n2:12}"
+                       },
+                       {
+                           "id": "45",
+                           "name": "节点名称3",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n1:11}"
+                       },
+                       {
+                           "id": "46",
+                           "name": "节点名称4",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n2:12}"
+                       },
+                       {
+                           "id": "47",
+                           "name": "节点名称6",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n1:11}"
+                       }
+                   ]
+               },
+               {
+                   "id": "39",   //后台数据库中的ID
+                   "type": "4",  // 类型 1 系统拓扑 2 流程拓扑 3 物理拓扑 4 流程拓扑
+                   "name": "拓扑图名称22",  // 拓扑图的名字
+                   "busi_id": "22",  //API 1 中的ID，获取后传给后台即可
+                   "opr": null,  // 操作类型 add 新增 mod 修改 del 删除，这个API为获取数据库的数据，所以这个字段都为空
+                   "line": [
+                       {
+                           "id": "16",
+                           "name": "连线名称6",
+                           "from_id": "44",
+                           "to_id": "47",
+                           "opr": null,
+                           "json": "{l1:16}"
+                       },
+                       {
+                           "id": "17",
+                           "name": "连线名称",
+                           "from_id": "45",
+                           "to_id": "46",
+                           "opr": null,
+                           "json": "{l1:11}"
+                       },
+                       {
+                           "id": "18",
+                           "name": "连线名称7",
+                           "from_id": "43",
+                           "to_id": "46",
+                           "opr": null,
+                           "json": "{l1:17}"
+                       }
+                   ],
+                   "node": [
+                       {
+                           "id": "43",
+                           "name": "节点名称qqq",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n1:11}"
+                       },
+                       {
+                           "id": "44",
+                           "name": "节点id2",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n2:12}"
+                       },
+                       {
+                           "id": "45",
+                           "name": "节点名称3",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n1:11}"
+                       },
+                       {
+                           "id": "46",
+                           "name": "节点名称4",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n2:12}"
+                       },
+                       {
+                           "id": "47",
+                           "name": "节点名称6",
+                           "type": "2",
+                           "busi_id": "123",
+                           "opr": null,
+                           "json": "{n1:11}"
+                       }
+                   ]
+               }
+           ]
+
+            stateManager.currentTopo=data;
+            return data;
+        },
         /**********************************************************视觉层*****/
          //显示拖拽图标
          showIconData:function () {
@@ -497,6 +805,23 @@
                  var obj=data[i];
                  var  imgName='iconType'+obj.type;
                  html+='<div class="dragTag '+imgName+'" imgName="'+imgName+'"  nodeType="'+obj.type+'"  nodeName="'+obj.name+'"></div>'
+            }
+            return html;
+        },
+        //显示拓扑图切换
+        showTopoChange:function (aData) {
+            var data=aData?aData:this.getTopoData();
+            var json={
+                  1:'系统拓扑',
+                  2:'流程拓扑',
+                  3:'物理拓扑',
+                  4:'流程拓扑'
+                }
+            var html='';
+            for(var i=0; i<data.length;i++){
+                var isActive=i?'':'active';
+                var isExpanded=i?false:true;
+                html +='<li class="'+isActive+'"  topoId="'+data[i].id+'"><a data-toggle="tab"  aria-expanded="'+isExpanded+'">'+json[data[i].type]+'</a><i class="del">×</i></li>';
             }
             return html;
         },
@@ -524,19 +849,59 @@
             //目录树初始化
             $.fn.zTree.init($("#treeDemo"),setting , zNodes);
         },
-        //目录树节点点击事件
-        _menuClickEvent:function (e,treeId, treeNode) {
-            var self=dragManager;
-            //单击打开节点
-            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-            zTree.expandNode(treeNode);
-            //获取图标
-            var html=self.showIconData();
+        //控制拖拽图标显示
+        setIconData:function () {
+            var self = dragManager;
+            var html = self.showIconData();
             $('.entityIcon').addClass('active').siblings().removeClass('active');
             $('.entityIconTag').html(html).show().siblings().hide();
             self.dragInit();
-            //获取拓扑图
-            console.log(arguments);
+        },
+        //控制拓扑图切换
+        setTopChange:function (arr) {
+            var self = dragManager;
+            var html = self.showTopoChange(arr);
+            $('.topoChooseArea ul').html(html);
+            $('.topoChooseArea .del').click(function (e) {
+                e.stopPropagation();
+                var topoId=$(this).parents('li').attr('topoId');
+                var arr=[];
+                var topoArr=stateManager.currentTopo;
+                //删除数据
+                for(var i=0 ;i<topoArr.length;i++) {
+                    if (topoArr[i].id != topoId) {
+                        arr.push(topoArr[i]);
+                    }
+                }
+                stateManager.currentTopo=arr;
+                //渲染
+                $(this).parents('li').remove();
+                //todo:传输给后台
+            });
+            $('.topoChooseArea li').click(function () {
+                 var topoId= $(this).attr('topoId');
+                var topoArr=stateManager.currentTopo;
+                var obj={};
+                for(var i=0 ;i<topoArr.length;i++) {
+                    if (topoArr[i].id == topoId) {
+                        obj=topoArr[i];
+                        break;
+                    }
+                }
+                //渲染obj
+                console.log(obj);
+            });
+        },
+        //目录树节点点击事件
+        _menuClickEvent:function (e,treeId, treeNode) {
+            var self = dragManager;
+            //单击打开节点
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            zTree.expandNode(treeNode);
+            //拖拽图标初始化
+            self.setIconData();
+            //拓扑图初始化
+            self.setTopChange();
         },
 
 

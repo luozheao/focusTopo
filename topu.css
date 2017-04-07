@@ -145,6 +145,7 @@ table {
     line-height: 37px;
     font-size:12px;
     padding:0 22px;
+    cursor: pointer;
 }
 .topoChooseArea ul li a{
    text-decoration: none;
