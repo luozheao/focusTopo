@@ -804,7 +804,7 @@
             for(var i=0;i<data.length;i++){
                  var obj=data[i];
                  var  imgName='iconType'+obj.type;
-                 html+='<div class="dragTag '+imgName+'" imgName="'+imgName+'"  nodeType="'+obj.type+'"  nodeName="'+obj.name+'"></div>'
+                 html+='<div class="none dragTag '+imgName+'" imgName="'+imgName+'"  nodeType="'+obj.type+'"  nodeName="'+obj.name+'"></div>'
             }
             return html;
         },
@@ -815,13 +815,13 @@
                   1:'系统拓扑',
                   2:'流程拓扑',
                   3:'物理拓扑',
-                  4:'流程拓扑'
+                  4:'逻辑拓扑'
                 }
             var html='';
             for(var i=0; i<data.length;i++){
                 var isActive=i?'':'active';
                 var isExpanded=i?false:true;
-                html +='<li class="'+isActive+'"  topoId="'+data[i].id+'"><a data-toggle="tab"  aria-expanded="'+isExpanded+'">'+json[data[i].type]+'</a><i class="del">×</i></li>';
+                html +='<li class="'+isActive+'"  nodeType="'+data[i].type+'"  topoId="'+data[i].id+'"><a data-toggle="tab"  aria-expanded="'+isExpanded+'">'+json[data[i].type]+'</a><i class="del">×</i></li>';
             }
             return html;
         },
@@ -861,7 +861,10 @@
         setTopChange:function (arr) {
             var self = dragManager;
             var html = self.showTopoChange(arr);
+            var currentTopo=stateManager.currentTopo;
             $('.topoChooseArea ul').html(html);
+            self._setDragIconByTopoType(currentTopo[0].type);
+
             $('.topoChooseArea .del').click(function (e) {
                 e.stopPropagation();
                 var topoId=$(this).parents('li').attr('topoId');
@@ -879,15 +882,18 @@
                 //todo:传输给后台
             });
             $('.topoChooseArea li').click(function () {
-                 var topoId= $(this).attr('topoId');
-                var topoArr=stateManager.currentTopo;
-                var obj={};
-                for(var i=0 ;i<topoArr.length;i++) {
+                var topoId = $(this).attr('topoId');
+                var nodeType = $(this).attr('nodeType');
+                var topoArr = stateManager.currentTopo;
+                var obj = {};
+                for (var i = 0; i < topoArr.length; i++) {
                     if (topoArr[i].id == topoId) {
-                        obj=topoArr[i];
+                        obj = topoArr[i];
                         break;
                     }
                 }
+                //控制拖拽图标的显示
+                self._setDragIconByTopoType(nodeType);
                 //渲染obj
                 console.log(obj);
             });
@@ -920,8 +926,34 @@
                 canvasManager[json[str]](sNodeName, $thisClone, mDown, thisWidth, thisHeight, pageX, pageY);
             }
         },
+        //根据拓扑图类型筛选拖拽图标
+        _setDragIconByTopoType:function(nodeType){
 
+            var json={
+                1:["1"],
+                2:[],
+                3:["3"],
+                4:["1","2"]
+            };
+            var  arr=json[nodeType];
 
+            $('.entityIconTag .dragTag').each(function () {
+                if(arr.indexOf($(this).attr('nodeType'))>=0){
+                    $(this).fadeIn();
+                }else{
+                    $(this).hide();
+                }
+            });
+
+            if(nodeType==2){
+                $('.basicIcon').click();
+                $('.entityIcon').hide();
+            }else{
+                $('.entityIcon').click();
+                $('.entityIcon').show();
+            }
+
+        },
         /*********其他事件******************************/
         aEvents:[
             //切换图标
