@@ -457,11 +457,29 @@ table {
     line-height: 35px;
     background: #f0f4f9;
 }
-
+#equipmentArea #iconArea .iconTitle {
+    height:100%;
+    width: 80%;
+}
+#equipmentArea #iconArea .iconTitle li{
+     float:left;
+     text-align:center;
+     width: 50%;
+     cursor: pointer;
+}
+#equipmentArea #iconArea{
+    background: #f8f8f8;
+}
+#equipmentArea #iconArea .iconTitle li.active{
+    border-bottom: 2px solid #51a4da;
+    color: #51a4da;
+}
 #equipmentArea #iconArea .iconContainer {
     min-height: 400px;
     overflow-y: auto;
     background: #f8f8f8;
+    border-top: 1px solid #d5e0e6;
+    width: 100%;
 }
 
 /*弹窗部分样式开始*/

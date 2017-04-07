@@ -210,193 +210,253 @@
     }
     //拖拽管理者
     var dragManager={
-        /*******数据层******/
-        //下拉框
+
+        /*******************************************************数据层******/
+        //获取目录树数据
         getMenuData:function(){
-           var data=[
-               {
-                   "isParent":true,
-                   "name":"默认域",
-                   "pId":0,
-                   "id":1,
-                   "open":true
-               },
-               {
-                   "name":"默认组",
-                   "pId":1,
-                   "id":2
-               },
-               {
-                   "isParent":true,
-                   "name":"广东",
-                   "pId":0,
-                   "id":3
-               },
-               {
-                   "name":"10086系统",
-                   "pId":3,
-                   "id":4
-               },
-               {
-                   "name":"CRM系统",
-                   "pId":3,
-                   "id":5
-               },
-               {
-                   "isParent":true,
-                   "name":"四川",
-                   "pId":0,
-                   "id":10
-               },
-               {
-                   "name":"内部ERP系统",
-                   "pId":10,
-                   "id":11
-               },
-               {
-                   "isParent":true,
-                   "name":"湖南",
-                   "pId":0,
-                   "id":12
-               },
-               {
-                   "name":"微信平台系统",
-                   "pId":12,
-                   "id":13
-               },
-               {
-                   "isParent":true,
-                   "name":"安徽",
-                   "pId":0,
-                   "id":14
-               },
-               {
-                   "name":"内部OA系统",
-                   "pId":14,
-                   "id":15
-               },
-               {
-                   "isParent":true,
-                   "name":"湖北",
-                   "pId":0,
-                   "id":16
-               },
-               {
-                   "name":"电子渠道系统",
-                   "pId":16,
-                   "id":17
-               },
-               {
-                   "name":"票据系统",
-                   "pId":3,
-                   "id":18
-               },
-               {
-                   "name":"应用性能管理",
-                   "pId":3,
-                   "id":19
-               },
-               {
-                   "name":"性能监控",
-                   "pId":3,
-                   "id":20
-               },
-               {
-                   "name":"内部定餐系统",
-                   "pId":12,
-                   "id":21
-               },
-               {
-                   "isParent":true,
-                   "name":"DCOS平台",
-                   "pId":0,
-                   "id":34
-               },
-               {
-                   "name":"移动数据中心",
-                   "pId":34,
-                   "id":35
-               },
-               {
-                   "name":"cmcc_serv1",
-                   "pId":35,
-                   "id":36
-               },
-               {
-                   "name":"历史",
-                   "pId":36,
-                   "id":37
-               },
-               {
-                   "name":"cmcc_serv2",
-                   "pId":35,
-                   "id":38
-               },
-               {
-                   "name":"移动数据中心1",
-                   "pId":34,
-                   "id":39
-               },
-               {
-                   "name":"cmcc_serv2",
-                   "pId":39,
-                   "id":40
-               },
-               {
-                   "name":"移动数据中心2",
-                   "pId":34,
-                   "id":41
-               },
-               {
-                   "name":"cmcc_serv2",
-                   "pId":41,
-                   "id":42
-               },
-               {
-                   "name":"历史",
-                   "pId":42,
-                   "id":43
-               },
-               {
-                   "name":"历史",
-                   "pId":40,
-                   "id":44
-               },
-               {
-                   "isParent":true,
-                   "name":"aaaaaaaaaa",
-                   "pId":0,
-                   "id":54
-               },
-               {
-                   "name":"bbbbb",
-                   "pId":54,
-                   "id":55
-               }
-           ];
-            var obj={};
-            //第一步，找父节点
-            for(var i=0 ;i<data.length;i++){
-                var p=data[i];
-                p['childs']=[];
-                if(p['isParent']){
-                    obj[p.id]=p;
+            var zNodes=[
+                {
+                    "code": "default_area",  // 编码，可不用管
+                    "name": "默认域",   // 目录名称
+                    "pId": "0",   // 根据pId、id判断层级关系
+                    "id": "1",
+                    "type": "0",  // 类型，0 域 1 业务系统 可不用管
+                    "isLeaf": "false"   // 值为true时，表明其为叶子业务系统，其下无子业务系统，其下关联的是集群、主机、实例。
+                },
+                {
+                    "code": "default_group",
+                    "name": "默认组",
+                    "pId": "1",
+                    "id": "2",
+                    "type": "1",
+                    "isLeaf": "true"
+                },
+                {
+                    "code": "guangdong",
+                    "name": "广东",
+                    "pId": "0",
+                    "id": "3",
+                    "type": "0",
+                    "isLeaf": "false"
+                },
+                {
+                    "code": "guangzhou",
+                    "name": "10086系统",
+                    "pId": "3",
+                    "id": "4",
+                    "type": "1",
+                    "isLeaf": "true"
+                },
+                {
+                    "code": "foshan",
+                    "name": "CRM系统",
+                    "pId": "3",
+                    "id": "5",
+                    "type": "1",
+                    "isLeaf": "true"
+                },
+                {
+                    "code": "sichun",
+                    "name": "四川",
+                    "pId": "0",
+                    "id": "10",
+                    "type": "0",
+                    "isLeaf": "false"
+                },
+                {
+                    "code": "chengdu",
+                    "name": "内部ERP系统",
+                    "pId": "10",
+                    "id": "11",
+                    "type": "1",
+                    "isLeaf": "true"
+                },
+                {
+                    "code": "hunan",
+                    "name": "湖南",
+                    "pId": "0",
+                    "id": "12",
+                    "type": "0",
+                    "isLeaf": "false"
+                },
+                {
+                    "code": "changsha",
+                    "name": "微信平台系统",
+                    "pId": "12",
+                    "id": "13",
+                    "type": "1",
+                    "isLeaf": "true"
+                },
+                {
+                    "code": "anwei",
+                    "name": "安徽",
+                    "pId": "0",
+                    "id": "14",
+                    "type": "0",
+                    "isLeaf": "false"
+                },
+                {
+                    "code": "hefei",
+                    "name": "内部OA系统",
+                    "pId": "14",
+                    "id": "15",
+                    "type": "1",
+                    "isLeaf": "true"
+                },
+                {
+                    "code": "hubei",
+                    "name": "湖北",
+                    "pId": "0",
+                    "id": "16",
+                    "type": "0",
+                    "isLeaf": "false"
+                },
+                {
+                    "code": "wuhan",
+                    "name": "电子渠道系统",
+                    "pId": "16",
+                    "id": "17",
+                    "type": "1",
+                    "isLeaf": "true"
+                },
+                {
+                    "code": "gfrms",
+                    "name": "票据系统",
+                    "pId": "3",
+                    "id": "18",
+                    "type": "1",
+                    "isLeaf": "true"
+                },
+                {
+                    "code": "apm",
+                    "name": "应用性能管理",
+                    "pId": "3",
+                    "id": "19",
+                    "type": "1",
+                    "isLeaf": "true"
+                },
+                {
+                    "code": "netmgr",
+                    "name": "性能监控",
+                    "pId": "3",
+                    "id": "20",
+                    "type": "1",
+                    "isLeaf": "true"
+                },
+                {
+                    "code": "setmeal",
+                    "name": "内部定餐系统",
+                    "pId": "12",
+                    "id": "21",
+                    "type": "1",
+                    "isLeaf": "true"
+                },
+                {
+                    "code": "dcos",
+                    "name": "DCOS平台",
+                    "pId": "0",
+                    "id": "34",
+                    "type": "0",
+                    "isLeaf": "false"
+                },
+                {
+                    "code": "移动数据中心",
+                    "name": "移动数据中心",
+                    "pId": "34",
+                    "id": "35",
+                    "type": "1",
+                    "isLeaf": "false"
+                },
+                {
+                    "code": "cmcc_serv1",
+                    "name": "cmcc_serv1",
+                    "pId": "35",
+                    "id": "36",
+                    "type": "1",
+                    "isLeaf": "false"
+                },
+                {
+                    "code": "history",
+                    "name": "历史",
+                    "pId": "36",
+                    "id": "37",
+                    "type": "1",
+                    "isLeaf": "true"
+                },
+                {
+                    "code": "cmcc_serv2",
+                    "name": "cmcc_serv2",
+                    "pId": "35",
+                    "id": "38",
+                    "type": "1",
+                    "isLeaf": "true"
+                },
+                {
+                    "code": "移动数据中心1",
+                    "name": "移动数据中心1",
+                    "pId": "34",
+                    "id": "39",
+                    "type": "1",
+                    "isLeaf": "false"
+                },
+                {
+                    "code": "cmcc_serv2",
+                    "name": "cmcc_serv2",
+                    "pId": "39",
+                    "id": "40",
+                    "type": "1",
+                    "isLeaf": "false"
+                },
+                {
+                    "code": "移动数据中心2",
+                    "name": "移动数据中心2",
+                    "pId": "34",
+                    "id": "41",
+                    "type": "1",
+                    "isLeaf": "false"
+                },
+                {
+                    "code": "cmcc_serv2",
+                    "name": "cmcc_serv2",
+                    "pId": "41",
+                    "id": "42",
+                    "type": "1",
+                    "isLeaf": "false"
+                },
+                {
+                    "code": "history",
+                    "name": "历史",
+                    "pId": "42",
+                    "id": "43",
+                    "type": "1",
+                    "isLeaf": "true"
+                },
+                {
+                    "code": "history",
+                    "name": "历史",
+                    "pId": "40",
+                    "id": "44",
+                    "type": "1",
+                    "isLeaf": "true"
+                },
+                {
+                    "code": "aaaaaaaaa",
+                    "name": "aaaaaaaaaa",
+                    "pId": "0",
+                    "id": "54",
+                    "type": "0",
+                    "isLeaf": "false"
+                },
+                {
+                    "code": "bbbbbbbbbb",
+                    "name": "bbbbb",
+                    "pId": "54",
+                    "id": "55",
+                    "type": "1",
+                    "isLeaf": "true"
                 }
-            }
-            //第二步，从父节点开始，不停完善下去
-            for(var j in obj){
-                findChild(obj[j]);
-            }
-            function findChild(obj) {
-                for (var i = 0; i < data.length; i++) {
-                    if (obj.id == data[i].pId) {
-                        obj.childs.push(data[i]);
-                        findChild(data[i])
-                    }
-                }
-            }
-            //console.log(obj);
-            return obj;
+            ]
+            return zNodes;
         },
         //图标
         getIconData:function () {
@@ -428,32 +488,31 @@
           ]
             return data;
         },
-        /********视觉层*****/
+        /**********************************************************视觉层*****/
         showMenuData:function () {
-            var obj = this.getMenuData();
-            var arr=[];
-            for(var i in obj){
-                arr.push(obj[i]);
-            }
-            var html=  getHtml(arr);
-            function getHtml(arr) {
-                var html = '';
-                html += '<ul class="dropdown-menu">';
-                for (var i = 0; i < arr.length; i++) {
-                    var p = arr[i];
-                    if (p.childs.length == 0) {
-                        html += '<li><a tabindex="-1" href="javascript:;">'+p.name+'</a></li> ';
-                    } else {
-                        html += '<li class="dropdown-submenu">';
-                        html += '<a href="javascript:;">'+p.name+'</a>';
-                        html += getHtml(p.childs);
-                        html += '</li>';
+            var zNodes = this.getMenuData();
+            var setting={
+                data: {
+                    simpleData: {
+                        enable: true,
+                        idKey: "id",
+                        pIdKey: "pId",
+                        rootPId: 0
+                    }
+                },
+                view:{
+                    dblClickExpand:false
+                },
+                callback: {
+                    onClick: function (e,treeId, treeNode) {
+                        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+                        zTree.expandNode(treeNode);
                     }
                 }
-                html += '</ul>';
-                return html;
-            }
-            return html;
+            };
+
+            //目录树初始化
+            $.fn.zTree.init($("#treeDemo"),setting , zNodes);
         },
         showIconData:function () {
             var data= this.getIconData();
@@ -462,23 +521,14 @@
                  var obj=data[i];
                  html+='<div class="dragTag '+obj.code+'" imgName="'+obj.code+'"  nodeType="'+obj.nodeType+'"  nodeName="'+obj.name+'"></div>'
             }
-           return html;
+            return html;
         },
-        /********控制层*****/
+        /**********************************************************控制层*****/
         setMenuData:function () {
-            var self=this;
-             /*******控制显示******/
-             var html=this.showMenuData();
-             $('.dropdown').append(html);
-            /*******控制事件******/
-             $('#equipmentArea').on('click','.dropdown-menu>li>a',function () {
-                 var $equipmentArea= $('#equipmentArea');
-                 $equipmentArea.find('.dragTag').remove();
-                 var html=self.showIconData();
-                 $equipmentArea.append(html);
-                 //初始化拖拽事件
-                 self.dragInit();
-             });
+             this.showMenuData();
+             //目录树点击后
+            // b、调用拓扑图数据
+            // a、调用图标
         },
         dragInit:function () {
             var $dragContainer=$('#container');
@@ -495,6 +545,7 @@
                 });
             });
         },
+
         /*********辅助方法******************************/
         //根据拖拽的图标对象，确定创建哪一类节点
         _createNodeOrContainerNodeByDrag:function(sNodeName, $thisClone, mDown, thisWidth, thisHeight, pageX, pageY){
@@ -508,9 +559,25 @@
                 canvasManager[json[str]](sNodeName, $thisClone, mDown, thisWidth, thisHeight, pageX, pageY);
             }
         },
+        /*********其他事件******************************/
+        aEvents:[
+            //切换图标
+            ['click','.iconTitle >li',function () {
+                var $obj=$(this).hasClass('entityIcon')?$('.entityIconTag'):$('.basicIconTag');
+                $(this).addClass('active').siblings().removeClass('active');
+                $obj.show().siblings().hide();
+            }],
+        ],
         init:function () {
+            //目录树
             this.setMenuData();
             this.dragInit();
+            //事件初始化
+            var aEvents=this.aEvents;
+            for(var i=0;i<aEvents.length;i++){
+                $(aEvents[i][1]).on(aEvents[i][0],aEvents[i][2]);
+            }
+
         }
     }
     //画布管理者
@@ -1373,6 +1440,256 @@ dragManager.init();
 toolbarManager.init();
 
 $('#jumpBox').append($('.TopujumpHost'))
+
+
+
+
+    var zNodes=[
+        {
+            "code": "default_area",  // 编码，可不用管
+            "name": "默认域",   // 目录名称
+            "pId": "0",   // 根据pId、id判断层级关系
+            "id": "1",
+            "type": "0",  // 类型，0 域 1 业务系统 可不用管
+            "isLeaf": "false"   // 值为true时，表明其为叶子业务系统，其下无子业务系统，其下关联的是集群、主机、实例。
+        },
+        {
+            "code": "default_group",
+            "name": "默认组",
+            "pId": "1",
+            "id": "2",
+            "type": "1",
+            "isLeaf": "true"
+        },
+        {
+            "code": "guangdong",
+            "name": "广东",
+            "pId": "0",
+            "id": "3",
+            "type": "0",
+            "isLeaf": "false"
+        },
+        {
+            "code": "guangzhou",
+            "name": "10086系统",
+            "pId": "3",
+            "id": "4",
+            "type": "1",
+            "isLeaf": "true"
+        },
+        {
+            "code": "foshan",
+            "name": "CRM系统",
+            "pId": "3",
+            "id": "5",
+            "type": "1",
+            "isLeaf": "true"
+        },
+        {
+            "code": "sichun",
+            "name": "四川",
+            "pId": "0",
+            "id": "10",
+            "type": "0",
+            "isLeaf": "false"
+        },
+        {
+            "code": "chengdu",
+            "name": "内部ERP系统",
+            "pId": "10",
+            "id": "11",
+            "type": "1",
+            "isLeaf": "true"
+        },
+        {
+            "code": "hunan",
+            "name": "湖南",
+            "pId": "0",
+            "id": "12",
+            "type": "0",
+            "isLeaf": "false"
+        },
+        {
+            "code": "changsha",
+            "name": "微信平台系统",
+            "pId": "12",
+            "id": "13",
+            "type": "1",
+            "isLeaf": "true"
+        },
+        {
+            "code": "anwei",
+            "name": "安徽",
+            "pId": "0",
+            "id": "14",
+            "type": "0",
+            "isLeaf": "false"
+        },
+        {
+            "code": "hefei",
+            "name": "内部OA系统",
+            "pId": "14",
+            "id": "15",
+            "type": "1",
+            "isLeaf": "true"
+        },
+        {
+            "code": "hubei",
+            "name": "湖北",
+            "pId": "0",
+            "id": "16",
+            "type": "0",
+            "isLeaf": "false"
+        },
+        {
+            "code": "wuhan",
+            "name": "电子渠道系统",
+            "pId": "16",
+            "id": "17",
+            "type": "1",
+            "isLeaf": "true"
+        },
+        {
+            "code": "gfrms",
+            "name": "票据系统",
+            "pId": "3",
+            "id": "18",
+            "type": "1",
+            "isLeaf": "true"
+        },
+        {
+            "code": "apm",
+            "name": "应用性能管理",
+            "pId": "3",
+            "id": "19",
+            "type": "1",
+            "isLeaf": "true"
+        },
+        {
+            "code": "netmgr",
+            "name": "性能监控",
+            "pId": "3",
+            "id": "20",
+            "type": "1",
+            "isLeaf": "true"
+        },
+        {
+            "code": "setmeal",
+            "name": "内部定餐系统",
+            "pId": "12",
+            "id": "21",
+            "type": "1",
+            "isLeaf": "true"
+        },
+        {
+            "code": "dcos",
+            "name": "DCOS平台",
+            "pId": "0",
+            "id": "34",
+            "type": "0",
+            "isLeaf": "false"
+        },
+        {
+            "code": "移动数据中心",
+            "name": "移动数据中心",
+            "pId": "34",
+            "id": "35",
+            "type": "1",
+            "isLeaf": "false"
+        },
+        {
+            "code": "cmcc_serv1",
+            "name": "cmcc_serv1",
+            "pId": "35",
+            "id": "36",
+            "type": "1",
+            "isLeaf": "false"
+        },
+        {
+            "code": "history",
+            "name": "历史",
+            "pId": "36",
+            "id": "37",
+            "type": "1",
+            "isLeaf": "true"
+        },
+        {
+            "code": "cmcc_serv2",
+            "name": "cmcc_serv2",
+            "pId": "35",
+            "id": "38",
+            "type": "1",
+            "isLeaf": "true"
+        },
+        {
+            "code": "移动数据中心1",
+            "name": "移动数据中心1",
+            "pId": "34",
+            "id": "39",
+            "type": "1",
+            "isLeaf": "false"
+        },
+        {
+            "code": "cmcc_serv2",
+            "name": "cmcc_serv2",
+            "pId": "39",
+            "id": "40",
+            "type": "1",
+            "isLeaf": "false"
+        },
+        {
+            "code": "移动数据中心2",
+            "name": "移动数据中心2",
+            "pId": "34",
+            "id": "41",
+            "type": "1",
+            "isLeaf": "false"
+        },
+        {
+            "code": "cmcc_serv2",
+            "name": "cmcc_serv2",
+            "pId": "41",
+            "id": "42",
+            "type": "1",
+            "isLeaf": "false"
+        },
+        {
+            "code": "history",
+            "name": "历史",
+            "pId": "42",
+            "id": "43",
+            "type": "1",
+            "isLeaf": "true"
+        },
+        {
+            "code": "history",
+            "name": "历史",
+            "pId": "40",
+            "id": "44",
+            "type": "1",
+            "isLeaf": "true"
+        },
+        {
+            "code": "aaaaaaaaa",
+            "name": "aaaaaaaaaa",
+            "pId": "0",
+            "id": "54",
+            "type": "0",
+            "isLeaf": "false"
+        },
+        {
+            "code": "bbbbbbbbbb",
+            "name": "bbbbb",
+            "pId": "54",
+            "id": "55",
+            "type": "1",
+            "isLeaf": "true"
+        }
+    ]
+
+
+
+
 
 
 

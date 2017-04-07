@@ -6,6 +6,7 @@
     <link href="./bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./topu.css">
     <link rel="stylesheet" href="./font-awesome.css">
+    <link rel="stylesheet" href="./zTreeStyle.css">
 </head>
 <body >
 <div class="jtp-main">
@@ -142,16 +143,26 @@
                 </div>
                 <div id="treeArea">
                      <div class="title">拓扑图目录结构</div>
-                     <div class="treeContainer"></div>
+                     <div class="treeContainer">
+                         <ul id="treeDemo" class="ztree"></ul>
+                     </div>
                 </div>
                 <div id="iconArea">
                     <div class="title">
                         <ul class="clearfix iconTitle">
-                            <li class="entityIcon">实体图形</li>
+                            <li class="entityIcon active">实体图形</li>
                             <li class="basicIcon">基本图形</li>
                         </ul>
                     </div>
-                    <div class="iconContainer"></div>
+                    <div class="iconContainer">
+                         <div class="entityIconTag">
+                             实体图形
+
+                         </div>
+                         <div class="basicIconTag none">
+                             基本图形
+                         </div>
+                    </div>
                 </div>
             </div>
                <canvas id="canvas" >您的浏览器不支持显示，请换非IE8及以下的浏览器！</canvas>
@@ -352,9 +363,9 @@
         </form>
     </div>
 </div>
-
 </body>
 <script src="./jquery-1.9.1.min.js"></script>
+<script src="./jquery.ztree.core.js"></script>
 <script src="./bootstrap.min.js"></script>
 <script src="./jtopo-0.4.8.js"></script>
 <script src="./drag.js"></script>
