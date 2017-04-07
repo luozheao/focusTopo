@@ -331,6 +331,16 @@
     line-height: 35px;
     background: #f0f4f9;
 }
+#equipmentArea #iconArea .iconTitle{
+    height: 100%;
+    width: 100%;
+}
+#equipmentArea #iconArea .iconTitle li{
+    float: left;
+    width: 50%;
+    height: 100%;
+    cursor: pointer;
+}
 #equipmentArea #iconArea .iconContainer{
     min-height: 400px;
     overflow-y: auto;
