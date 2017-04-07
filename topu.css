@@ -222,14 +222,20 @@ table {
 #toolbar .btn,
 #toolbar .btn-group {
     margin-right: 5px;
+    border-radius:3px;
 }
 
 #toolbar .btn-group .btn {
     margin: 0px -1px;
+    border:none;
+}
+#toolbar .btn-group .btn:first-child,#toolbar .btn-group .btn:last-child{
+    margin: 0px;
 }
 
 #toolbar .btn, #toolbar .btn-group {
     margin-right: 5px;
+    border:1px solid #ccc;
 }
 
 #toolbar .groupWrap {
@@ -260,63 +266,83 @@ table {
 }
 
 .toolbar-default {
-    background-position: -74px 0px;
+    background-position: -28px -5px;
     width: 16px;
     height: 16px;
 }
 
 .q-icon {
-    background-image: url(images/icons-32.png);
+    background-image: url('./images/smallpng.png');
     background-repeat: no-repeat no-repeat;
     margin: 1px 0px;
-    background-size: 460px 16px;
-}
-
-.toolbar-select {
+    width: 16px;
+    height: 16px;
 }
 
 .toolbar-setBorder {
-    background-position: -314px 0px;
+    background-position: -247px -59px;
     width: 16px;
     height: 16px;
 }
-
+.toolbar-select{
+    background-position: -56px -3px;
+}
 .toolbar-pan {
-
+    background-position: -222px -60px;
 }
 
 .toolbar-zoomin {
-    background-position: -388px 0px;
-    width: 16px;
-    height: 16px;
+    background-position: -79px -3px;
 }
 
 .toolbar-zoomout {
-    background-position: -407px 0px;
-    width: 16px;
-    height: 16px;
+    background-position: -104px -5px;
 }
 
 .toolbar-zoomreset {
-    background-position: -425px 0px;
-    width: 16px;
-    height: 16px;
+    background-position: -136px -5px;
 }
 
 .toolbar-center {
-
+    background-position: -161px -2px;
 }
 
 .toolbar-overview {
-    background-position: -240px 0px;
-    width: 16px;
-    height: 16px;
+    background-position: -188px 0px;
 }
-
-.toolbar-edge {
-    background-position: -129px 0px;
-    width: 16px;
-    height: 16px;
+.toolbar-solid{
+    background-position: -215px -2px;
+}
+.toolbar-dashed{
+    background-position: -243px 0px;
+}
+.toolbar-curve{
+    background-position: -195px -59px;
+}
+.toolbar-arrow{
+    background-position: -163px -62px;
+}
+.toolbar-dArrow{
+    background-position: -127px -62px;
+    width:20px;
+}
+.toolbar-flexional{
+    background-position: -98px -62px;
+}
+.toolbar-flow{
+    background-position: -67px -62px;
+}
+.toolbar-eyes{
+    background-position: -31px -62px;
+}
+.toolbar-backOff{
+    background-position: -1px -60px;
+}
+.toolbar-forward{
+    background-position: -246px -27px;
+}
+.toolbar-save{
+    background-position: -216px -28px;
 }
 
 .toolbar-edge_VH {
@@ -337,10 +363,9 @@ table {
     height: 16px;
 }
 
-.toolbar-search {
-    background-position: -333px 0px;
-    width: 16px;
-    height: 16px;
+.toolbar-search i{
+    color: #4fa4da;
+    font-size:14px;
 }
 
 .toolbar-print {
