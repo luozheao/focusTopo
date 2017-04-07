@@ -325,9 +325,6 @@
     overflow-y: auto;
     background: #f8f8f8;
 }
-#equipmentArea #iconArea{
-
-}
 #equipmentArea #iconArea .title{
     height: 35px;
     text-align: center;
@@ -339,3 +336,116 @@
     overflow-y: auto;
     background: #f8f8f8;
 }
+/*弹窗部分样式开始*/
+.TopujumpDiv{
+    width:25%;
+    transition: 0.3s;
+    position: absolute;
+    right:10px;
+    top:90px;
+    background: #fff;
+    box-shadow: -1px 1px 8px #bdbdbd;
+    display: none;
+}
+.TopujumpDivShow{
+    display: block;
+}
+.TopujumpDiv .TopujumpTitle{
+    height: 40px;
+    line-height: 40px;
+    padding-left:20px;
+    padding-right:20px;
+    font-size:14px;
+    color: #333333;
+    background: #f0f4f9;
+}
+.TopujumpDiv .TopujumpTitle .TopujumpTitleUl{
+    list-style: none;
+    margin:0;
+    padding:0;
+}
+.TopujumpDiv .TopujumpTitle .TopujumpTitleUl li{
+    display: block;
+    float: left;
+    width:80%;
+    height:40px;
+}
+.TopujumpDiv .TopujumpTitle .TopujumpTitleUl li:first-child{
+    width:10%;
+    font-size:20px;
+    color: #9ea2a5;
+}
+.TopujumpDiv .TopujumpTitle .TopujumpTitleUl li:last-child{
+    width:10%;
+    text-align: right;
+    color: #9ea2a5;
+    cursor: pointer;
+}
+.TopujumpBody{
+    padding:20px;
+}
+.TopujumpBody label{
+    width:100%;
+    margin-bottom:10px;
+    margin-top:16px;
+    font-size: 12px;
+    color: #555555;
+    font-weight: 700;
+}
+.TopujumpBody .TopujumpLine:first-child label{
+    margin-top:0px;
+}
+.TopujumpBody label span{
+    color: #f18609;
+    padding:0 10px;
+}
+.TopujumpBody .TopujumpLineDiv .TopujumpLineDiv_div{
+    float: left;
+    position: relative;
+    width:50%;
+}
+.TopujumpLineDiv_div_icon{
+    position: absolute;
+    top:0;
+    width: 35px;
+    height: 24px;
+    background: url('./images/smallpng.png') no-repeat -96px -27px;
+}
+.form-input{
+    height: 30px;
+    width: 100%;
+    padding:0 5px;
+    color: #617083;
+    font-size: 14px;
+    box-sizing: border-box;
+    border:1px solid #dcdcdc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    transition: 0.42s;
+}
+.form-input:hover{
+    border-color: #bfbfbf;
+    box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px inset;
+}
+.form-input:focus{
+    border-color: #37a8e0;
+}
+.form-textarea:hover {
+    box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px inset;
+    border-color: rgb(191, 191, 191);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.form-textarea{
+    border: 1px solid #dcdcdc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    vertical-align: text-top;
+    font-size: 14px;
+    color: #617083;
+    padding: 5px;
+    width: 100%;
+    /*resize:none*/
+}
+/*弹窗部分样式结束*/
