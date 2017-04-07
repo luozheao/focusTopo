@@ -380,20 +380,20 @@ table {
     background-position: right center !important;
 }
 
-.dragTag.code1 {
-    background: url("./images/code1.jpg") no-repeat 100% 100%;
+.dragTag.iconType1 {
+    background: url("./images/iconType1.jpg") no-repeat 100% 100%;
 }
 
-.dragTag.code2 {
-    background: url("./images/code2.jpg") no-repeat 100% 100%;
+.dragTag.iconType2 {
+    background: url("./images/iconType2.jpg") no-repeat 100% 100%;
 }
 
-.dragTag.code3 {
-    background: url("./images/code3.jpg") no-repeat;
+.dragTag.iconType3 {
+    background: url("./images/iconType3.jpg") no-repeat;
 }
 
-.dragTag.timg {
-    background: url("./images/timg.jpg") no-repeat;
+.dragTag.iconType4 {
+    background: url("./images/iconType4.jpg") no-repeat;
     background-size: 100%;
 }
 
@@ -565,13 +565,17 @@ table {
     color: #51a4da;
 }
 #equipmentArea #iconArea .iconContainer {
-    min-height: 400px;
     overflow-y: auto;
     background: #f8f8f8;
     border-top: 1px solid #d5e0e6;
     width: 100%;
 }
-
+#equipmentArea #iconArea .entityIconTag {
+   min-height: 400px;
+}
+#equipmentArea #iconArea .basicIconTag {
+    min-height: 400px;
+}
 /*弹窗部分样式开始*/
 .TopujumpDiv {
     width: 28%;

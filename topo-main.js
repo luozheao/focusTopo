@@ -210,7 +210,6 @@
     }
     //拖拽管理者
     var dragManager={
-
         /*******************************************************数据层******/
         //获取目录树数据
         getMenuData:function(){
@@ -458,39 +457,54 @@
             ]
             return zNodes;
         },
-        //图标
+        //根据id获取拖拽图标
         getIconData:function () {
-          var data=[
-              {
-                  "code":"code1",
-                  "name":"系统1",
-                  "nodeType":"node",
-                  "id":"id1"
-              },
-              {
-                  "code":"code2",
-                  "name":"系统2",
-                  "nodeType":"node",
-                  "id":"id2"
-              },
-              {
-                  "code":"code3",
-                  "name":"系统3",
-                  "nodeType":"node",
-                  "id":"id3"
-              },
-              {
-                  "code":"timg",
-                  "name":"我是碉爆的定制节点",
-                  "nodeType":"containerNode",
-                  "id":"id4"
-              }
-          ]
+            var data=[
+                {
+                    "name": "10086系统",  //候选拓扑图节点的名称
+                    "id": "4",   //关联的业务ID
+                    "type": "1"  // 类型 1 业务系统 2 集群 3 主机 4 实例
+                },
+                {
+                    "name": "CRM系统",
+                    "id": "5",
+                    "type": "2"
+                },
+                {
+                    "name": "票据系统",
+                    "id": "18",
+                    "type": "3"
+                },
+                {
+                    "name": "应用性能管理",
+                    "id": "19",
+                    "type": "4"
+                },
+                {
+                    "name": "性能监控",
+                    "id": "20",
+                    "type": "1"
+                }
+            ]
             return data;
         },
         /**********************************************************视觉层*****/
-        showMenuData:function () {
+         //显示拖拽图标
+         showIconData:function () {
+            var data= this.getIconData();
+            var html='';
+            for(var i=0;i<data.length;i++){
+                 var obj=data[i];
+                 var  imgName='iconType'+obj.type;
+                 html+='<div class="dragTag '+imgName+'" imgName="'+imgName+'"  nodeType="'+obj.type+'"  nodeName="'+obj.name+'"></div>'
+            }
+            return html;
+        },
+        /**********************************************************控制层*****/
+        //控制目录树显示与事件
+        setMenuData:function () {
             var zNodes = this.getMenuData();
+            var self =this;
             var setting={
                 data: {
                     simpleData: {
@@ -504,32 +518,54 @@
                     dblClickExpand:false
                 },
                 callback: {
-                    onClick: function (e,treeId, treeNode) {
-                        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-                        zTree.expandNode(treeNode);
-                    }
+                    onClick: self._menuClickEvent
                 }
             };
-
             //目录树初始化
             $.fn.zTree.init($("#treeDemo"),setting , zNodes);
         },
-        showIconData:function () {
-            var data= this.getIconData();
-            var html='';
-            for(var i=0;i<data.length;i++){
-                 var obj=data[i];
-                 html+='<div class="dragTag '+obj.code+'" imgName="'+obj.code+'"  nodeType="'+obj.nodeType+'"  nodeName="'+obj.name+'"></div>'
+        //目录树节点点击事件
+        _menuClickEvent:function (e,treeId, treeNode) {
+            var self=dragManager;
+            //单击打开节点
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            zTree.expandNode(treeNode);
+            //获取图标
+            var html=self.showIconData();
+            $('.entityIcon').addClass('active').siblings().removeClass('active');
+            $('.entityIconTag').html(html).show().siblings().hide();
+            self.dragInit();
+            //获取拓扑图
+            console.log(arguments);
+        },
+
+
+        /*********辅助方法******************************/
+        //根据拖拽的图标对象，确定创建哪一类节点
+        _createNodeOrContainerNodeByDrag:function(sNodeName, $thisClone, mDown, thisWidth, thisHeight, pageX, pageY){
+
+            if($thisClone){
+                var str=$thisClone.attr('nodeType');
+                var json={
+                    1:'createNodeByDrag',
+                    2:'createNodeByDrag',
+                    3:'createNodeByDrag',
+                    4:'createContainerNodeByDrag'
+                }
+                canvasManager[json[str]](sNodeName, $thisClone, mDown, thisWidth, thisHeight, pageX, pageY);
             }
-            return html;
         },
-        /**********************************************************控制层*****/
-        setMenuData:function () {
-             this.showMenuData();
-             //目录树点击后
-            // b、调用拓扑图数据
-            // a、调用图标
-        },
+
+
+        /*********其他事件******************************/
+        aEvents:[
+            //切换图标
+            ['click','.iconTitle >li',function () {
+                var $obj=$(this).hasClass('entityIcon')?$('.entityIconTag'):$('.basicIconTag');
+                $(this).addClass('active').siblings().removeClass('active');
+                $obj.show().siblings().hide();
+            }],
+        ],
         dragInit:function () {
             var $dragContainer=$('#container');
             // var $equipmentArea=$('#equipmentArea');
@@ -545,29 +581,6 @@
                 });
             });
         },
-
-        /*********辅助方法******************************/
-        //根据拖拽的图标对象，确定创建哪一类节点
-        _createNodeOrContainerNodeByDrag:function(sNodeName, $thisClone, mDown, thisWidth, thisHeight, pageX, pageY){
-
-            if($thisClone){
-                var str=$thisClone.attr('nodeType');
-                var json={
-                    node:'createNodeByDrag',
-                    containerNode:'createContainerNodeByDrag'
-                }
-                canvasManager[json[str]](sNodeName, $thisClone, mDown, thisWidth, thisHeight, pageX, pageY);
-            }
-        },
-        /*********其他事件******************************/
-        aEvents:[
-            //切换图标
-            ['click','.iconTitle >li',function () {
-                var $obj=$(this).hasClass('entityIcon')?$('.entityIconTag'):$('.basicIconTag');
-                $(this).addClass('active').siblings().removeClass('active');
-                $obj.show().siblings().hide();
-            }],
-        ],
         init:function () {
             //目录树
             this.setMenuData();
@@ -845,8 +858,9 @@
             var scene = stateManager.scene;
             var self = canvasManager;
             var subWidth = pageX - stateManager.equipmentAreaWidth;
+            var subHeight=pageY-80;
             var nodeX = subWidth - scene.translateX;//松开鼠标时,元素在画布上的x坐标
-            var nodeY = pageY - scene.translateY-40;//松开鼠标时,元素在画布上的y 坐标
+            var nodeY = pageY - scene.translateY-80;//松开鼠标时,元素在画布上的y 坐标
 
             var nodeName = 'node_name';
             var nodeWidth = thisWidth;
@@ -857,7 +871,7 @@
                 imgName = $thisClone.attr('imgName');
                 $thisClone.remove()
             }
-            if (subWidth > 0 && mDown) {
+            if (subWidth > 0 &&subHeight>0&& mDown) {
                 var node = new JTopo.Node(nodeName);
                 node.setLocation(nodeX, nodeY);
                 node.font = "14px Consolas";
@@ -937,8 +951,9 @@
             var scene = stateManager.scene;
             var self = canvasManager;
             var subWidth = pageX - stateManager.equipmentAreaWidth;
+            var subHeight=pageY-80;
             var nodeX = subWidth - scene.translateX;//松开鼠标时,元素在画布上的x坐标
-            var nodeY = pageY - scene.translateY-40;//松开鼠标时,元素在画布上的y 坐标
+            var nodeY = pageY - scene.translateY-80;//松开鼠标时,元素在画布上的y 坐标
 
             var nodeName = 'node_name';
             var nodeWidth = thisWidth;
@@ -949,7 +964,7 @@
                 imgName = $thisClone.attr('imgName');
                 $thisClone.remove()
             }
-            if (subWidth > 0 && mDown) {
+            if (subWidth > 0&&subHeight>0 && mDown) {
                 //文字
                 var textNode=new JTopo.Node();
                 textNode.fontColor='43,43,43';
