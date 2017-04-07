@@ -134,15 +134,15 @@ table {
     background: #f8f8f8;
     position: absolute;
     top: 0px;
-    width: 900px;
+    width:80%;
+    right:0;
     z-index: 1;
-    left: 230px;
     border-bottom: 1px solid #dad9d9;
 }
 .topoChooseArea ul li{
     float: left;
     height: 35px;
-    line-height: 45px;
+    line-height: 37px;
     font-size:12px;
     padding:0 22px;
 }
@@ -178,9 +178,9 @@ table {
     position: absolute;
     top: 40px;
     height: 40px;
-    width: 900px;
+    right:0;
+    width: 80%;
     z-index: 1;
-    left: 230px;
 }
 
 .q-panel .q-content {
@@ -362,12 +362,12 @@ table {
 
 /********************equipmentArea*********************/
 #equipmentArea {
-    width: 225px;
+    width: 20%;
     height: 100%;
     position: absolute;
     left: 0;
     top: 0;
-    border: none;
+    border-right:6px solid #fff;
 }
 
 .dragTag {
@@ -525,14 +525,26 @@ table {
 }
 
 #equipmentArea #treeArea {
-    height: 225px;
+    height: 215px;
+    margin-bottom:10px;
+    box-shadow: 0px 0px 7px #b7b6b6;
 }
 
 #equipmentArea #treeArea .title {
     height: 35px;
-    text-align: center;
+    border-bottom:1px solid #d5e0e6;
+    color: #333;
     line-height: 35px;
     background: #f0f4f9;
+}
+#equipmentArea #treeArea .title i{
+    color: #b3baca;
+    padding:0 10px;
+}
+#equipmentArea #treeArea .title i.fa-search{
+    float: right;
+    margin-top: 10px;
+    cursor: pointer;
 }
 
 #equipmentArea #treeArea .treeContainer {
@@ -550,6 +562,7 @@ table {
 #equipmentArea #iconArea .iconTitle {
     height:100%;
     width: 80%;
+    float: left;
 }
 #equipmentArea #iconArea .iconTitle li{
      float:left;
@@ -559,6 +572,7 @@ table {
 }
 #equipmentArea #iconArea{
     background: #f8f8f8;
+    box-shadow: 0px 0px 7px #b7b6b6;
 }
 #equipmentArea #iconArea .iconTitle li.active{
     border-bottom: 2px solid #51a4da;
@@ -570,8 +584,14 @@ table {
     border-top: 1px solid #d5e0e6;
     width: 100%;
 }
+#equipmentArea #iconArea .title div i.fa-search{
+    float: right;
+    padding:10px;
+    color: #b3baca;
+    cursor: pointer;
+}
 #equipmentArea #iconArea .entityIconTag {
-   min-height: 400px;
+    min-height: 400px;
 }
 #equipmentArea #iconArea .basicIconTag {
     min-height: 400px;
