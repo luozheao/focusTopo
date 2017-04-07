@@ -7,12 +7,19 @@
     <link rel="stylesheet" href="./topu.css">
     <link rel="stylesheet" href="./font-awesome.css">
 </head>
-<body >
+<body>
 <div class="jtp-main">
     <div id="graph_panel" class="q-panel">
         <div id="container" class="q-content">
-               <div class="topoChooseArea"></div>
-               <div role="toolbar" class="q-toolbar">
+            <div class="topoChooseArea">
+                <ul>
+                    <li class="active"><a data-toggle="tab" href="#tab_div_1" aria-expanded="true">物理拓扑</a><i class="">×</i></li>
+                    <li><a data-toggle="tab" href="#tab_div_1" aria-expanded="false">物理拓扑</a><i class="">×</i></li>
+                    <li><a data-toggle="tab" href="#tab_div_1" aria-expanded="false">物理拓扑</a><i class="">×</i></li>
+                    <li><a data-toggle="tab" href="#tab_div_1" aria-expanded="false">物理拓扑</a><i class="">×</i></li>
+                </ul>
+            </div>
+            <div role="toolbar" class="q-toolbar">
                 <div>
                     <div id="toolbar">
                         <div class="btn-group patternArea">
@@ -33,7 +40,7 @@
                             <div class="group">组</div>
                         </div>
                         <div class="btn-group zoomArea">
-                            <div   class="btn btn-default btn-sm     " title="放大">
+                            <div class="btn btn-default btn-sm     " title="放大">
                                 <div class="q-icon toolbar-zoomin"></div>
                             </div>
                             <div class="btn btn-default btn-sm     " title="缩小">
@@ -52,7 +59,7 @@
 
                         <div class="btn-group chooselineArea">
                             <div class="btn btn-default btn-sm     " lineType="Link" title="实线">
-                                <div class="" >实</div>
+                                <div class="">实</div>
                             </div>
                             <div class="btn btn-default btn-sm     " lineType="dashed" title="虚线">
                                 <div class="">虚</div>
@@ -100,7 +107,7 @@
                             <!--<div class="q-icon toolbar-line"></div>-->
                             <!--</div>-->
                         </div>
-                        <div  class="searchArea">
+                        <div class="searchArea">
                             <div class="input-group input-group-sm">
                                 <input type="text" class="form-control" placeholder="Name" id="search_input">
                                 <span class="input-group-btn searchWrap">
@@ -114,14 +121,14 @@
                             <div class=" toolbar-eyes">眼</div>
                         </div>
                         <div class="btn-group  historyArea">
-                            <div class="btn btn-default btn-sm  backOff "   title="后退">
-                                <div class="" >后</div>
+                            <div class="btn btn-default btn-sm  backOff " title="后退">
+                                <div class="">后</div>
                             </div>
-                            <div class="btn btn-default btn-sm  forward "   title="前进">
-                                <div class="" >前</div>
+                            <div class="btn btn-default btn-sm  forward " title="前进">
+                                <div class="">前</div>
                             </div>
-                            <div class="btn btn-default btn-sm  saveBtn "   title="保存">
-                                <div class="" >保存</div>
+                            <div class="btn btn-default btn-sm  saveBtn " title="保存">
+                                <div class="">保存</div>
                             </div>
                         </div>
                         <!--<div id="btnJSONShow" title="JSON Export" class="btn btn-default btn-sm">-->
@@ -133,23 +140,23 @@
                     </div>
                 </div>
             </div>
-               <div id="equipmentArea" class="q-panel">
+            <div id="equipmentArea" class="q-panel">
                 <div class="dropdown none">
                     <a role="button" data-toggle="dropdown" class="btn" data-target="#"
-                         href="javascript:;">
+                       href="javascript:;">
                         下拉选择 <span class="caret"></span>
                     </a>
                 </div>
                 <div id="treeArea">
-                     <div class="title">拓扑图目录结构</div>
-                     <div class="treeContainer"></div>
+                    <div class="title">拓扑图目录结构</div>
+                    <div class="treeContainer"></div>
                 </div>
                 <div id="iconArea">
                     <div class="title">拓扑图目录结构</div>
                     <div class="iconContainer"></div>
                 </div>
             </div>
-               <canvas id="canvas" >您的浏览器不支持显示，请换非IE8及以下的浏览器！</canvas>
+            <canvas id="canvas">您的浏览器不支持显示，请换非IE8及以下的浏览器！</canvas>
             <div id="jumpBox"></div>
         </div>
     </div>
@@ -177,7 +184,7 @@
         <li><a>删除该线条</a></li>
     </ul>
     <div id="nodeTitle" class="titleDiv">
-         什么模式下显示title，需要确定下
+        什么模式下显示title，需要确定下
     </div>
     <div id="linkTitle" class="titleDiv">
         hello world2 !
@@ -185,7 +192,8 @@
 </div>
 
 <!--这是所有的弹窗页面-->
-<div class="TopujumpColony TopujumpDiv ">
+<div style="display:none">
+<div class="TopujumpServer TopujumpDiv ">
     <div class="TopujumpTitle">
         <ul class="TopujumpTitleUl clearfix">
             <li><i class="fa fa-cog" aria-hidden="true"></i></li>
@@ -193,11 +201,200 @@
             <li><i class="fa fa-times" aria-hidden="true"></i></li>
         </ul>
     </div>
-    <div class="TopujumpColony_title TopujumpDiv">集群关联实例 <span>12/18</span></div>
+    <div class="TopujumpBody">
+        <div class="TopujumpLine">
+            <label>主机名称</label>
+            <div class="TopujumpLineDiv">
+                <input type="text" class="form-input" disabled value="应用服务器主机1">
+            </div>
+        </div>
+        <div class="TopujumpLine">
+            <label>主机IP</label>
+            <div class="TopujumpLineDiv">
+                <input type="text" class="form-input" disabled value="192.168.2.13">
+            </div>
+        </div>
+        <div class="TopujumpLine">
+            <label>服务地址</label>
+            <div class="TopujumpLineDiv">
+                <input type="text" class="form-input" disabled value="192.168.2.13:8848">
+            </div>
+        </div>
+        <div class="TopujumpLine">
+            <ul class="nav nav-tabs nav-bootstarp">
+                <li class="active"><a data-toggle="tab" href="#tab_server_1" aria-expanded="true"> 告警数目 </a></li>
+                <li class=""><a data-toggle="tab" href="#tab_server_2" aria-expanded="false"> 关联指标 </a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade active in" id="tab_server_1" aria-labelledby="home-tab">
+                    <table class="table table-striped responsive-utilities jambo_table treetable" style="table-layout: fixed">
+                        <thead>
+                        <tr>
+                            <td title="" class="td-autocut table_head_font">设备名称</td>
+                            <td title="" class="td-autocut table_head_font">告警信息</td>
+                            <td title="" class="td-autocut table_head_font">告警时间</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="td-autocut" title="127">127</td>
+                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                            <td class="td-autocut" title="3">25点40分</td>
+                        </tr>
+                        <tr>
+                            <td class="td-autocut" title="127">127</td>
+                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                            <td class="td-autocut" title="3">25点40分</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab_server_2" aria-labelledby="profile-tab">
+                    <table class="table table-striped responsive-utilities jambo_table treetable" style="table-layout: fixed">
+                        <thead>
+                        <tr>
+                            <td title="" class="td-autocut table_head_font">指标名称</td>
+                            <td title="" class="td-autocut table_head_font">所属节点</td>
+                            <td title="" class="td-autocut table_head_font">指标数值</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="td-autocut" title="127">127</td>
+                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                            <td class="td-autocut" title="3">25点40分</td>
+                        </tr>
+                        <tr>
+                            <td class="td-autocut" title="127">127</td>
+                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                            <td class="td-autocut" title="3">25点40分</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="TopujumpLine">
+            <label>快速运维</label>
+            <div class="TopujumpLineDiv">
+                <input type="button" class="btn-save" value="重启">
+                <input type="button" class="btn-save" value="巡检">
+                <input type="button" class="btn-save" value="启动">
+                <input type="button" class="btn-save" value="停止">
+                <input type="button" class="btn-save" value="XX">
+            </div>
+        </div>
+    </div>
 </div>
+<div class="TopujumpColony TopujumpDiv">
+    <div class="TopujumpTitle">
+        <ul class="TopujumpTitleUl clearfix">
+            <li><i class="fa fa-cog" aria-hidden="true"></i></li>
+            <li>应用系统集群</li>
+            <li><i class="fa fa-times" aria-hidden="true"></i></li>
+        </ul>
+    </div>
+    <div class="TopujumpBody">
+        <div class="TopujumpColony_title TopujumpLine">集群关联实例 <span>12/18</span></div>
+        <div class="TopujumpLine">
+            <ul class="nav nav-tabs nav-bootstarp">
+                <li class="active"><a data-toggle="tab" href="#tab_div_1" aria-expanded="true"> 告警数目 </a></li>
+                <li class=""><a data-toggle="tab" href="#tab_div_2" aria-expanded="false"> 关联指标 </a></li>
+                <li class=""><a data-toggle="tab" href="#tab_div_3" aria-expanded="false"> 作业执行 </a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div role="tabpanel" class="tab-pane fade active in" id="tab_div_1" aria-labelledby="home-tab">
+                    <table class="table table-striped responsive-utilities jambo_table treetable"
+                           style="table-layout: fixed">
+                        <thead>
+                        <tr>
+                            <td title="" class="td-autocut table_head_font">设备名称</td>
+                            <td title="" class="td-autocut table_head_font">告警信息</td>
+                            <td title="" class="td-autocut table_head_font">告警时间</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="td-autocut" title="127">127</td>
+                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                            <td class="td-autocut" title="3">25点40分</td>
+                        </tr>
+                        <tr>
+                            <td class="td-autocut" title="127">127</td>
+                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                            <td class="td-autocut" title="3">25点40分</td>
+                        </tr>
 
+                        </tbody>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab_div_2" aria-labelledby="profile-tab">
+                    <table class="table table-striped responsive-utilities jambo_table treetable"
+                           style="table-layout: fixed">
+                        <thead>
+                        <tr>
+                            <td title="" class="td-autocut table_head_font">指标名称</td>
+                            <td title="" class="td-autocut table_head_font">所属节点</td>
+                            <td title="" class="td-autocut table_head_font">指标数值</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="td-autocut" title="127">127</td>
+                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                            <td class="td-autocut" title="3">25点40分</td>
+                        </tr>
+                        <tr>
+                            <td class="td-autocut" title="127">127</td>
+                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                            <td class="td-autocut" title="3">25点40分</td>
+                        </tr>
 
-<div class="TopujumpHost TopujumpDiv TopujumpDivShow">
+                        </tbody>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab_div_3" aria-labelledby="dropdown1-tab">
+                    <table class="table table-striped responsive-utilities jambo_table treetable"
+                           style="table-layout: fixed">
+                        <thead>
+                        <tr>
+                            <td title="" class="td-autocut table_head_font">作业名称</td>
+                            <td title="" class="td-autocut table_head_font">进度</td>
+                            <td title="" class="td-autocut table_head_font">状态</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="td-autocut" title="127">127</td>
+                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                            <td class="td-autocut" title="3">25点40分</td>
+                        </tr>
+                        <tr>
+                            <td class="td-autocut" title="127">127</td>
+                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                            <td class="td-autocut" title="3">25点40分</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="TopujumpLine">
+            <label>快速运维</label>
+            <div class="TopujumpLineDiv">
+                <input type="button" class="btn-save" value="重启">
+                <input type="button" class="btn-save" value="巡检">
+                <input type="button" class="btn-save" value="启动">
+                <input type="button" class="btn-save" value="停止">
+                <input type="button" class="btn-save" value="XX">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="TopujumpHost TopujumpDiv">
     <div class="TopujumpTitle">
         <ul class="TopujumpTitleUl clearfix">
             <li><i class="fa fa-cog" aria-hidden="true"></i></li>
@@ -258,39 +455,39 @@
     </div>
     <div class="TopujumpBody">
         <form>
-        <div class="TopujumpLine">
-            <label>实例名称</label>
-            <div class="TopujumpLineDiv">
-                <input type="text" class="form-input">
+            <div class="TopujumpLine">
+                <label>实例名称</label>
+                <div class="TopujumpLineDiv">
+                    <input type="text" class="form-input">
+                </div>
             </div>
-        </div>
-        <div class="TopujumpLine">
-            <label>别名</label>
-            <div class="TopujumpLineDiv">
-                <input type="text" class="form-input">
+            <div class="TopujumpLine">
+                <label>别名</label>
+                <div class="TopujumpLineDiv">
+                    <input type="text" class="form-input">
+                </div>
             </div>
-        </div>
-        <div class="TopujumpLine">
-            <label>实例地址</label>
-            <div class="TopujumpLineDiv">
-                <input type="text" class="form-input">
+            <div class="TopujumpLine">
+                <label>实例地址</label>
+                <div class="TopujumpLineDiv">
+                    <input type="text" class="form-input">
+                </div>
             </div>
-        </div>
-        <div class="TopujumpLine">
-            <label>实例类型</label>
-            <div class="TopujumpLineDiv">
-                <input type="text" class="form-input">
+            <div class="TopujumpLine">
+                <label>实例类型</label>
+                <div class="TopujumpLineDiv">
+                    <input type="text" class="form-input">
+                </div>
             </div>
-        </div>
-        <div class="TopujumpLine">
-            <label>主机IP</label>
-            <div class="TopujumpLineDiv">
-                <input type="text" class="form-input">
+            <div class="TopujumpLine">
+                <label>主机IP</label>
+                <div class="TopujumpLineDiv">
+                    <input type="text" class="form-input">
+                </div>
             </div>
-        </div>
-        <div class="TopujumpLine">
-            <label>已关联指标<span>5</span></label>
-        </div>
+            <div class="TopujumpLine">
+                <label>已关联指标<span>5</span></label>
+            </div>
             <div class="TopujumpLine clearfix text-right">
                 <input type="button" class="btn btn-info " value="提交">
                 <input type="button" class="btn btn-default " value="取消">
@@ -309,43 +506,44 @@
     </div>
     <div class="TopujumpBody">
         <form>
-        <div class="TopujumpLine">
-            <label>节点名称</label>
-            <div class="TopujumpLineDiv">
-                <input type="text" class="form-input">
+            <div class="TopujumpLine">
+                <label>节点名称</label>
+                <div class="TopujumpLineDiv">
+                    <input type="text" class="form-input">
+                </div>
             </div>
-        </div>
-        <div class="TopujumpLine">
-            <label>别名</label>
-            <div class="TopujumpLineDiv">
-                <input type="text" class="form-input">
+            <div class="TopujumpLine">
+                <label>别名</label>
+                <div class="TopujumpLineDiv">
+                    <input type="text" class="form-input">
+                </div>
             </div>
-        </div>
-        <div class="TopujumpLine">
-            <label>节点类型</label>
-            <div class="TopujumpLineDiv">
-                <input type="text" class="form-input">
+            <div class="TopujumpLine">
+                <label>节点类型</label>
+                <div class="TopujumpLineDiv">
+                    <input type="text" class="form-input">
+                </div>
             </div>
-        </div>
-        <div class="TopujumpLine">
-            <label>备注</label>
-            <div class="TopujumpLineDiv">
-                <textarea class="form-textarea" cols="3" rows="2"></textarea>
+            <div class="TopujumpLine">
+                <label>备注</label>
+                <div class="TopujumpLineDiv">
+                    <textarea class="form-textarea" cols="3" rows="2"></textarea>
+                </div>
             </div>
-        </div>
-        <div class="TopujumpLine">
-            <label>已关联指标<span>5</span></label>
-            <div class="TopujumpLineDiv clearfix">
-                <div class="TopujumpLineDiv_div"><span>图标</span><i class="TopujumpLineDiv_div_icon"></i></div>
-                <div class="TopujumpLineDiv_div"><span>背景</span><input type="color"></div>
+            <div class="TopujumpLine">
+                <label>已关联指标<span>5</span></label>
+                <div class="TopujumpLineDiv clearfix">
+                    <div class="TopujumpLineDiv_div"><span>图标</span><i class="TopujumpLineDiv_div_icon"></i></div>
+                    <div class="TopujumpLineDiv_div"><span>背景</span><input type="color"></div>
+                </div>
             </div>
-        </div>
             <div class="TopujumpLine clearfix text-right">
                 <input type="button" class="btn btn-info " value="提交">
                 <input type="button" class="btn btn-default " value="取消">
             </div>
         </form>
     </div>
+</div>
 </div>
 
 </body>

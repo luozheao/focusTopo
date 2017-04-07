@@ -1372,7 +1372,7 @@ canvasManager.init();
 dragManager.init();
 toolbarManager.init();
 
-$('#jumpBox').append($('.TopujumpHost'))
+$('#jumpBox').append($('.TopujumpServer'))
 
 
 
