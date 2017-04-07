@@ -60,6 +60,74 @@ table {
     border-spacing: 0;
 }
 
+.form-input {
+    height: 30px;
+    width: 100%;
+    padding: 0 5px;
+    color: #617083;
+    font-size: 14px;
+    box-sizing: border-box;
+    border: 1px solid #dcdcdc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    transition: 0.42s;
+}
+
+.form-input:hover {
+    border-color: #bfbfbf;
+    box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px inset;
+}
+
+.form-input:focus {
+    border-color: #37a8e0;
+}
+
+.form-textarea:hover {
+    box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px inset;
+    border-color: rgb(191, 191, 191);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-textarea {
+    border: 1px solid #dcdcdc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    vertical-align: text-top;
+    font-size: 14px;
+    color: #617083;
+    padding: 5px;
+    width: 100%;
+    /*resize:none*/
+}
+.nav-bootstarp>li>a {
+    background-color: #f3f4f4 !important;
+    margin-right: 2px;
+    color: #586b82 !important;
+    border: 1px solid #d6dbe6;
+    padding:9px 15px;
+}
+.nav-bootstarp>li.active>a{
+    color: #37a8e0 !important;
+    background-color: #fff !important;
+    border-top-color:#37a8e0 !important;
+}
+.nav-bootstarp>li>a:hover{
+    border: 1px solid #d6dbe6;
+    background-color: #f1f5f9 !important;
+}
+.nav-bootstarp>li.active>a:hover{
+    background-color: #fff !important;
+}
+.nav-bootstarp2>li.active>a{
+    color: #37a8e0 !important;
+}
+.nav-bootstarp2>li>a{
+    margin-right: 2px;
+    color: #586b82;
+}
+
 /***********face********************/
 .topoChooseArea {
     height: 35px;
@@ -71,7 +139,29 @@ table {
     left: 230px;
     border-bottom: 1px solid #dad9d9;
 }
-
+.topoChooseArea ul li{
+    float: left;
+    height: 35px;
+    line-height: 45px;
+    font-size:12px;
+    padding:0 22px;
+}
+.topoChooseArea ul li a{
+   text-decoration: none;
+    color: #555555;
+}
+.topoChooseArea ul li.active{
+    padding:0 25px;
+    background:url('./images/toptab.jpg') no-repeat left bottom;
+}
+.topoChooseArea ul li i{
+    font-size: 20px;
+    color: #9e9d9d;
+    cursor: pointer;
+    position: relative;
+    top: 2px;
+    margin-left: 5px;
+}
 .q-panel {
     position: relative;
     border-radius: 5px;
@@ -484,20 +574,14 @@ table {
 
 /*弹窗部分样式开始*/
 .TopujumpDiv {
-    width: 25%;
+    width: 28%;
     transition: 0.3s;
     position: absolute;
     right: 10px;
     top: 90px;
     background: #fff;
     box-shadow: -1px 1px 8px #bdbdbd;
-    display: none;
 }
-
-.TopujumpDivShow {
-    display: block;
-}
-
 .TopujumpDiv .TopujumpTitle {
     height: 40px;
     line-height: 40px;
@@ -550,7 +634,6 @@ table {
 .TopujumpBody .TopujumpLine:first-child label {
     margin-top: 0px;
 }
-
 .TopujumpBody label span {
     color: #f18609;
     padding: 0 10px;
@@ -569,52 +652,72 @@ table {
     height: 24px;
     background: url('./images/smallpng.png') no-repeat -96px -27px;
 }
-
-.TopujumpColony .TopujumpColony_title {
+.TopujumpColony .TopujumpColony_title ,.TopujumpServer .TopujumpBody .nav-bootstarp{
     color: #555555;
+    font-size: 14px;
+}
+.TopujumpColony .TopujumpBody .nav-bootstarp,.TopujumpServer .TopujumpBody .nav-bootstarp{
+    margin-top:16px;
+}
+/*弹窗部分样式结束*/
+
+table.jambo_table {
+    border: 1px solid rgba(221, 221, 221, 0.78);
+}
+.table.jambo_table thead {
+    background: #f4f4f4;
+    color: #333333;
+    font-weight: bold;
+}
+.table.jambo_table thead {
+    background: #f4f4f4;
+    color: #333333;
+    font-weight: bold;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    font-size: 12px;
+    padding: 6px;
+}
+td.td-autocut {
+    border-right:1px solid #ddd;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -icab-text-overflow: ellipsis;
+    -khtml-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    -webkit-text-overflow: ellipsis;
+}
+td {
+    word-break: break-all;
+}
+.table.jambo_table thead {
+    background: #f4f4f4;
+    color: #333333;
+    font-weight: bold;
+}
+.table.jambo_table>tbody>tr:hover {
+    background-color: #ecf6fe;
+}
+.tab-content{
+    margin-top:16px;
+}
+.btn-save:hover {
+    background-color: #299dd7;
+    color: #ffffff;
+}
+.btn-save {
+    background-color: #37a8e0;
+    display: inline-block;
+    color: #ffffff;
+    padding: 5px 15px;
+    border: none;
+    text-align: center;
+    border-radius: 3px;
+    cursor: pointer;
     font-size: 12px;
 }
-
-.form-input {
-    height: 30px;
-    width: 100%;
-    padding: 0 5px;
-    color: #617083;
-    font-size: 14px;
-    box-sizing: border-box;
-    border: 1px solid #dcdcdc;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    transition: 0.42s;
+.no-margin{
+    margin:0;
 }
-
-.form-input:hover {
-    border-color: #bfbfbf;
-    box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px inset;
-}
-
-.form-input:focus {
-    border-color: #37a8e0;
-}
-
-.form-textarea:hover {
-    box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px inset;
-    border-color: rgb(191, 191, 191);
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.form-textarea {
-    border: 1px solid #dcdcdc;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    vertical-align: text-top;
-    font-size: 14px;
-    color: #617083;
-    padding: 5px;
-    width: 100%;
-    /*resize:none*/
-}
-
-/*弹窗部分样式结束*/
