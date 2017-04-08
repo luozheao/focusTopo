@@ -465,7 +465,7 @@
                 {
                     "name": "10086系统",  //候选拓扑图节点的名称
                     "id": "4",   //关联的业务ID
-                    "type": "1"  // 类型 1 业务系统 2 集群 3 主机 4 实例
+                    "type": "4"  // 类型 1 业务系统 2 集群 3 主机 4 实例
                 },
                 {
                     "name": "CRM系统",
@@ -1145,6 +1145,22 @@
                 //渲染拓扑图
                 self.setTopoShow(topoId);
             });
+            //增加一个tab拓扑图类型
+            $('.topoChooseArea .topuAdd-tab').click(function(){
+                layer.open({
+                    type: 1,
+                    title: '新增拓扑图',
+                    area: ['300px', '180px'],
+                    content: $('#addtopuTab'),
+                    btn:['确定','取消'],
+                    yes:function(){
+
+                    },
+                    btn2:function(index,layero){
+                        layer.close(index)
+                    }
+                });
+            })
         },
         //控制具体拓扑图展示
         setTopoShow:function (sTopoId) {
@@ -2074,6 +2090,26 @@
                 } else if (text == '缩小') {
                     stateManager.currentNode.scaleX -= 0.2;
                     stateManager.currentNode.scaleY -= 0.2;
+                } else if(text == '编辑该节点'){
+                    var type=$('.topoChooseArea ul li.active').attr('nodetype')
+                    switch(type)
+                    {
+                        case '1':
+                            $('#jumpBox').append($('.TopujumpSystem'))
+                            break;
+
+                        case '2':
+                            $('#jumpBox').append($('.TopujumpInstance'))
+                            break;
+                        case '3':
+                            $('#jumpBox').append($('.TopujumpHost'))
+                            break;
+                        case '4':
+                            $('#jumpBox').append($('.TopujumpInstance'))
+                            break;
+
+                        // default:
+                    }
                 }
             });
             //容器节点目录操作
@@ -2127,6 +2163,10 @@
                 }
 
             });
+            //所有目录操作表单公共事件
+            $('.TopujumpTitleUl .fa-times , .btn-back').click(function(){
+                $('#allJumpPage').append($('#jumpBox .TopujumpDiv'))
+            })
         },
 
         init: function () {
@@ -2150,7 +2190,6 @@ canvasManager.init();
 dragManager.init();
 toolbarManager.init();
 
-$('#jumpBox').append($('.TopujumpHost'))
 
 
 

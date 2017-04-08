@@ -130,6 +130,90 @@ table {
     margin-right: 2px;
     color: #586b82;
 }
+table.jambo_table {
+    border: 1px solid rgba(221, 221, 221, 0.78);
+}
+.table.jambo_table thead {
+    background: #f4f4f4;
+    color: #333333;
+    font-weight: bold;
+}
+.table.jambo_table thead {
+    background: #f4f4f4;
+    color: #333333;
+    font-weight: bold;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    font-size: 12px;
+    padding: 6px;
+}
+td.td-autocut {
+    border-right:1px solid #ddd;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -icab-text-overflow: ellipsis;
+    -khtml-text-overflow: ellipsis;
+    -moz-text-overflow: ellipsis;
+    -webkit-text-overflow: ellipsis;
+}
+td {
+    word-break: break-all;
+}
+.table.jambo_table thead {
+    background: #f4f4f4;
+    color: #333333;
+    font-weight: bold;
+}
+.table.jambo_table>tbody>tr:hover {
+    background-color: #ecf6fe;
+}
+.tab-content{
+    margin-top:16px;
+}
+.btn-save:hover {
+    background-color: #299dd7;
+    color: #ffffff;
+}
+.btn-save {
+    background-color: #37a8e0;
+    display: inline-block;
+    color: #ffffff;
+    padding: 5px 15px;
+    border: none;
+    text-align: center;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.btn-canel{
+    background-color: #e8eff6;
+    display: inline-block;
+    color: #8098b6;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 3px;
+    font-size: 12px;
+    text-align: center;
+    cursor: pointer;
+}
+.btn-canel:focus{
+    outline: none;
+    background-color: #e8eff6;
+    color: #8098b6;
+}
+.btn-canel:hover{
+    background-color: #dfe8f0;
+}
+.btn-canel:active{
+    background-color: #dae3eb !important;
+}
+.btn-canel:visited{
+    background-color: #e8eff6;
+    color: #8098b6;
+}
+
 
 /***********face********************/
 .topoChooseArea {
@@ -418,23 +502,23 @@ table {
     position: relative;
 }
 .dragTag .dragNodeName{
-    
+
 font-size: 12px;
-    
+
 position: absolute;
-    
+
 width: 52px;
-    
+
 overflow: hidden;
-    
+
 text-overflow: ellipsis;
-    
+
 white-space: nowrap;
-    
+
 bottom: -13px;
-    
+
 left: 0;
-    
+
 text-align: center;
 }
 
@@ -743,65 +827,12 @@ text-align: center;
 .TopujumpColony .TopujumpBody .nav-bootstarp,.TopujumpServer .TopujumpBody .nav-bootstarp{
     margin-top:16px;
 }
+#addtopuTab{
+    padding:20px;
+}
 /*弹窗部分样式结束*/
 
-table.jambo_table {
-    border: 1px solid rgba(221, 221, 221, 0.78);
-}
-.table.jambo_table thead {
-    background: #f4f4f4;
-    color: #333333;
-    font-weight: bold;
-}
-.table.jambo_table thead {
-    background: #f4f4f4;
-    color: #333333;
-    font-weight: bold;
-}
-.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
-    font-size: 12px;
-    padding: 6px;
-}
-td.td-autocut {
-    border-right:1px solid #ddd;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;
-    -icab-text-overflow: ellipsis;
-    -khtml-text-overflow: ellipsis;
-    -moz-text-overflow: ellipsis;
-    -webkit-text-overflow: ellipsis;
-}
-td {
-    word-break: break-all;
-}
-.table.jambo_table thead {
-    background: #f4f4f4;
-    color: #333333;
-    font-weight: bold;
-}
-.table.jambo_table>tbody>tr:hover {
-    background-color: #ecf6fe;
-}
-.tab-content{
-    margin-top:16px;
-}
-.btn-save:hover {
-    background-color: #299dd7;
-    color: #ffffff;
-}
-.btn-save {
-    background-color: #37a8e0;
-    display: inline-block;
-    color: #ffffff;
-    padding: 5px 15px;
-    border: none;
-    text-align: center;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 12px;
-}
+
 .no-margin{
     margin:0;
 }
