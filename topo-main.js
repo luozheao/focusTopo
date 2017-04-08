@@ -1145,22 +1145,6 @@
                 //渲染拓扑图
                 self.setTopoShow(topoId);
             });
-            //增加一个tab拓扑图类型
-            $('.topoChooseArea .topuAdd-tab').click(function(){
-                layer.open({
-                    type: 1,
-                    title: '新增拓扑图',
-                    area: ['300px', '180px'],
-                    content: $('#addtopuTab'),
-                    btn:['确定','取消'],
-                    yes:function(){
-
-                    },
-                    btn2:function(index,layero){
-                        layer.close(index)
-                    }
-                });
-            })
         },
         //控制具体拓扑图展示
         setTopoShow:function (sTopoId) {
@@ -1273,7 +1257,24 @@
             }],
             //新增拓扑图
             ['click','.topuAdd-tab',function () {
-                alert('新增拓扑图');
+                layer.open({
+                    type: 1,
+                    title: '新增拓扑图',
+                    area: ['300px', '180px'],
+                    content: $('#addtopuTab'),
+                    btn:['确定','取消'],
+                    yes:function(index,layero){
+                        var time=Math.random();
+                        var nodetype=$('#addTabselect').val();
+                        // var nodetext=$('#addTabselect').val();
+                        var html='<li class="" nodetype="'+nodetype+'" topoid="'+time+'"><a>'+nodetext+'</a><i class="del">×</i></li>'
+                        $('.topoChooseArea ul').append(html);
+                        layer.close(index)
+                    },
+                    btn2:function(index,layero){
+                        layer.close(index)
+                    }
+                });
             }],
         ],
         dragInit:function () {
