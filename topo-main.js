@@ -677,7 +677,7 @@
                    "node": [
                        {
                            "id": "1491623966792493877",
-                           "name": "性能监控",
+                           "name": "性能监控2",
                            "type": "2",
                            "busi_id": "123",
                            "opr": null,
@@ -708,7 +708,7 @@
                                "selected":false,
                                "showSelected":true,
                                "isMouseOver":false,
-                               "text":"性能监控",
+                               "text":"性能监控2",
                                "font":"14px Consolas",
                                "fontColor":"236,105,65",
                                "textPosition":"Bottom_Center",
@@ -719,7 +719,7 @@
                        },
                        {
                            "id": "1491623970341717271",
-                           "name": "10086系统",
+                           "name": "10086系统2",
                            "type": "2",
                            "busi_id": "123",
                            "opr": null,
@@ -811,7 +811,7 @@
                    "node": [
                        {
                            "id": "1491623966792493877",
-                           "name": "性能监控",
+                           "name": "性能监控3",
                            "type": "2",
                            "busi_id": "123",
                            "opr": null,
@@ -853,7 +853,7 @@
                        },
                        {
                            "id": "1491623970341717271",
-                           "name": "10086系统",
+                           "name": "10086系统3",
                            "type": "2",
                            "busi_id": "123",
                            "opr": null,
@@ -976,7 +976,7 @@
                                "selected":false,
                                "showSelected":true,
                                "isMouseOver":false,
-                               "text":"性能监控",
+                               "text":"性能监控4",
                                "font":"14px Consolas",
                                "fontColor":"236,105,65",
                                "textPosition":"Bottom_Center",
@@ -1059,8 +1059,7 @@
             var html='';
             for(var i=0; i<data.length;i++){
                 var isActive=i?'':'active';
-                var isExpanded=i?false:true;
-                html +='<li class="'+isActive+'"  nodeType="'+data[i].type+'"  topoId="'+data[i].id+'"><a data-toggle="tab"  aria-expanded="'+isExpanded+'">'+json[data[i].type]+'</a><i class="del">×</i></li>';
+                html +='<li class="'+isActive+'"  nodeType="'+data[i].type+'"  topoId="'+data[i].id+'"><a >'+json[data[i].type]+'</a><i class="del">×</i></li>';
             }
             return html;
         },
@@ -1108,6 +1107,8 @@
             $('.topoChooseArea ul').html(html);
             //拖拽图图标html
             self._setDragIconByTopoType(currentTopo[0].type);
+            //新增图标显示出来
+            $('.topuAdd-tab').removeClass('hide');
 
             $('.topoChooseArea .del').click(function (e) {
                 e.stopPropagation();
@@ -1127,9 +1128,12 @@
             });
             $('.topoChooseArea li').click(function () {
                 var topoId = $(this).attr('topoId');
+                var oldTopoId=$('.topoChooseArea li.active').attr('topoId');
                 var nodeType = $(this).attr('nodeType');
                 var topoArr = stateManager.currentTopo;
                 var obj = {};
+
+                $(this).addClass('active').siblings().removeClass('active');
                 for (var i = 0; i < topoArr.length; i++) {
                     if (topoArr[i].id == topoId) {
                         obj = topoArr[i];
@@ -1142,7 +1146,7 @@
                 self.setTopoShow(topoId);
             });
         },
-        //控制拓扑图展示
+        //控制具体拓扑图展示
         setTopoShow:function (sTopoId) {
             var topoArr=stateManager.currentTopo;
             var topoId=sTopoId!==undefined?sTopoId:$('.topoChooseArea ul li.active').attr('topoId');
@@ -1184,7 +1188,6 @@
 
             if($thisClone){
                 var str=$thisClone.attr('nodeType');
-                console.log(str);
                 var json={
                     1:'createNodeByDrag',
                     2:'createNodeByDrag',
@@ -1224,6 +1227,26 @@
                 $('.entityIcon').show();
             }
         },
+        //将画布数据保存成后台所需格式
+        _saveCanvasToJsonForTrans:function(oldTopoId){
+            var topoArr = stateManager.currentTopo;
+            //获取数据
+            var saveArr=canvasManager.getCanvasToJson();
+            //第一步，获取node数组
+            //第二步，获取link数组
+            //第三步，获取container数组
+            //第四步，获取containerNode数组
+
+            //改造,要考虑新增、修改、删除，要遍历到节点、线条、容器节点、容器四种元素
+            //需要一些冗余代码，牺牲些效率，来降低代码实现和维护难度
+            for (var i = 0; i < topoArr.length; i++) {
+                if (topoArr[i].id == oldTopoId) {
+                     //
+
+                    break;
+                }
+            }
+        },
         /*********其他事件******************************/
         aEvents:[
             //切换图标
@@ -1231,6 +1254,10 @@
                 var $obj=$(this).hasClass('entityIcon')?$('.entityIconTag'):$('.basicIconTag');
                 $(this).addClass('active').siblings().removeClass('active');
                 $obj.show().siblings().hide();
+            }],
+            //新增拓扑图
+            ['click','.topuAdd-tab',function () {
+                alert('新增拓扑图');
             }],
         ],
         dragInit:function () {
@@ -1582,6 +1609,7 @@
                 stateManager.currentNode = this;
                 if (e.button == 2) {
                     // 当前位置弹出菜单（div）
+                    $('.contextmenu').hide();
                     $("#contextmenuNode").css({
                         top: e.pageY - 40,
                         left: e.pageX - 40
@@ -1995,6 +2023,7 @@
                 stateManager.currentLink = this;
                 if (event.button == 2) {// 右键
                     // 当前位置弹出菜单（div）
+                    $('.contextmenu').hide();
                     $("#contextmenuLink").css({
                         top: event.pageY - 40,
                         left: event.pageX - 40
