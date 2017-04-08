@@ -1110,21 +1110,23 @@
             //新增图标显示出来
             $('.topuAdd-tab').removeClass('hide');
 
-            $('.topoChooseArea .del').click(function (e) {
+            $('.topoChooseArea').click(function (e) {
                 e.stopPropagation();
-                var topoId=$(this).parents('li').attr('topoId');
-                var arr=[];
-                var topoArr=stateManager.currentTopo;
-                //删除数据
-                for(var i=0 ;i<topoArr.length;i++) {
-                    if (topoArr[i].id != topoId) {
-                        arr.push(topoArr[i]);
+                if($(e.target).hasClass('del')){
+                    var topoId=$(e.target).parents('li').attr('topoId');
+                    var arr=[];
+                    var topoArr=stateManager.currentTopo;
+                    //删除数据
+                    for(var i=0 ;i<topoArr.length;i++) {
+                        if (topoArr[i].id != topoId) {
+                            arr.push(topoArr[i]);
+                        }
                     }
+                    stateManager.currentTopo=arr;
+                    //渲染
+                    $(e.target).parents('li').remove();
+                    //todo:传输给后台
                 }
-                stateManager.currentTopo=arr;
-                //渲染
-                $(this).parents('li').remove();
-                //todo:传输给后台
             });
             $('.topoChooseArea li').click(function () {
                 var topoId = $(this).attr('topoId');
@@ -1266,7 +1268,7 @@
                     yes:function(index,layero){
                         var time=Math.random();
                         var nodetype=$('#addTabselect').val();
-                        // var nodetext=$('#addTabselect').val();
+                        var nodetext=$("#addTabselect").find("option:selected").text();
                         var html='<li class="" nodetype="'+nodetype+'" topoid="'+time+'"><a>'+nodetext+'</a><i class="del">×</i></li>'
                         $('.topoChooseArea ul').append(html);
                         layer.close(index)
