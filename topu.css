@@ -412,6 +412,18 @@ table {
     margin-left: 5px;
     float: left;
     background-position: right center !important;
+    position: relative;
+}
+.dragTag .dragNodeName{
+    font-size: 12px;
+    position: absolute;
+    width: 52px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    bottom: -13px;
+    left: 0;
+    text-align: center;
 }
 
 .dragTag.iconType1 {

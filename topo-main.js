@@ -161,8 +161,10 @@
                      }
                  }
                  else if($(this).hasClass('saveBtn')) {
+                     //保存
                      var saveArr= fnGetCanvasToJson();
-                }
+                     console.log(saveArr);
+                 }
              }],
             //设置成组
             ['click','.groupWrap.btn',function ()   {
@@ -499,303 +501,540 @@
                    "opr": null,  // 操作类型 add 新增 mod 修改 del 删除，这个API为获取数据库的数据，所以这个字段都为空
                    "line": [
                        {
-                           "id": "16",
-                           "name": "连线名称6",
-                           "from_id": "44",
-                           "to_id": "47",
+                           "id": "1491623984085203200",
+                           "name": "连线名称1",
+                           "from_id": "1491623966792493877",
+                           "to_id": "1491623970341717271",
                            "opr": null,
-                           "json": "{l1:16}"
-                       },
-                       {
-                           "id": "17",
-                           "name": "连线名称",
-                           "from_id": "45",
-                           "to_id": "46",
-                           "opr": null,
-                           "json": "{l1:11}"
-                       },
-                       {
-                           "id": "18",
-                           "name": "连线名称7",
-                           "from_id": "43",
-                           "to_id": "46",
-                           "opr": null,
-                           "json": "{l1:17}"
+                           "json": {
+                               "_id":"1491623984085203200",
+                               "nodeAId":"1491623966792493877",
+                               "nodeZId":"1491623970341717271",
+                               "linkType":"dashed",
+                               "elementType":"link",
+                               "x":0,
+                               "y":0,
+                               "width":32,
+                               "height":32,
+                               "visible":true,
+                               "alpha":1,
+                               "rotate":0,
+                               "scaleX":1,
+                               "scaleY":1,
+                               "strokeColor":"22,124,255",
+                               "fillColor":"22,124,255",
+                               "shadow":false,
+                               "shadowColor":"rgba(0,0,0,0.5)",
+                               "shadowOffsetX":3,
+                               "shadowOffsetY":6,
+                               "transformAble":false,
+                               "zIndex":1,
+                               "dragable":false,
+                               "selected":false,
+                               "showSelected":true,
+                               "isMouseOver":false,
+                               "font":"12px Consolas",
+                               "fontColor":"255,255,255",
+                               "textOffsetX":0,
+                               "textOffsetY":0
+                           }
                        }
                    ],
                    "node": [
                        {
-                           "id": "43",
-                           "name": "节点名称qqq",
+                           "id": "1491623966792493877",
+                           "name": "性能监控",
                            "type": "2",
                            "busi_id": "123",
                            "opr": null,
-                           "json": "{n1:11}"
+                           "json": {
+                               "_id":"1491623966792493877",
+                               "imgName":"iconType1",
+                               "textBreakNumber":5,
+                               "textLineHeight":15,
+                               "elementType":"node",
+                               "x":82.00000381469727,
+                               "y":89.66667938232422,
+                               "width":50,
+                               "height":50,
+                               "visible":true,
+                               "alpha":1,
+                               "rotate":0,
+                               "scaleX":1,
+                               "scaleY":1,
+                               "strokeColor":"22,124,255",
+                               "fillColor":"255,0,0",
+                               "shadow":false,
+                               "shadowColor":"rgba(0,0,0,0.5)",
+                               "shadowOffsetX":3,
+                               "shadowOffsetY":6,
+                               "transformAble":true,
+                               "zIndex":3,
+                               "dragable":true,
+                               "selected":false,
+                               "showSelected":true,
+                               "isMouseOver":false,
+                               "text":"性能监控",
+                               "font":"14px Consolas",
+                               "fontColor":"236,105,65",
+                               "textPosition":"Bottom_Center",
+                               "textOffsetX":0,
+                               "textOffsetY":5,
+                               "borderRadius":null
+                           }
                        },
                        {
-                           "id": "44",
-                           "name": "节点id2",
+                           "id": "1491623970341717271",
+                           "name": "10086系统",
                            "type": "2",
                            "busi_id": "123",
                            "opr": null,
-                           "json": "{n2:12}"
-                       },
-                       {
-                           "id": "45",
-                           "name": "节点名称3",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": "{n1:11}"
-                       },
-                       {
-                           "id": "46",
-                           "name": "节点名称4",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": "{n2:12}"
-                       },
-                       {
-                           "id": "47",
-                           "name": "节点名称6",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": "{n1:11}"
+                           "json": {
+                               "_id":"1491623970341717271",
+                               "imgName":"iconType1",
+                               "textBreakNumber":5,
+                               "textLineHeight":15,
+                               "elementType":"node",
+                               "x":223.00000381469727,
+                               "y":105.66667938232422,
+                               "width":50,
+                               "height":50,
+                               "visible":true,
+                               "alpha":1,
+                               "rotate":0,
+                               "scaleX":1,
+                               "scaleY":1,
+                               "strokeColor":"22,124,255",
+                               "fillColor":"255,0,0",
+                               "shadow":false,
+                               "shadowColor":"rgba(0,0,0,0.5)",
+                               "shadowOffsetX":3,
+                               "shadowOffsetY":6,
+                               "transformAble":true,
+                               "zIndex":3,
+                               "dragable":true,
+                               "selected":true,
+                               "showSelected":true,
+                               "isMouseOver":true,
+                               "text":"10086系统",
+                               "font":"14px Consolas",
+                               "fontColor":"236,105,65",
+                               "textPosition":"Bottom_Center",
+                               "textOffsetX":0,
+                               "textOffsetY":5,
+                               "borderRadius":null
+                           }
                        }
                    ]
                },
                {
-                   "id": "19",   //后台数据库中的ID
+                   "id": "10",   //后台数据库中的ID
                    "type": "2",  // 类型 1 系统拓扑 2 流程拓扑 3 物理拓扑 4 流程拓扑
                    "name": "拓扑图名称22",  // 拓扑图的名字
-                   "busi_id": "42",  //API 1 中的ID，获取后传给后台即可
+                   "busi_id": "12",  //API 1 中的ID，获取后传给后台即可
                    "opr": null,  // 操作类型 add 新增 mod 修改 del 删除，这个API为获取数据库的数据，所以这个字段都为空
                    "line": [
                        {
-                           "id": "16",
-                           "name": "连线名称6",
-                           "from_id": "44",
-                           "to_id": "47",
+                           "id": "1491623984085203200",
+                           "name": "连线名称1",
+                           "from_id": "1491623966792493877",
+                           "to_id": "1491623970341717271",
                            "opr": null,
-                           "json": "{l1:16}"
-                       },
-                       {
-                           "id": "17",
-                           "name": "连线名称",
-                           "from_id": "45",
-                           "to_id": "46",
-                           "opr": null,
-                           "json": "{l1:11}"
-                       },
-                       {
-                           "id": "18",
-                           "name": "连线名称7",
-                           "from_id": "43",
-                           "to_id": "46",
-                           "opr": null,
-                           "json": "{l1:17}"
+                           "json": {
+                               "_id":"1491623984085203200",
+                               "nodeAId":"1491623966792493877",
+                               "nodeZId":"1491623970341717271",
+                               "linkType":"dashed",
+                               "elementType":"link",
+                               "x":0,
+                               "y":0,
+                               "width":32,
+                               "height":32,
+                               "visible":true,
+                               "alpha":1,
+                               "rotate":0,
+                               "scaleX":1,
+                               "scaleY":1,
+                               "strokeColor":"22,124,255",
+                               "fillColor":"22,124,255",
+                               "shadow":false,
+                               "shadowColor":"rgba(0,0,0,0.5)",
+                               "shadowOffsetX":3,
+                               "shadowOffsetY":6,
+                               "transformAble":false,
+                               "zIndex":1,
+                               "dragable":false,
+                               "selected":false,
+                               "showSelected":true,
+                               "isMouseOver":false,
+                               "font":"12px Consolas",
+                               "fontColor":"255,255,255",
+                               "textOffsetX":0,
+                               "textOffsetY":0
+                           }
                        }
                    ],
                    "node": [
                        {
-                           "id": "43",
-                           "name": "节点名称qqq",
+                           "id": "1491623966792493877",
+                           "name": "性能监控",
                            "type": "2",
                            "busi_id": "123",
                            "opr": null,
-                           "json": "{n1:11}"
+                           "json": {
+                               "_id":"1491623966792493877",
+                               "imgName":"iconType1",
+                               "textBreakNumber":5,
+                               "textLineHeight":15,
+                               "elementType":"node",
+                               "x":82.00000381469727,
+                               "y":89.66667938232422,
+                               "width":50,
+                               "height":50,
+                               "visible":true,
+                               "alpha":1,
+                               "rotate":0,
+                               "scaleX":1,
+                               "scaleY":1,
+                               "strokeColor":"22,124,255",
+                               "fillColor":"255,0,0",
+                               "shadow":false,
+                               "shadowColor":"rgba(0,0,0,0.5)",
+                               "shadowOffsetX":3,
+                               "shadowOffsetY":6,
+                               "transformAble":true,
+                               "zIndex":3,
+                               "dragable":true,
+                               "selected":false,
+                               "showSelected":true,
+                               "isMouseOver":false,
+                               "text":"性能监控",
+                               "font":"14px Consolas",
+                               "fontColor":"236,105,65",
+                               "textPosition":"Bottom_Center",
+                               "textOffsetX":0,
+                               "textOffsetY":5,
+                               "borderRadius":null
+                           }
                        },
                        {
-                           "id": "44",
-                           "name": "节点id2",
+                           "id": "1491623970341717271",
+                           "name": "10086系统",
                            "type": "2",
                            "busi_id": "123",
                            "opr": null,
-                           "json": "{n2:12}"
-                       },
-                       {
-                           "id": "45",
-                           "name": "节点名称3",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": "{n1:11}"
-                       },
-                       {
-                           "id": "46",
-                           "name": "节点名称4",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": "{n2:12}"
-                       },
-                       {
-                           "id": "47",
-                           "name": "节点名称6",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": "{n1:11}"
+                           "json": {
+                               "_id":"1491623970341717271",
+                               "imgName":"iconType1",
+                               "textBreakNumber":5,
+                               "textLineHeight":15,
+                               "elementType":"node",
+                               "x":223.00000381469727,
+                               "y":105.66667938232422,
+                               "width":50,
+                               "height":50,
+                               "visible":true,
+                               "alpha":1,
+                               "rotate":0,
+                               "scaleX":1,
+                               "scaleY":1,
+                               "strokeColor":"22,124,255",
+                               "fillColor":"255,0,0",
+                               "shadow":false,
+                               "shadowColor":"rgba(0,0,0,0.5)",
+                               "shadowOffsetX":3,
+                               "shadowOffsetY":6,
+                               "transformAble":true,
+                               "zIndex":3,
+                               "dragable":true,
+                               "selected":true,
+                               "showSelected":true,
+                               "isMouseOver":true,
+                               "text":"10086系统",
+                               "font":"14px Consolas",
+                               "fontColor":"236,105,65",
+                               "textPosition":"Bottom_Center",
+                               "textOffsetX":0,
+                               "textOffsetY":5,
+                               "borderRadius":null
+                           }
                        }
                    ]
                },
                {
-                   "id": "29",   //后台数据库中的ID
+                   "id": "11",   //后台数据库中的ID
                    "type": "3",  // 类型 1 系统拓扑 2 流程拓扑 3 物理拓扑 4 流程拓扑
                    "name": "拓扑图名称22",  // 拓扑图的名字
-                   "busi_id": "32",  //API 1 中的ID，获取后传给后台即可
+                   "busi_id": "12",  //API 1 中的ID，获取后传给后台即可
                    "opr": null,  // 操作类型 add 新增 mod 修改 del 删除，这个API为获取数据库的数据，所以这个字段都为空
                    "line": [
                        {
-                           "id": "16",
-                           "name": "连线名称6",
-                           "from_id": "44",
-                           "to_id": "47",
+                           "id": "1491623984085203200",
+                           "name": "连线名称1",
+                           "from_id": "1491623966792493877",
+                           "to_id": "1491623970341717271",
                            "opr": null,
-                           "json": "{l1:16}"
-                       },
-                       {
-                           "id": "17",
-                           "name": "连线名称",
-                           "from_id": "45",
-                           "to_id": "46",
-                           "opr": null,
-                           "json": "{l1:11}"
-                       },
-                       {
-                           "id": "18",
-                           "name": "连线名称7",
-                           "from_id": "43",
-                           "to_id": "46",
-                           "opr": null,
-                           "json": "{l1:17}"
+                           "json": {
+                               "_id":"1491623984085203200",
+                               "nodeAId":"1491623966792493877",
+                               "nodeZId":"1491623970341717271",
+                               "linkType":"dashed",
+                               "elementType":"link",
+                               "x":0,
+                               "y":0,
+                               "width":32,
+                               "height":32,
+                               "visible":true,
+                               "alpha":1,
+                               "rotate":0,
+                               "scaleX":1,
+                               "scaleY":1,
+                               "strokeColor":"22,124,255",
+                               "fillColor":"22,124,255",
+                               "shadow":false,
+                               "shadowColor":"rgba(0,0,0,0.5)",
+                               "shadowOffsetX":3,
+                               "shadowOffsetY":6,
+                               "transformAble":false,
+                               "zIndex":1,
+                               "dragable":false,
+                               "selected":false,
+                               "showSelected":true,
+                               "isMouseOver":false,
+                               "font":"12px Consolas",
+                               "fontColor":"255,255,255",
+                               "textOffsetX":0,
+                               "textOffsetY":0
+                           }
                        }
                    ],
                    "node": [
                        {
-                           "id": "43",
-                           "name": "节点名称qqq",
+                           "id": "1491623966792493877",
+                           "name": "性能监控",
                            "type": "2",
                            "busi_id": "123",
                            "opr": null,
-                           "json": "{n1:11}"
+                           "json": {
+                               "_id":"1491623966792493877",
+                               "imgName":"iconType1",
+                               "textBreakNumber":5,
+                               "textLineHeight":15,
+                               "elementType":"node",
+                               "x":82.00000381469727,
+                               "y":89.66667938232422,
+                               "width":50,
+                               "height":50,
+                               "visible":true,
+                               "alpha":1,
+                               "rotate":0,
+                               "scaleX":1,
+                               "scaleY":1,
+                               "strokeColor":"22,124,255",
+                               "fillColor":"255,0,0",
+                               "shadow":false,
+                               "shadowColor":"rgba(0,0,0,0.5)",
+                               "shadowOffsetX":3,
+                               "shadowOffsetY":6,
+                               "transformAble":true,
+                               "zIndex":3,
+                               "dragable":true,
+                               "selected":false,
+                               "showSelected":true,
+                               "isMouseOver":false,
+                               "text":"性能监控",
+                               "font":"14px Consolas",
+                               "fontColor":"236,105,65",
+                               "textPosition":"Bottom_Center",
+                               "textOffsetX":0,
+                               "textOffsetY":5,
+                               "borderRadius":null
+                           }
                        },
                        {
-                           "id": "44",
-                           "name": "节点id2",
+                           "id": "1491623970341717271",
+                           "name": "10086系统",
                            "type": "2",
                            "busi_id": "123",
                            "opr": null,
-                           "json": "{n2:12}"
-                       },
-                       {
-                           "id": "45",
-                           "name": "节点名称3",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": "{n1:11}"
-                       },
-                       {
-                           "id": "46",
-                           "name": "节点名称4",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": "{n2:12}"
-                       },
-                       {
-                           "id": "47",
-                           "name": "节点名称6",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": "{n1:11}"
+                           "json": {
+                               "_id":"1491623970341717271",
+                               "imgName":"iconType1",
+                               "textBreakNumber":5,
+                               "textLineHeight":15,
+                               "elementType":"node",
+                               "x":223.00000381469727,
+                               "y":105.66667938232422,
+                               "width":50,
+                               "height":50,
+                               "visible":true,
+                               "alpha":1,
+                               "rotate":0,
+                               "scaleX":1,
+                               "scaleY":1,
+                               "strokeColor":"22,124,255",
+                               "fillColor":"255,0,0",
+                               "shadow":false,
+                               "shadowColor":"rgba(0,0,0,0.5)",
+                               "shadowOffsetX":3,
+                               "shadowOffsetY":6,
+                               "transformAble":true,
+                               "zIndex":3,
+                               "dragable":true,
+                               "selected":true,
+                               "showSelected":true,
+                               "isMouseOver":true,
+                               "text":"10086系统",
+                               "font":"14px Consolas",
+                               "fontColor":"236,105,65",
+                               "textPosition":"Bottom_Center",
+                               "textOffsetX":0,
+                               "textOffsetY":5,
+                               "borderRadius":null
+                           }
                        }
                    ]
                },
                {
-                   "id": "39",   //后台数据库中的ID
+                   "id": "12",   //后台数据库中的ID
                    "type": "4",  // 类型 1 系统拓扑 2 流程拓扑 3 物理拓扑 4 流程拓扑
                    "name": "拓扑图名称22",  // 拓扑图的名字
-                   "busi_id": "22",  //API 1 中的ID，获取后传给后台即可
+                   "busi_id": "12",  //API 1 中的ID，获取后传给后台即可
                    "opr": null,  // 操作类型 add 新增 mod 修改 del 删除，这个API为获取数据库的数据，所以这个字段都为空
                    "line": [
                        {
-                           "id": "16",
-                           "name": "连线名称6",
-                           "from_id": "44",
-                           "to_id": "47",
+                           "id": "1491623984085203200",
+                           "name": "连线名称1",
+                           "from_id": "1491623966792493877",
+                           "to_id": "1491623970341717271",
                            "opr": null,
-                           "json": "{l1:16}"
-                       },
-                       {
-                           "id": "17",
-                           "name": "连线名称",
-                           "from_id": "45",
-                           "to_id": "46",
-                           "opr": null,
-                           "json": "{l1:11}"
-                       },
-                       {
-                           "id": "18",
-                           "name": "连线名称7",
-                           "from_id": "43",
-                           "to_id": "46",
-                           "opr": null,
-                           "json": "{l1:17}"
+                           "json": {
+                               "_id":"1491623984085203200",
+                               "nodeAId":"1491623966792493877",
+                               "nodeZId":"1491623970341717271",
+                               "linkType":"dashed",
+                               "elementType":"link",
+                               "x":0,
+                               "y":0,
+                               "width":32,
+                               "height":32,
+                               "visible":true,
+                               "alpha":1,
+                               "rotate":0,
+                               "scaleX":1,
+                               "scaleY":1,
+                               "strokeColor":"22,124,255",
+                               "fillColor":"22,124,255",
+                               "shadow":false,
+                               "shadowColor":"rgba(0,0,0,0.5)",
+                               "shadowOffsetX":3,
+                               "shadowOffsetY":6,
+                               "transformAble":false,
+                               "zIndex":1,
+                               "dragable":false,
+                               "selected":false,
+                               "showSelected":true,
+                               "isMouseOver":false,
+                               "font":"12px Consolas",
+                               "fontColor":"255,255,255",
+                               "textOffsetX":0,
+                               "textOffsetY":0
+                           }
                        }
                    ],
                    "node": [
                        {
-                           "id": "43",
-                           "name": "节点名称qqq",
+                           "id": "1491623966792493877",
+                           "name": "性能监控",
                            "type": "2",
                            "busi_id": "123",
                            "opr": null,
-                           "json": "{n1:11}"
+                           "json": {
+                               "_id":"1491623966792493877",
+                               "imgName":"iconType1",
+                               "textBreakNumber":5,
+                               "textLineHeight":15,
+                               "elementType":"node",
+                               "x":82.00000381469727,
+                               "y":89.66667938232422,
+                               "width":50,
+                               "height":50,
+                               "visible":true,
+                               "alpha":1,
+                               "rotate":0,
+                               "scaleX":1,
+                               "scaleY":1,
+                               "strokeColor":"22,124,255",
+                               "fillColor":"255,0,0",
+                               "shadow":false,
+                               "shadowColor":"rgba(0,0,0,0.5)",
+                               "shadowOffsetX":3,
+                               "shadowOffsetY":6,
+                               "transformAble":true,
+                               "zIndex":3,
+                               "dragable":true,
+                               "selected":false,
+                               "showSelected":true,
+                               "isMouseOver":false,
+                               "text":"性能监控",
+                               "font":"14px Consolas",
+                               "fontColor":"236,105,65",
+                               "textPosition":"Bottom_Center",
+                               "textOffsetX":0,
+                               "textOffsetY":5,
+                               "borderRadius":null
+                           }
                        },
                        {
-                           "id": "44",
-                           "name": "节点id2",
+                           "id": "1491623970341717271",
+                           "name": "10086系统",
                            "type": "2",
                            "busi_id": "123",
                            "opr": null,
-                           "json": "{n2:12}"
-                       },
-                       {
-                           "id": "45",
-                           "name": "节点名称3",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": "{n1:11}"
-                       },
-                       {
-                           "id": "46",
-                           "name": "节点名称4",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": "{n2:12}"
-                       },
-                       {
-                           "id": "47",
-                           "name": "节点名称6",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": "{n1:11}"
+                           "json": {
+                               "_id":"1491623970341717271",
+                               "imgName":"iconType1",
+                               "textBreakNumber":5,
+                               "textLineHeight":15,
+                               "elementType":"node",
+                               "x":223.00000381469727,
+                               "y":105.66667938232422,
+                               "width":50,
+                               "height":50,
+                               "visible":true,
+                               "alpha":1,
+                               "rotate":0,
+                               "scaleX":1,
+                               "scaleY":1,
+                               "strokeColor":"22,124,255",
+                               "fillColor":"255,0,0",
+                               "shadow":false,
+                               "shadowColor":"rgba(0,0,0,0.5)",
+                               "shadowOffsetX":3,
+                               "shadowOffsetY":6,
+                               "transformAble":true,
+                               "zIndex":3,
+                               "dragable":true,
+                               "selected":true,
+                               "showSelected":true,
+                               "isMouseOver":true,
+                               "text":"10086系统",
+                               "font":"14px Consolas",
+                               "fontColor":"236,105,65",
+                               "textPosition":"Bottom_Center",
+                               "textOffsetX":0,
+                               "textOffsetY":5,
+                               "borderRadius":null
+                           }
                        }
                    ]
-               }
+               },
            ]
-
             stateManager.currentTopo=data;
             return data;
         },
+
+
         /**********************************************************视觉层*****/
          //显示拖拽图标
          showIconData:function () {
@@ -804,7 +1043,7 @@
             for(var i=0;i<data.length;i++){
                  var obj=data[i];
                  var  imgName='iconType'+obj.type;
-                 html+='<div class="none dragTag '+imgName+'" imgName="'+imgName+'"  nodeType="'+obj.type+'"  nodeName="'+obj.name+'"></div>'
+                 html+='<div class="none dragTag '+imgName+'"   title="'+obj.name+'"  imgName="'+imgName+'"  nodeType="'+obj.type+'"  nodeName="'+obj.name+'"><div class="dragNodeName">'+obj.name+'</div></div>'
             }
             return html;
         },
@@ -825,6 +1064,8 @@
             }
             return html;
         },
+
+
         /**********************************************************控制层*****/
         //控制目录树显示与事件
         setMenuData:function () {
@@ -863,7 +1104,9 @@
             var self = dragManager;
             var html = self.showTopoChange(arr);
             var currentTopo=stateManager.currentTopo;
+            //拓扑图类型html
             $('.topoChooseArea ul').html(html);
+            //拖拽图图标html
             self._setDragIconByTopoType(currentTopo[0].type);
 
             $('.topoChooseArea .del').click(function (e) {
@@ -895,9 +1138,29 @@
                 }
                 //控制拖拽图标的显示
                 self._setDragIconByTopoType(nodeType);
-                //渲染obj
-                console.log(obj);
+                //渲染拓扑图
+                self.setTopoShow(topoId);
             });
+        },
+        //控制拓扑图展示
+        setTopoShow:function (sTopoId) {
+            var topoArr=stateManager.currentTopo;
+            var topoId=sTopoId!==undefined?sTopoId:$('.topoChooseArea ul li.active').attr('topoId');
+            var topoObj={};
+            for(var i=0;i<topoArr.length;i++){
+                if(topoArr[i].id==topoId){
+                    topoObj=topoArr[i];
+                    break;
+                }
+            }
+            var data=[];
+            for(var j=0 ;j< topoObj.line.length;j++){
+                data.push(topoObj.line[j].json);
+            }
+            for(var k=0 ;k< topoObj.node.length;k++){
+                data.push(topoObj.node[k].json);
+            }
+            canvasManager.renderCanvasByJson(data);
         },
         //目录树节点点击事件
         _menuClickEvent:function (e,treeId, treeNode) {
@@ -907,17 +1170,21 @@
             zTree.expandNode(treeNode);
             //拖拽图标初始化
             self.setIconData();
-            //拓扑图初始化
+            //拓扑图选择初始化
             self.setTopChange();
+            //拓扑图初始化
+            self.setTopoShow();
         },
 
 
         /*********辅助方法******************************/
         //根据拖拽的图标对象，确定创建哪一类节点
-        _createNodeOrContainerNodeByDrag:function(sNodeName, $thisClone, mDown, thisWidth, thisHeight, pageX, pageY){
+        _createNodeOrContainerNodeByDrag:function(sNodeName, $thisClone, mDown, thisWidth, thisHeight, pageX, pageY)
+        {
 
             if($thisClone){
                 var str=$thisClone.attr('nodeType');
+                console.log(str);
                 var json={
                     1:'createNodeByDrag',
                     2:'createNodeByDrag',
@@ -931,15 +1198,18 @@
         _setDragIconByTopoType:function(nodeType){
 
             var json={
+                //拓扑图类型:[图标类型...]
                 1:["1"],
                 2:[],
                 3:["3"],
-                4:["1","2"]
+                4:["2","4"]
             };
+
             var  arr=json[nodeType];
 
             $('.entityIconTag .dragTag').each(function () {
-                if(arr.indexOf($(this).attr('nodeType'))>=0){
+                var nodeType=$(this).attr('nodeType');
+                if(arr.indexOf(nodeType)>=0){
                     $(this).fadeIn();
                 }else{
                     $(this).hide();
@@ -1744,12 +2014,12 @@
         },
         /******************线条处理，end***************************/
 
-        //设置右键目录目录
+        //设置右键目录
         _setContextmenu: function () {
             var stage = stateManager.stage;
             var scene = stateManager.scene;
             //节点目录操作
-            $("#contextmenuNode a").click(function () {
+            $("#contextmenuNode a").click(function ()  {
                 var text = $(this).text();
                 $("#contextmenuNode").hide();
                 if (text == '删除该节点') {
