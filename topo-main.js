@@ -840,7 +840,8 @@
                     }
                 },
                 view:{
-                    dblClickExpand:false
+                    dblClickExpand:false,
+                    showIcon: false
                 },
                 callback: {
                     onClick: self._menuClickEvent
@@ -1851,7 +1852,7 @@ canvasManager.init();
 dragManager.init();
 toolbarManager.init();
 
-$('#jumpBox').append($('.TopujumpServer'))
+$('#jumpBox').append($('.TopujumpHost'))
 
 
 
