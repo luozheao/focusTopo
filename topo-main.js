@@ -840,7 +840,8 @@
                     }
                 },
                 view:{
-                    dblClickExpand:false
+                    dblClickExpand:false,
+                    showIcon: false
                 },
                 callback: {
                     onClick: self._menuClickEvent
