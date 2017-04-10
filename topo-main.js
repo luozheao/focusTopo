@@ -19,7 +19,7 @@
         currentContainerNode:null,//当前容器节点
         currentContainer:null,//当前容器
         currentLink: null,//当前线条
-        currentTopo:[], //当前打开的拓扑图
+        currentTopo:[], //当前树节点的拓扑图，包含物理、逻辑、系统、流程拓扑
         customAttr:[//节点、容器、线条通用保存属性
             "elementType", "x", "y", "width", "height", "visible","alpha",
             "rotate", "scaleX", "scaleY", "strokeColor","fillColor",
@@ -162,7 +162,7 @@
                  }
                  else if($(this).hasClass('saveBtn')) {
                      //保存
-                     var saveArr= fnGetCanvasToJson();
+                    var saveArr=   dragManager.saveTopoToTrans()
                      console.log(saveArr);
                  }
              }],
@@ -492,545 +492,16 @@
         },
         //根据id获取拓扑图数据
         getTopoData:function () {
-           var data=[
-               {
-                   "id": "9",   //后台数据库中的ID
-                   "type": "1",  // 类型 1 系统拓扑 2 流程拓扑 3 物理拓扑 4 流程拓扑
-                   "name": "拓扑图名称22",  // 拓扑图的名字
-                   "busi_id": "12",  //API 1 中的ID，获取后传给后台即可
-                   "opr": null,  // 操作类型 add 新增 mod 修改 del 删除，这个API为获取数据库的数据，所以这个字段都为空
-                   "line": [
-                       {
-                           "id": "1491623984085203200",
-                           "name": "连线名称1",
-                           "from_id": "1491623966792493877",
-                           "to_id": "1491623970341717271",
-                           "opr": null,
-                           "json": {
-                               "_id":"1491623984085203200",
-                               "nodeAId":"1491623966792493877",
-                               "nodeZId":"1491623970341717271",
-                               "linkType":"dashed",
-                               "elementType":"link",
-                               "x":0,
-                               "y":0,
-                               "width":32,
-                               "height":32,
-                               "visible":true,
-                               "alpha":1,
-                               "rotate":0,
-                               "scaleX":1,
-                               "scaleY":1,
-                               "strokeColor":"22,124,255",
-                               "fillColor":"22,124,255",
-                               "shadow":false,
-                               "shadowColor":"rgba(0,0,0,0.5)",
-                               "shadowOffsetX":3,
-                               "shadowOffsetY":6,
-                               "transformAble":false,
-                               "zIndex":1,
-                               "dragable":false,
-                               "selected":false,
-                               "showSelected":true,
-                               "isMouseOver":false,
-                               "font":"12px Consolas",
-                               "fontColor":"255,255,255",
-                               "textOffsetX":0,
-                               "textOffsetY":0
-                           }
-                       }
-                   ],
-                   "node": [
-                       {
-                           "id": "1491623966792493877",
-                           "name": "性能监控",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": {
-                               "_id":"1491623966792493877",
-                               "imgName":"iconType1",
-                               "textBreakNumber":5,
-                               "textLineHeight":15,
-                               "elementType":"node",
-                               "x":82.00000381469727,
-                               "y":89.66667938232422,
-                               "width":50,
-                               "height":50,
-                               "visible":true,
-                               "alpha":1,
-                               "rotate":0,
-                               "scaleX":1,
-                               "scaleY":1,
-                               "strokeColor":"22,124,255",
-                               "fillColor":"255,0,0",
-                               "shadow":false,
-                               "shadowColor":"rgba(0,0,0,0.5)",
-                               "shadowOffsetX":3,
-                               "shadowOffsetY":6,
-                               "transformAble":true,
-                               "zIndex":3,
-                               "dragable":true,
-                               "selected":false,
-                               "showSelected":true,
-                               "isMouseOver":false,
-                               "text":"性能监控",
-                               "font":"14px Consolas",
-                               "fontColor":"236,105,65",
-                               "textPosition":"Bottom_Center",
-                               "textOffsetX":0,
-                               "textOffsetY":5,
-                               "borderRadius":null
-                           }
-                       },
-                       {
-                           "id": "1491623970341717271",
-                           "name": "10086系统",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": {
-                               "_id":"1491623970341717271",
-                               "imgName":"iconType1",
-                               "textBreakNumber":5,
-                               "textLineHeight":15,
-                               "elementType":"node",
-                               "x":223.00000381469727,
-                               "y":105.66667938232422,
-                               "width":50,
-                               "height":50,
-                               "visible":true,
-                               "alpha":1,
-                               "rotate":0,
-                               "scaleX":1,
-                               "scaleY":1,
-                               "strokeColor":"22,124,255",
-                               "fillColor":"255,0,0",
-                               "shadow":false,
-                               "shadowColor":"rgba(0,0,0,0.5)",
-                               "shadowOffsetX":3,
-                               "shadowOffsetY":6,
-                               "transformAble":true,
-                               "zIndex":3,
-                               "dragable":true,
-                               "selected":true,
-                               "showSelected":true,
-                               "isMouseOver":true,
-                               "text":"10086系统",
-                               "font":"14px Consolas",
-                               "fontColor":"236,105,65",
-                               "textPosition":"Bottom_Center",
-                               "textOffsetX":0,
-                               "textOffsetY":5,
-                               "borderRadius":null
-                           }
-                       }
-                   ]
-               },
-               {
-                   "id": "10",   //后台数据库中的ID
-                   "type": "2",  // 类型 1 系统拓扑 2 流程拓扑 3 物理拓扑 4 流程拓扑
-                   "name": "拓扑图名称22",  // 拓扑图的名字
-                   "busi_id": "12",  //API 1 中的ID，获取后传给后台即可
-                   "opr": null,  // 操作类型 add 新增 mod 修改 del 删除，这个API为获取数据库的数据，所以这个字段都为空
-                   "line": [
-                       {
-                           "id": "1491623984085203200",
-                           "name": "连线名称1",
-                           "from_id": "1491623966792493877",
-                           "to_id": "1491623970341717271",
-                           "opr": null,
-                           "json": {
-                               "_id":"1491623984085203200",
-                               "nodeAId":"1491623966792493877",
-                               "nodeZId":"1491623970341717271",
-                               "linkType":"dashed",
-                               "elementType":"link",
-                               "x":0,
-                               "y":0,
-                               "width":32,
-                               "height":32,
-                               "visible":true,
-                               "alpha":1,
-                               "rotate":0,
-                               "scaleX":1,
-                               "scaleY":1,
-                               "strokeColor":"22,124,255",
-                               "fillColor":"22,124,255",
-                               "shadow":false,
-                               "shadowColor":"rgba(0,0,0,0.5)",
-                               "shadowOffsetX":3,
-                               "shadowOffsetY":6,
-                               "transformAble":false,
-                               "zIndex":1,
-                               "dragable":false,
-                               "selected":false,
-                               "showSelected":true,
-                               "isMouseOver":false,
-                               "font":"12px Consolas",
-                               "fontColor":"255,255,255",
-                               "textOffsetX":0,
-                               "textOffsetY":0
-                           }
-                       }
-                   ],
-                   "node": [
-                       {
-                           "id": "1491623966792493877",
-                           "name": "性能监控2",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": {
-                               "_id":"1491623966792493877",
-                               "imgName":"iconType1",
-                               "textBreakNumber":5,
-                               "textLineHeight":15,
-                               "elementType":"node",
-                               "x":82.00000381469727,
-                               "y":89.66667938232422,
-                               "width":50,
-                               "height":50,
-                               "visible":true,
-                               "alpha":1,
-                               "rotate":0,
-                               "scaleX":1,
-                               "scaleY":1,
-                               "strokeColor":"22,124,255",
-                               "fillColor":"255,0,0",
-                               "shadow":false,
-                               "shadowColor":"rgba(0,0,0,0.5)",
-                               "shadowOffsetX":3,
-                               "shadowOffsetY":6,
-                               "transformAble":true,
-                               "zIndex":3,
-                               "dragable":true,
-                               "selected":false,
-                               "showSelected":true,
-                               "isMouseOver":false,
-                               "text":"性能监控2",
-                               "font":"14px Consolas",
-                               "fontColor":"236,105,65",
-                               "textPosition":"Bottom_Center",
-                               "textOffsetX":0,
-                               "textOffsetY":5,
-                               "borderRadius":null
-                           }
-                       },
-                       {
-                           "id": "1491623970341717271",
-                           "name": "10086系统2",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": {
-                               "_id":"1491623970341717271",
-                               "imgName":"iconType1",
-                               "textBreakNumber":5,
-                               "textLineHeight":15,
-                               "elementType":"node",
-                               "x":223.00000381469727,
-                               "y":105.66667938232422,
-                               "width":50,
-                               "height":50,
-                               "visible":true,
-                               "alpha":1,
-                               "rotate":0,
-                               "scaleX":1,
-                               "scaleY":1,
-                               "strokeColor":"22,124,255",
-                               "fillColor":"255,0,0",
-                               "shadow":false,
-                               "shadowColor":"rgba(0,0,0,0.5)",
-                               "shadowOffsetX":3,
-                               "shadowOffsetY":6,
-                               "transformAble":true,
-                               "zIndex":3,
-                               "dragable":true,
-                               "selected":true,
-                               "showSelected":true,
-                               "isMouseOver":true,
-                               "text":"10086系统",
-                               "font":"14px Consolas",
-                               "fontColor":"236,105,65",
-                               "textPosition":"Bottom_Center",
-                               "textOffsetX":0,
-                               "textOffsetY":5,
-                               "borderRadius":null
-                           }
-                       }
-                   ]
-               },
-               {
-                   "id": "11",   //后台数据库中的ID
-                   "type": "3",  // 类型 1 系统拓扑 2 流程拓扑 3 物理拓扑 4 流程拓扑
-                   "name": "拓扑图名称22",  // 拓扑图的名字
-                   "busi_id": "12",  //API 1 中的ID，获取后传给后台即可
-                   "opr": null,  // 操作类型 add 新增 mod 修改 del 删除，这个API为获取数据库的数据，所以这个字段都为空
-                   "line": [
-                       {
-                           "id": "1491623984085203200",
-                           "name": "连线名称1",
-                           "from_id": "1491623966792493877",
-                           "to_id": "1491623970341717271",
-                           "opr": null,
-                           "json": {
-                               "_id":"1491623984085203200",
-                               "nodeAId":"1491623966792493877",
-                               "nodeZId":"1491623970341717271",
-                               "linkType":"dashed",
-                               "elementType":"link",
-                               "x":0,
-                               "y":0,
-                               "width":32,
-                               "height":32,
-                               "visible":true,
-                               "alpha":1,
-                               "rotate":0,
-                               "scaleX":1,
-                               "scaleY":1,
-                               "strokeColor":"22,124,255",
-                               "fillColor":"22,124,255",
-                               "shadow":false,
-                               "shadowColor":"rgba(0,0,0,0.5)",
-                               "shadowOffsetX":3,
-                               "shadowOffsetY":6,
-                               "transformAble":false,
-                               "zIndex":1,
-                               "dragable":false,
-                               "selected":false,
-                               "showSelected":true,
-                               "isMouseOver":false,
-                               "font":"12px Consolas",
-                               "fontColor":"255,255,255",
-                               "textOffsetX":0,
-                               "textOffsetY":0
-                           }
-                       }
-                   ],
-                   "node": [
-                       {
-                           "id": "1491623966792493877",
-                           "name": "性能监控3",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": {
-                               "_id":"1491623966792493877",
-                               "imgName":"iconType1",
-                               "textBreakNumber":5,
-                               "textLineHeight":15,
-                               "elementType":"node",
-                               "x":82.00000381469727,
-                               "y":89.66667938232422,
-                               "width":50,
-                               "height":50,
-                               "visible":true,
-                               "alpha":1,
-                               "rotate":0,
-                               "scaleX":1,
-                               "scaleY":1,
-                               "strokeColor":"22,124,255",
-                               "fillColor":"255,0,0",
-                               "shadow":false,
-                               "shadowColor":"rgba(0,0,0,0.5)",
-                               "shadowOffsetX":3,
-                               "shadowOffsetY":6,
-                               "transformAble":true,
-                               "zIndex":3,
-                               "dragable":true,
-                               "selected":false,
-                               "showSelected":true,
-                               "isMouseOver":false,
-                               "text":"性能监控",
-                               "font":"14px Consolas",
-                               "fontColor":"236,105,65",
-                               "textPosition":"Bottom_Center",
-                               "textOffsetX":0,
-                               "textOffsetY":5,
-                               "borderRadius":null
-                           }
-                       },
-                       {
-                           "id": "1491623970341717271",
-                           "name": "10086系统3",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": {
-                               "_id":"1491623970341717271",
-                               "imgName":"iconType1",
-                               "textBreakNumber":5,
-                               "textLineHeight":15,
-                               "elementType":"node",
-                               "x":223.00000381469727,
-                               "y":105.66667938232422,
-                               "width":50,
-                               "height":50,
-                               "visible":true,
-                               "alpha":1,
-                               "rotate":0,
-                               "scaleX":1,
-                               "scaleY":1,
-                               "strokeColor":"22,124,255",
-                               "fillColor":"255,0,0",
-                               "shadow":false,
-                               "shadowColor":"rgba(0,0,0,0.5)",
-                               "shadowOffsetX":3,
-                               "shadowOffsetY":6,
-                               "transformAble":true,
-                               "zIndex":3,
-                               "dragable":true,
-                               "selected":true,
-                               "showSelected":true,
-                               "isMouseOver":true,
-                               "text":"10086系统",
-                               "font":"14px Consolas",
-                               "fontColor":"236,105,65",
-                               "textPosition":"Bottom_Center",
-                               "textOffsetX":0,
-                               "textOffsetY":5,
-                               "borderRadius":null
-                           }
-                       }
-                   ]
-               },
-               {
-                   "id": "12",   //后台数据库中的ID
-                   "type": "4",  // 类型 1 系统拓扑 2 流程拓扑 3 物理拓扑 4 流程拓扑
-                   "name": "拓扑图名称22",  // 拓扑图的名字
-                   "busi_id": "12",  //API 1 中的ID，获取后传给后台即可
-                   "opr": null,  // 操作类型 add 新增 mod 修改 del 删除，这个API为获取数据库的数据，所以这个字段都为空
-                   "line": [
-                       {
-                           "id": "1491623984085203200",
-                           "name": "连线名称1",
-                           "from_id": "1491623966792493877",
-                           "to_id": "1491623970341717271",
-                           "opr": null,
-                           "json": {
-                               "_id":"1491623984085203200",
-                               "nodeAId":"1491623966792493877",
-                               "nodeZId":"1491623970341717271",
-                               "linkType":"dashed",
-                               "elementType":"link",
-                               "x":0,
-                               "y":0,
-                               "width":32,
-                               "height":32,
-                               "visible":true,
-                               "alpha":1,
-                               "rotate":0,
-                               "scaleX":1,
-                               "scaleY":1,
-                               "strokeColor":"22,124,255",
-                               "fillColor":"22,124,255",
-                               "shadow":false,
-                               "shadowColor":"rgba(0,0,0,0.5)",
-                               "shadowOffsetX":3,
-                               "shadowOffsetY":6,
-                               "transformAble":false,
-                               "zIndex":1,
-                               "dragable":false,
-                               "selected":false,
-                               "showSelected":true,
-                               "isMouseOver":false,
-                               "font":"12px Consolas",
-                               "fontColor":"255,255,255",
-                               "textOffsetX":0,
-                               "textOffsetY":0
-                           }
-                       }
-                   ],
-                   "node": [
-                       {
-                           "id": "1491623966792493877",
-                           "name": "性能监控",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": {
-                               "_id":"1491623966792493877",
-                               "imgName":"iconType1",
-                               "textBreakNumber":5,
-                               "textLineHeight":15,
-                               "elementType":"node",
-                               "x":82.00000381469727,
-                               "y":89.66667938232422,
-                               "width":50,
-                               "height":50,
-                               "visible":true,
-                               "alpha":1,
-                               "rotate":0,
-                               "scaleX":1,
-                               "scaleY":1,
-                               "strokeColor":"22,124,255",
-                               "fillColor":"255,0,0",
-                               "shadow":false,
-                               "shadowColor":"rgba(0,0,0,0.5)",
-                               "shadowOffsetX":3,
-                               "shadowOffsetY":6,
-                               "transformAble":true,
-                               "zIndex":3,
-                               "dragable":true,
-                               "selected":false,
-                               "showSelected":true,
-                               "isMouseOver":false,
-                               "text":"性能监控4",
-                               "font":"14px Consolas",
-                               "fontColor":"236,105,65",
-                               "textPosition":"Bottom_Center",
-                               "textOffsetX":0,
-                               "textOffsetY":5,
-                               "borderRadius":null
-                           }
-                       },
-                       {
-                           "id": "1491623970341717271",
-                           "name": "10086系统",
-                           "type": "2",
-                           "busi_id": "123",
-                           "opr": null,
-                           "json": {
-                               "_id":"1491623970341717271",
-                               "imgName":"iconType1",
-                               "textBreakNumber":5,
-                               "textLineHeight":15,
-                               "elementType":"node",
-                               "x":223.00000381469727,
-                               "y":105.66667938232422,
-                               "width":50,
-                               "height":50,
-                               "visible":true,
-                               "alpha":1,
-                               "rotate":0,
-                               "scaleX":1,
-                               "scaleY":1,
-                               "strokeColor":"22,124,255",
-                               "fillColor":"255,0,0",
-                               "shadow":false,
-                               "shadowColor":"rgba(0,0,0,0.5)",
-                               "shadowOffsetX":3,
-                               "shadowOffsetY":6,
-                               "transformAble":true,
-                               "zIndex":3,
-                               "dragable":true,
-                               "selected":true,
-                               "showSelected":true,
-                               "isMouseOver":true,
-                               "text":"10086系统",
-                               "font":"14px Consolas",
-                               "fontColor":"236,105,65",
-                               "textPosition":"Bottom_Center",
-                               "textOffsetX":0,
-                               "textOffsetY":5,
-                               "borderRadius":null
-                           }
-                       }
-                   ]
-               },
-           ]
-            stateManager.currentTopo=data;
+
+
+
+          //  var data=[{"id":"9","type":"1","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"1491816366178658908","from_id":"1491623966792493877","to_id":"1491623970341717271","opr":"mod","json":{"_id":"1491816366178658908","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控1","type":"1","nodeType":"node","busi_id":"12","opr":"mod","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":82.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控1","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null}},{"id":"1491623970341717271","name":"10086系统","type":"1","nodeType":"node","busi_id":"12","opr":"mod","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":91.00000381469727,"y":-4.333320617675781,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null}},{"id":"1491813260660786069","name":"","type":"1","nodeType":"container","busi_id":"12","opr":"mod","json":{"_id":"1491813260660786069","childsArr":["1491623970341717271","1491623966792493877"],"alarm":null,"childDragble":true,"elementType":"container","x":82.00000381469727,"y":-4.333320617675781,"width":59,"height":144,"visible":true,"alpha":0.5,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"234,28,39","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"","font":"16px 微软雅黑","fontColor":"22,124,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":10,"borderRadius":7}}]},{"id":"10","type":"2","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"1491813281445315560","from_id":"1491623966792493877","to_id":"1491623970341717271","opr":"mod","json":{"_id":"1491813281445315560","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控2","type":"2","nodeType":"node","busi_id":"12","opr":"mod","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":82.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控2","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null}},{"id":"1491623970341717271","name":"10086系统","type":"2","nodeType":"node","busi_id":"12","opr":"mod","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":313.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":true,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null}}]},{"id":"11","type":"3","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"1491816481301587103","from_id":"1491623966792493877","to_id":"1491623970341717271","opr":"mod","json":{"_id":"1491816481301587103","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控2","type":"3","nodeType":"node","busi_id":"12","opr":"mod","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":82.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控2","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null}},{"id":"1491623970341717271","name":"10086系统","type":"3","nodeType":"node","busi_id":"12","opr":"mod","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":95.00000381469727,"y":209.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":true,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null}}]},{"id":"12","type":"4","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"1491816367346527763","from_id":"1491623966792493877","to_id":"1491623970341717271","opr":"mod","json":{"_id":"1491816367346527763","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}},{"id":"1491816380265771706","from_id":"1491623966792493877","to_id":"1491816376906649894","opr":"mod","json":{"_id":"1491816380265771706","nodeAId":"1491623966792493877","nodeZId":"1491816376906649894","linkType":"Link","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控4","type":"4","nodeType":"node","busi_id":"12","opr":"mod","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":230.00000381469727,"y":95.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控4","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null}},{"id":"1491623970341717271","name":"10086系统","type":"4","nodeType":"node","busi_id":"12","opr":"mod","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":75.00000381469727,"y":91.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null}},{"id":"1491816376906649894","name":"应用性能管理","type":"4","nodeType":"containerNode","busi_id":"12","opr":"mod","json":{"_id":"1491816376906649894","childsArr":["1491816376905230710","1491816376905380996","1491816376906863164","1491816376906962966"],"childDragble":false,"elementType":"containerNode","x":591.0000038146973,"y":123.66667175292969,"width":150,"height":150,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"154,206,240","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"应用性能管理","font":"16px 微软雅黑","fontColor":"232,31,0","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":0,"childsNodeArr":[{"_id":"1491816376905230710","textBreakNumber":8,"textLineHeight":13,"parentType":"containerNode","elementType":"node","x":711.0000038146973,"y":143.6666717529297,"width":0,"height":0,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"text":"luozheaoluojie","font":"12px Consolas","fontColor":"43,43,43","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null},{"_id":"1491816376905380996","imgName":"iconType4","alarm":null,"textBreakNumber":5,"textLineHeight":15,"parentType":"containerNode","elementType":"node","x":596.0000038146973,"y":173.6666717529297,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null},{"_id":"1491816376906863164","textBreakNumber":5,"textLineHeight":15,"parentType":"containerNode","elementType":"node","x":591.0000038146973,"y":123.66667175292969,"width":0,"height":0,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null},{"_id":"1491816376906962966","textBreakNumber":5,"textLineHeight":15,"parentType":"containerNode","elementType":"node","x":741.0000038146973,"y":273.6666717529297,"width":0,"height":0,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null}]}}]}];
+          //  var data=[{"id":"9","type":"1","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"1491820749603343360","from_id":"1491623966792493877","to_id":"1491623970341717271","json":{"_id":"1491820749603343360","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控1","nodeType":"node","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":82.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控1","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null}},{"id":"1491623970341717271","name":"10086系统","nodeType":"node","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":91.00000381469727,"y":-4.333320617675781,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null}},{"id":"1491813260660786069","name":"","nodeType":"container","json":{"_id":"1491813260660786069","childsArr":["1491623970341717271","1491623966792493877"],"alarm":null,"childDragble":true,"elementType":"container","x":82.00000381469727,"y":-4.333320617675781,"width":59,"height":144,"visible":true,"alpha":0.5,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"234,28,39","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"","font":"16px 微软雅黑","fontColor":"22,124,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":10,"borderRadius":7}}]},{"id":"10","type":"2","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"1491813281445315560","from_id":"1491623966792493877","to_id":"1491623970341717271","json":{"_id":"1491813281445315560","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控2","type":"2","nodeType":"node","busi_id":"12","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":82.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控2","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"2"}},{"id":"1491623970341717271","name":"10086系统","type":"2","nodeType":"node","busi_id":"12","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":313.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":true,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"2"}}]},{"id":"11","type":"3","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"1491816481301587103","from_id":"1491623966792493877","to_id":"1491623970341717271","json":{"_id":"1491816481301587103","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控2","type":"3","nodeType":"node","busi_id":"12","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":82.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控2","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"3"}},{"id":"1491623970341717271","name":"10086系统","type":"3","nodeType":"node","busi_id":"12","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":95.00000381469727,"y":209.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":true,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"3"}}]},{"id":"12","type":"4","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"1491816367346527763","from_id":"1491623966792493877","to_id":"1491623970341717271","json":{"_id":"1491816367346527763","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}},{"id":"1491816380265771706","from_id":"1491623966792493877","to_id":"1491816376906649894","json":{"_id":"1491816380265771706","nodeAId":"1491623966792493877","nodeZId":"1491816376906649894","linkType":"Link","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控4","type":"4","nodeType":"node","busi_id":"12","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":230.00000381469727,"y":95.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控4","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"4"}},{"id":"1491623970341717271","name":"10086系统","type":"4","nodeType":"node","busi_id":"12","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":75.00000381469727,"y":91.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"4"}},{"id":"1491816376906649894","name":"应用性能管理","type":"4","nodeType":"containerNode","busi_id":"12","json":{"_id":"1491816376906649894","childsArr":["1491816376905230710","1491816376905380996","1491816376906863164","1491816376906962966"],"childDragble":false,"elementType":"containerNode","x":591.0000038146973,"y":123.66667175292969,"width":150,"height":150,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"154,206,240","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"应用性能管理","font":"16px 微软雅黑","fontColor":"232,31,0","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":0,"childsNodeArr":[{"_id":"1491816376905230710","textBreakNumber":8,"textLineHeight":13,"parentType":"containerNode","elementType":"node","x":711.0000038146973,"y":143.6666717529297,"width":0,"height":0,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"text":"luozheaoluojie","font":"12px Consolas","fontColor":"43,43,43","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null},{"_id":"1491816376905380996","imgName":"iconType4","alarm":null,"textBreakNumber":5,"textLineHeight":15,"parentType":"containerNode","elementType":"node","x":596.0000038146973,"y":173.6666717529297,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null},{"_id":"1491816376906863164","textBreakNumber":5,"textLineHeight":15,"parentType":"containerNode","elementType":"node","x":591.0000038146973,"y":123.66667175292969,"width":0,"height":0,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null},{"_id":"1491816376906962966","textBreakNumber":5,"textLineHeight":15,"parentType":"containerNode","elementType":"node","x":741.0000038146973,"y":273.6666717529297,"width":0,"height":0,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null}],"busi_id":"12","type":"4"}}]}];
+          //  var data=[{"id":"9","type":"1","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"front1491820826332568303","from_id":"1491623966792493877","to_id":"1491623970341717271","json":{"_id":"front1491820826332568303","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控1","nodeType":"node","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":82.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控1","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null}},{"id":"1491623970341717271","name":"10086系统","nodeType":"node","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":91.00000381469727,"y":-4.333320617675781,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null}},{"id":"1491813260660786069","name":"","nodeType":"container","json":{"_id":"1491813260660786069","childsArr":["1491623970341717271","1491623966792493877"],"alarm":null,"childDragble":true,"elementType":"container","x":82.00000381469727,"y":-4.333320617675781,"width":59,"height":144,"visible":true,"alpha":0.5,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"234,28,39","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"","font":"16px 微软雅黑","fontColor":"22,124,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":10,"borderRadius":7}}]},{"id":"10","type":"2","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"1491813281445315560","from_id":"1491623966792493877","to_id":"1491623970341717271","json":{"_id":"1491813281445315560","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控2","type":"2","nodeType":"node","busi_id":"12","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":82.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控2","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"2"}},{"id":"1491623970341717271","name":"10086系统","type":"2","nodeType":"node","busi_id":"12","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":313.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":true,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"2"}}]},{"id":"11","type":"3","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"1491816481301587103","from_id":"1491623966792493877","to_id":"1491623970341717271","json":{"_id":"1491816481301587103","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控2","type":"3","nodeType":"node","busi_id":"12","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":82.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控2","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"3"}},{"id":"1491623970341717271","name":"10086系统","type":"3","nodeType":"node","busi_id":"12","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":95.00000381469727,"y":209.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":true,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"3"}}]},{"id":"12","type":"4","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"1491816367346527763","from_id":"1491623966792493877","to_id":"1491623970341717271","json":{"_id":"1491816367346527763","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}},{"id":"1491816380265771706","from_id":"1491623966792493877","to_id":"1491816376906649894","json":{"_id":"1491816380265771706","nodeAId":"1491623966792493877","nodeZId":"1491816376906649894","linkType":"Link","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控4","type":"4","nodeType":"node","busi_id":"12","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":230.00000381469727,"y":95.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控4","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"4"}},{"id":"1491623970341717271","name":"10086系统","type":"4","nodeType":"node","busi_id":"12","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":75.00000381469727,"y":91.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"4"}},{"id":"1491816376906649894","name":"应用性能管理","type":"4","nodeType":"containerNode","busi_id":"12","json":{"_id":"1491816376906649894","childsArr":["1491816376905230710","1491816376905380996","1491816376906863164","1491816376906962966"],"childDragble":false,"elementType":"containerNode","x":591.0000038146973,"y":123.66667175292969,"width":150,"height":150,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"154,206,240","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"应用性能管理","font":"16px 微软雅黑","fontColor":"232,31,0","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":0,"childsNodeArr":[{"_id":"1491816376905230710","textBreakNumber":8,"textLineHeight":13,"parentType":"containerNode","elementType":"node","x":711.0000038146973,"y":143.6666717529297,"width":0,"height":0,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"text":"luozheaoluojie","font":"12px Consolas","fontColor":"43,43,43","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null},{"_id":"1491816376905380996","imgName":"iconType4","alarm":null,"textBreakNumber":5,"textLineHeight":15,"parentType":"containerNode","elementType":"node","x":596.0000038146973,"y":173.6666717529297,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null},{"_id":"1491816376906863164","textBreakNumber":5,"textLineHeight":15,"parentType":"containerNode","elementType":"node","x":591.0000038146973,"y":123.66667175292969,"width":0,"height":0,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null},{"_id":"1491816376906962966","textBreakNumber":5,"textLineHeight":15,"parentType":"containerNode","elementType":"node","x":741.0000038146973,"y":273.6666717529297,"width":0,"height":0,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null}],"busi_id":"12","type":"4"}}]}]
+            var data=[{"id":"9","type":"1","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"front1491820932634572417","from_id":"1491623966792493877","to_id":"1491623970341717271","json":{"_id":"front1491820932634572417","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控1","nodeType":"node","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":82.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控1","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null}},{"id":"1491623970341717271","name":"10086系统","nodeType":"node","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":91.00000381469727,"y":-4.333320617675781,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null}},{"id":"1491813260660786069","name":"","nodeType":"container","json":{"_id":"1491813260660786069","childsArr":["1491623970341717271","1491623966792493877"],"alarm":null,"childDragble":true,"elementType":"container","x":82.00000381469727,"y":-4.333320617675781,"width":59,"height":144,"visible":true,"alpha":0.5,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"234,28,39","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"","font":"16px 微软雅黑","fontColor":"22,124,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":10,"borderRadius":7}}]},{"id":"10","type":"2","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"1491813281445315560","from_id":"1491623966792493877","to_id":"1491623970341717271","json":{"_id":"1491813281445315560","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控2","type":"2","nodeType":"node","busi_id":"12","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":82.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控2","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"2"}},{"id":"1491623970341717271","name":"10086系统","type":"2","nodeType":"node","busi_id":"12","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":313.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":true,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"2"}}]},{"id":"11","type":"3","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"1491816481301587103","from_id":"1491623966792493877","to_id":"1491623970341717271","json":{"_id":"1491816481301587103","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控2","type":"3","nodeType":"node","busi_id":"12","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":82.00000381469727,"y":89.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控2","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"3"}},{"id":"1491623970341717271","name":"10086系统","type":"3","nodeType":"node","busi_id":"12","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":95.00000381469727,"y":209.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":true,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"3"}}]},{"id":"12","type":"4","name":"拓扑图名称22","busi_id":"12","opr":"mod","line":[{"id":"1491816367346527763","from_id":"1491623966792493877","to_id":"1491623970341717271","json":{"_id":"1491816367346527763","nodeAId":"1491623966792493877","nodeZId":"1491623970341717271","linkType":"dashed","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}},{"id":"1491816380265771706","from_id":"1491623966792493877","to_id":"1491816376906649894","json":{"_id":"1491816380265771706","nodeAId":"1491623966792493877","nodeZId":"1491816376906649894","linkType":"Link","elementType":"link","x":0,"y":0,"width":32,"height":32,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":false,"zIndex":1,"dragable":false,"selected":false,"showSelected":true,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textOffsetX":0,"textOffsetY":0}}],"node":[{"id":"1491623966792493877","name":"性能监控4","type":"4","nodeType":"node","busi_id":"12","json":{"_id":"1491623966792493877","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":230.00000381469727,"y":95.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"性能监控4","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"4"}},{"id":"1491623970341717271","name":"10086系统","type":"4","nodeType":"node","busi_id":"12","json":{"_id":"1491623970341717271","imgName":"iconType1","textBreakNumber":5,"textLineHeight":15,"elementType":"node","x":75.00000381469727,"y":91.66667938232422,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"255,0,0","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"10086系统","font":"14px Consolas","fontColor":"236,105,65","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":null,"busi_id":"12","type":"4"}},{"id":"1491816376906649894","name":"应用性能管理","type":"4","nodeType":"containerNode","busi_id":"12","json":{"_id":"1491816376906649894","childsArr":["1491816376905230710","1491816376905380996","1491816376906863164","1491816376906962966"],"childDragble":false,"elementType":"containerNode","x":591.0000038146973,"y":123.66667175292969,"width":150,"height":150,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"154,206,240","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":true,"isMouseOver":false,"text":"应用性能管理","font":"16px 微软雅黑","fontColor":"232,31,0","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":5,"borderRadius":0,"childsNodeArr":[{"_id":"1491816376905230710","textBreakNumber":8,"textLineHeight":13,"parentType":"containerNode","elementType":"node","x":711.0000038146973,"y":143.6666717529297,"width":0,"height":0,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"text":"luozheaoluojie","font":"12px Consolas","fontColor":"43,43,43","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null},{"_id":"1491816376905380996","imgName":"iconType4","alarm":null,"textBreakNumber":5,"textLineHeight":15,"parentType":"containerNode","elementType":"node","x":596.0000038146973,"y":173.6666717529297,"width":50,"height":50,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null},{"_id":"1491816376906863164","textBreakNumber":5,"textLineHeight":15,"parentType":"containerNode","elementType":"node","x":591.0000038146973,"y":123.66667175292969,"width":0,"height":0,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null},{"_id":"1491816376906962966","textBreakNumber":5,"textLineHeight":15,"parentType":"containerNode","elementType":"node","x":741.0000038146973,"y":273.6666717529297,"width":0,"height":0,"visible":true,"alpha":1,"rotate":0,"scaleX":1,"scaleY":1,"strokeColor":"22,124,255","fillColor":"22,124,255","shadow":false,"shadowColor":"rgba(0,0,0,0.5)","shadowOffsetX":3,"shadowOffsetY":6,"transformAble":true,"zIndex":3,"dragable":false,"selected":false,"showSelected":false,"isMouseOver":false,"font":"12px Consolas","fontColor":"255,255,255","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"borderRadius":null}],"busi_id":"12","type":"4"}}]}];
+            //解析
+            stateManager.currentTopo=this._analysisTopo(data);
+
             return data;
         },
 
@@ -1096,10 +567,15 @@
             var html = self.showIconData();
             $('.entityIcon').addClass('active').siblings().removeClass('active');
             $('.entityIconTag').html(html).show().siblings().hide();
+            $('.iconTitle').unbind('click').on('click', 'li', function () {
+                var $obj = $(this).hasClass('entityIcon') ? $('.entityIconTag') : $('.basicIconTag');
+                $(this).addClass('active').siblings().removeClass('active');
+                $obj.show().siblings().hide();
+            })
             self.dragInit();
         },
         //控制拓扑图切换
-        setTopChange:function (arr) {
+        setTopoChange:function (arr) {
             var self = dragManager;
             var html = self.showTopoChange(arr);
             var currentTopo=stateManager.currentTopo;
@@ -1107,65 +583,78 @@
             $('.topoChooseArea ul').html(html);
             //拖拽图图标html
             self._setDragIconByTopoType(currentTopo[0].type);
-            //新增图标显示出来
-            $('.topuAdd-tab').removeClass('hide');
-
-            $('.topoChooseArea').click(function (e) {
-                e.stopPropagation();
-                if($(e.target).hasClass('del')){
-                    var topoId=$(e.target).parents('li').attr('topoId');
-                    var arr=[];
-                    var topoArr=stateManager.currentTopo;
-                    //删除数据
-                    for(var i=0 ;i<topoArr.length;i++) {
-                        if (topoArr[i].id != topoId) {
-                            arr.push(topoArr[i]);
-                        }
-                    }
-                    stateManager.currentTopo=arr;
-                    //渲染
-                    $(e.target).parents('li').remove();
-                    //todo:传输给后台
+            //切换
+            $('.topoChooseArea').on('click','ul>li',function (e) {
+                if($(this).hasClass('del')){
+                    $(e.target).click();
+                    //点击删除按钮，则不继续执行
+                    return false;
                 }
-            });
-            $('.topoChooseArea li').click(function () {
-                var topoId = $(this).attr('topoId');
-                var oldTopoId=$('.topoChooseArea li.active').attr('topoId');
+                var newTopoId = $(this).attr('topoId');
                 var nodeType = $(this).attr('nodeType');
-                var topoArr = stateManager.currentTopo;
-                var obj = {};
-
+                //切换时，应该保存切换前的topo图数据
+                var oldTopoId=$('.topoChooseArea li.active').attr('topoId');
+                var oldTopoData= canvasManager.getCanvasToJson();
+                self._updataTopoById(oldTopoId,oldTopoData);
                 $(this).addClass('active').siblings().removeClass('active');
-                for (var i = 0; i < topoArr.length; i++) {
-                    if (topoArr[i].id == topoId) {
-                        obj = topoArr[i];
-                        break;
-                    }
-                }
                 //控制拖拽图标的显示
                 self._setDragIconByTopoType(nodeType);
                 //渲染拓扑图
-                self.setTopoShow(topoId);
+                self.setTopoShow(newTopoId);
+            });
+        },
+        //控制拓扑图删除
+        setTopoDel:function () {
+            var self = this;
+            $('.topoChooseArea').on('click', '.del', function (e) {
+                e.stopPropagation();
+
+                var topoId = $(this).parents('li').attr('topoId');
+                var arr = [];
+                var topoArr = stateManager.currentTopo;
+                //删除数据
+                self._delTopoById(topoId);
+                //渲染
+                var $pLi = $(this).parents('li');
+                var hasActive = $pLi.hasClass('active');
+                $pLi.remove();
+                hasActive && $('.topoChooseArea li:first').click();
+            });
+        },
+        //控制拓扑图新增
+        setTopoAdd:function () {
+            //新增图标显示出来
+            $('.topuAdd-tab').removeClass('hide');
+            $('.topoChooseArea').on('click','.topuAdd-tab',function () {
+                var self=this;
+                layer.open({
+                    type: 1,
+                    title: '新增拓扑图',
+                    area: ['300px', '180px'],
+                    content: $('#addtopuTab'),
+                    btn:['确定','取消'],
+                    yes:function(index,layero){
+                        var nodeId=Math.round(Math.random()*1000000000000);
+                        var nodeType=$('#addTabselect').val();
+                        var nodeText=$("#addTabselect").find("option:selected").text();
+                        var html='<li class="" nodeType="'+nodeType+'" topoId="'+nodeId+'"><a>'+nodeText+'</a><i class="del">×</i></li>';
+                        $('.topoChooseArea ul').append(html);
+                        layer.close(index);
+                        self._addTopoById(nodeType,nodeId,'');
+                    },
+                    btn2:function(index,layero){
+                        layer.close(index)
+                    }
+                });
             });
         },
         //控制具体拓扑图展示
         setTopoShow:function (sTopoId) {
             var topoArr=stateManager.currentTopo;
             var topoId=sTopoId!==undefined?sTopoId:$('.topoChooseArea ul li.active').attr('topoId');
-            var topoObj={};
-            for(var i=0;i<topoArr.length;i++){
-                if(topoArr[i].id==topoId){
-                    topoObj=topoArr[i];
-                    break;
-                }
-            }
-            var data=[];
-            for(var j=0 ;j< topoObj.line.length;j++){
-                data.push(topoObj.line[j].json);
-            }
-            for(var k=0 ;k< topoObj.node.length;k++){
-                data.push(topoObj.node[k].json);
-            }
+            var topoObj=this._findTopoById(topoId);//找到拓扑图数据
+
+            var data=topoObj.topoData;//topoData为第一次加载时解析出来的node和link数据数组
             canvasManager.renderCanvasByJson(data);
         },
         //目录树节点点击事件
@@ -1174,16 +663,23 @@
             //单击打开节点
             var zTree = $.fn.zTree.getZTreeObj("treeDemo");
             zTree.expandNode(treeNode);
+
+            //操作栏事件初始化
+            $('.topoChooseArea').unbind('click');
             //拖拽图标初始化
             self.setIconData();
-            //拓扑图选择初始化
-            self.setTopChange();
+            //拓扑图切换初始化
+            self.setTopoChange();
+            //拓扑图删除初始化
+            self.setTopoDel();
+            //拓扑图新增初始化
+            self.setTopoAdd();
             //拓扑图初始化
             self.setTopoShow();
         },
 
 
-        /*********辅助方法******************************/
+        /*********辅助方法********************************************************************/
         //根据拖拽的图标对象，确定创建哪一类节点
         _createNodeOrContainerNodeByDrag:function(sNodeName, $thisClone, mDown, thisWidth, thisHeight, pageX, pageY)
         {
@@ -1229,56 +725,173 @@
                 $('.entityIcon').show();
             }
         },
-        //将画布数据保存成后台所需格式
-        _saveCanvasToJsonForTrans:function(oldTopoId){
+        //解析后台数据成画布所需的格式，只解析一次，点击树节点触发
+        _analysisTopo:function (topoDataArr) {
+            //四张图
+
+            var newTopoDataArr=[];
+            for(var i=0;i<topoDataArr.length;i++){
+                var data=[];
+                var topoObj=topoDataArr[i];//topoObj具体的一张图
+                for(var j=0 ;j< topoObj.line.length;j++){
+                    var lineObj=topoObj.line[j];
+                    data.push(lineObj.json);
+                }
+                for(var k=0 ;k< topoObj.node.length;k++) {
+                    var nodeObj = topoObj.node[k];
+                    nodeObj.json.busi_id=nodeObj.busi_id;
+                    nodeObj.json.type=nodeObj.type;
+                    if (nodeObj.nodeType == 'containerNode') {
+                        for (var k1 = 0; k1 < nodeObj.json.childsNodeArr.length; k1++) {
+                            data.push(nodeObj.json.childsNodeArr[k1]);
+                        }
+                    }
+                    data.push(nodeObj.json);
+                }
+                topoObj.topoData=data;
+                newTopoDataArr.push(topoObj);
+            }
+
+            return newTopoDataArr;
+        },
+        //将画布数据保存成后台所需格式，只保存一次，点击保存时触发,注意：该方法对外开放
+        saveTopoToTrans:function () {
+            /***
+             * 拿最新数据
+             *
+             *
+             *
+             *
+             * */
             var topoArr = stateManager.currentTopo;
-            //获取数据
-            var saveArr=canvasManager.getCanvasToJson();
-            //第一步，获取node数组
-            //第二步，获取link数组
-            //第三步，获取container数组
-            //第四步，获取containerNode数组
-
-            //改造,要考虑新增、修改、删除，要遍历到节点、线条、容器节点、容器四种元素
-            //需要一些冗余代码，牺牲些效率，来降低代码实现和维护难度
+            var newTopoArr = [];
+             debugger;
             for (var i = 0; i < topoArr.length; i++) {
-                if (topoArr[i].id == oldTopoId) {
-                     //
+                var topoObj = topoArr[i];//拓扑图
+                var topoData = topoObj.topoData;
+                var nodeArr = [];
+                var linkArr = [];
 
+                var containerNodeChilds = {};
+                var containerNodeArr = [];
+                for (var j = 0; j < topoData.length; j++) {
+                    var p = topoData[j];//元素，四类
+                    if (['node', 'container'].indexOf(p.elementType) >= 0 && p.parentType != 'containerNode') {
+                        nodeArr.push({
+                            id: p._id,
+                            name: p.text,
+                            type: p.type,
+                            nodeType: p.elementType,
+                            busi_id: p.busi_id,
+                            json: p
+                        });
+                    }
+                    else if (['node'].indexOf(p.elementType) >= 0 && p.parentType == 'containerNode') {
+                        containerNodeChilds[p._id] = p;
+                    }
+                    else if (['containerNode'].indexOf(p.elementType) >= 0) {
+                        containerNodeArr.push({
+                            id: p._id,
+                            name: p.text,
+                            type: p.type,
+                            nodeType: p.elementType,
+                            busi_id: p.busi_id,
+                            json: p
+                        });
+                    }
+                    else if (p.elementType == 'link') {
+                        linkArr.push({
+                            id: p._id,
+                            name: p.text,
+                            from_id: p.nodeAId,
+                            to_id: p.nodeZId,
+                            json: p
+                        });
+                    }
+                }
+
+                //容器节点中包含了定制化的节点，这些信息应该保存在容器节点的json中
+                for (var m = 0; m < containerNodeArr.length; m++) {
+                    var childsArr = containerNodeArr[m].json.childsArr;
+                    var childsNodeArr = [];
+                    for (var n = 0; n < childsArr.length; n++) {
+                        var id = childsArr[n];
+                        childsNodeArr.push(containerNodeChilds[id]);
+                    }
+                    containerNodeArr[m].json.childsNodeArr = childsNodeArr;
+                    nodeArr.push(containerNodeArr[m]);
+                }
+                topoObj.node = nodeArr;
+                topoObj.line = linkArr;
+
+                //选择性复制
+                var copyObj = {};
+                for (var k in topoObj) {
+                    if (k != 'topoData') {
+                        copyObj[k] = topoObj[k];
+                    }
+                }
+                newTopoArr.push(copyObj);
+            }
+
+            return newTopoArr;
+        },
+        //根据拓扑图type新增拓扑图
+        _addTopoById:function (topoType,topoId,name) {
+          var topoObj=  {
+                "id":topoId,   //后台数据库中的ID
+                "type": topoType,  // 类型 1 系统拓扑 2 流程拓扑 3 物理拓扑 4 流程拓扑
+                "name": name,  // 拓扑图的名字
+                "busi_id": "",  //API 1 中的ID，获取后传给后台即可
+                "opr": "add",  // 操作类型 add 新增 mod 修改 del 删除，这个API为获取数据库的数据，所以这个字段都为空
+                "line": [],
+                "node": [],
+            }
+
+            stateManager.currentTopo.push(topoObj);
+        },
+        //根据拓扑图id删除拓扑图
+        _delTopoById:function (topoId) {
+            var topoArr = stateManager.currentTopo;
+            var topoObj = {};
+            for (var i = 0; i < topoArr.length; i++) {
+                if (topoArr[i].id == topoId) {
+                    stateManager.currentTopo[i].opr='del';
                     break;
                 }
             }
         },
-        /*********其他事件******************************/
-        aEvents:[
-            //切换图标
-            ['click','.iconTitle >li',function () {
-                var $obj=$(this).hasClass('entityIcon')?$('.entityIconTag'):$('.basicIconTag');
-                $(this).addClass('active').siblings().removeClass('active');
-                $obj.show().siblings().hide();
-            }],
-            //新增拓扑图
-            ['click','.topuAdd-tab',function () {
-                layer.open({
-                    type: 1,
-                    title: '新增拓扑图',
-                    area: ['300px', '180px'],
-                    content: $('#addtopuTab'),
-                    btn:['确定','取消'],
-                    yes:function(index,layero){
-                        var time=Math.random();
-                        var nodetype=$('#addTabselect').val();
-                        var nodetext=$("#addTabselect").find("option:selected").text();
-                        var html='<li class="" nodetype="'+nodetype+'" topoid="'+time+'"><a>'+nodetext+'</a><i class="del">×</i></li>'
-                        $('.topoChooseArea ul').append(html);
-                        layer.close(index)
-                    },
-                    btn2:function(index,layero){
-                        layer.close(index)
+        //根据拓扑图id修改拓扑图
+        _updataTopoById:function (topoId,oldTopoArr) {
+            var topoArr = stateManager.currentTopo;
+            for (var i = 0; i < topoArr.length; i++) {
+                if (topoArr[i].id == topoId) {
+                    stateManager.currentTopo[i].topoData=oldTopoArr;
+                    //拓扑图属于新增和删除，则不标记为修改
+                    if(['add','del'].indexOf(stateManager.currentTopo[i].opr)<0){
+                        stateManager.currentTopo[i].opr='mod';
                     }
-                });
-            }],
-        ],
+                    break;
+                }
+            }
+
+        },
+        //根据拓扑图id查找拓扑图
+        _findTopoById:function(topoId){
+            var topoArr = stateManager.currentTopo;
+            var topoObj = {};
+            for (var i = 0; i < topoArr.length; i++) {
+                if (topoArr[i].id == topoId) {
+                    topoObj = topoArr[i];
+                    break;
+                }
+            }
+            return topoObj;
+        },
+
+
+
+
         dragInit:function () {
             var $dragContainer=$('#container');
             // var $equipmentArea=$('#equipmentArea');
@@ -1298,12 +911,6 @@
             //目录树
             this.setMenuData();
             this.dragInit();
-            //事件初始化
-            var aEvents=this.aEvents;
-            for(var i=0;i<aEvents.length;i++){
-                $(aEvents[i][1]).on(aEvents[i][0],aEvents[i][2]);
-            }
-
         }
     }
     //画布管理者

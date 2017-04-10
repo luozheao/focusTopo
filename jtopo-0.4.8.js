@@ -4,7 +4,7 @@
             this.elementType = "element",
                 this.serializedProperties = ["elementType"],
                 this.propertiesStack = [],
-                this._id = "" + (new Date).getTime()+Math.round(Math.random()*1000000)
+                this._id = "front" + (new Date).getTime()+Math.round(Math.random()*1000000)
         }
             ,
             this.distroy = function() {},
