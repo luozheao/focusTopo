@@ -500,6 +500,7 @@ td {
     float: left;
     background-position: right center !important;
     position: relative;
+    background-size: 100% 100% !important;
 }
 .dragTag .dragNodeName{
 
@@ -523,19 +524,19 @@ text-align: center;
 }
 
 .dragTag.iconType1 {
-    background: url("./images/iconType1.jpg") no-repeat 100% 100%;
+    background: url("./images/iconType1.png") no-repeat;
 }
 
 .dragTag.iconType2 {
-    background: url("./images/iconType2.jpg") no-repeat 100% 100%;
+    background: url("./images/iconType2.png") no-repeat 100% 100%;
 }
 
 .dragTag.iconType3 {
-    background: url("./images/iconType3.jpg") no-repeat;
+    background: url("./images/iconType3.png") no-repeat;
 }
 
 .dragTag.iconType4 {
-    background: url("./images/iconType4.jpg") no-repeat;
+    background: url("./images/iconType4.png") no-repeat;
     background-size: 100%;
 }
 
