@@ -170,7 +170,338 @@
                 </div>
             </div>
             <canvas id="canvas">您的浏览器不支持显示，请换非IE8及以下的浏览器！</canvas>
-            <div id="jumpBox"></div>
+            <div id="jumpBox">
+                <!--这是所有的弹窗页面-->
+                <div id="allJumpPage" style="">
+                    <div class="TopujumpServer TopujumpDiv ">
+                        <div class="TopujumpTitle">
+                            <ul class="TopujumpTitleUl clearfix">
+                                <li><i class="fa fa-cog" aria-hidden="true"></i></li>
+                                <li>应用系统集群</li>
+                                <li><i class="fa fa-times" aria-hidden="true"></i></li>
+                            </ul>
+                        </div>
+                        <div class="TopujumpBody">
+                            <div class="TopujumpLine">
+                                <label>主机名称</label>
+                                <div class="TopujumpLineDiv">
+                                    <input type="text" class="form-input" disabled value="应用服务器主机1">
+                                </div>
+                            </div>
+                            <div class="TopujumpLine">
+                                <label>主机IP</label>
+                                <div class="TopujumpLineDiv">
+                                    <input type="text" class="form-input" disabled value="192.168.2.13">
+                                </div>
+                            </div>
+                            <div class="TopujumpLine">
+                                <label>服务地址</label>
+                                <div class="TopujumpLineDiv">
+                                    <input type="text" class="form-input" disabled value="192.168.2.13:8848">
+                                </div>
+                            </div>
+                            <div class="TopujumpLine">
+                                <ul class="nav nav-tabs nav-bootstarp">
+                                    <li class="active"><a data-toggle="tab" href="#tab_server_1" aria-expanded="true"> 告警数目 </a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab_server_2" aria-expanded="false"> 关联指标 </a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_server_1" aria-labelledby="home-tab">
+                                        <table class="table table-striped responsive-utilities jambo_table treetable" style="table-layout: fixed">
+                                            <thead>
+                                            <tr>
+                                                <td title="" class="td-autocut table_head_font">设备名称</td>
+                                                <td title="" class="td-autocut table_head_font">告警信息</td>
+                                                <td title="" class="td-autocut table_head_font">告警时间</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="td-autocut" title="127">127</td>
+                                                <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                                                <td class="td-autocut" title="3">25点40分</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td-autocut" title="127">127</td>
+                                                <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                                                <td class="td-autocut" title="3">25点40分</td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_server_2" aria-labelledby="profile-tab">
+                                        <table class="table table-striped responsive-utilities jambo_table treetable" style="table-layout: fixed">
+                                            <thead>
+                                            <tr>
+                                                <td title="" class="td-autocut table_head_font">指标名称</td>
+                                                <td title="" class="td-autocut table_head_font">所属节点</td>
+                                                <td title="" class="td-autocut table_head_font">指标数值</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="td-autocut" title="127">127</td>
+                                                <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                                                <td class="td-autocut" title="3">25点40分</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td-autocut" title="127">127</td>
+                                                <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                                                <td class="td-autocut" title="3">25点40分</td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="TopujumpLine">
+                                <label>快速运维</label>
+                                <div class="TopujumpLineDiv">
+                                    <input type="button" class="btn-save" value="重启">
+                                    <input type="button" class="btn-save" value="巡检">
+                                    <input type="button" class="btn-save" value="启动">
+                                    <input type="button" class="btn-save" value="停止">
+                                    <input type="button" class="btn-save" value="XX">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="TopujumpColony TopujumpDiv">
+                        <div class="TopujumpTitle">
+                            <ul class="TopujumpTitleUl clearfix">
+                                <li><i class="fa fa-cog" aria-hidden="true"></i></li>
+                                <li>应用系统集群</li>
+                                <li><i class="fa fa-times" aria-hidden="true"></i></li>
+                            </ul>
+                        </div>
+                        <div class="TopujumpBody">
+                            <div class="TopujumpColony_title TopujumpLine">集群关联实例 <span>12/18</span></div>
+                            <div class="TopujumpLine">
+                                <ul class="nav nav-tabs nav-bootstarp">
+                                    <li class="active"><a data-toggle="tab" href="#tab_div_1" aria-expanded="true"> 告警数目 </a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab_div_2" aria-expanded="false"> 关联指标 </a></li>
+                                    <li class=""><a data-toggle="tab" href="#tab_div_3" aria-expanded="false"> 作业执行 </a></li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_div_1" aria-labelledby="home-tab">
+                                        <table class="table table-striped responsive-utilities jambo_table treetable"
+                                               style="table-layout: fixed">
+                                            <thead>
+                                            <tr>
+                                                <td title="" class="td-autocut table_head_font">设备名称</td>
+                                                <td title="" class="td-autocut table_head_font">告警信息</td>
+                                                <td title="" class="td-autocut table_head_font">告警时间</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="td-autocut" title="127">127</td>
+                                                <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                                                <td class="td-autocut" title="3">25点40分</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td-autocut" title="127">127</td>
+                                                <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                                                <td class="td-autocut" title="3">25点40分</td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_div_2" aria-labelledby="profile-tab">
+                                        <table class="table table-striped responsive-utilities jambo_table treetable"
+                                               style="table-layout: fixed">
+                                            <thead>
+                                            <tr>
+                                                <td title="" class="td-autocut table_head_font">指标名称</td>
+                                                <td title="" class="td-autocut table_head_font">所属节点</td>
+                                                <td title="" class="td-autocut table_head_font">指标数值</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="td-autocut" title="127">127</td>
+                                                <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                                                <td class="td-autocut" title="3">25点40分</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td-autocut" title="127">127</td>
+                                                <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
+                                                <td class="td-autocut" title="3">25点40分</td>
+                                            </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="TopujumpLine">
+                                <label>快速运维</label>
+                                <div class="TopujumpLineDiv">
+                                    <input type="button" class="btn-save" value="重启">
+                                    <input type="button" class="btn-save" value="巡检">
+                                    <input type="button" class="btn-save" value="启动">
+                                    <input type="button" class="btn-save" value="停止">
+                                    <input type="button" class="btn-save" value="XX">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="TopujumpHost TopujumpDiv">
+                        <div class="TopujumpTitle">
+                            <ul class="TopujumpTitleUl clearfix">
+                                <li><i class="fa fa-cog" aria-hidden="true"></i></li>
+                                <li>设备详情</li>
+                                <li><i class="fa fa-times" aria-hidden="true"></i></li>
+                            </ul>
+                        </div>
+                        <div class="TopujumpBody">
+                            <form>
+                                <div class="TopujumpLine">
+                                    <label>设备名称</label>
+                                    <div class="TopujumpLineDiv">
+                                        <input type="text" class="form-input form-input-disabled" disabled>
+                                    </div>
+                                </div>
+                                <div class="TopujumpLine">
+                                    <label>别名</label>
+                                    <div class="TopujumpLineDiv">
+                                        <input type="text" class="form-input">
+                                    </div>
+                                </div>
+                                <div class="TopujumpLine">
+                                    <label>设备IP</label>
+                                    <div class="TopujumpLineDiv">
+                                        <input type="text" class="form-input form-input-disabled" disabled>
+                                    </div>
+                                </div>
+                                <div class="TopujumpLine">
+                                    <label>设备类型</label>
+                                    <div class="TopujumpLineDiv">
+                                        <input type="text" class="form-input form-input-disabled" disabled>
+                                    </div>
+                                </div>
+                                <div class="TopujumpLine">
+                                    <label>业务类型</label>
+                                    <div class="TopujumpLineDiv">
+                                        <input type="text" class="form-input form-input-disabled" disabled>
+                                    </div>
+                                </div>
+                                <div class="TopujumpLine">
+                                    <label>已关联指标<span>5</span></label>
+                                </div>
+                                <!--<div class="TopujumpLine clearfix text-right">-->
+                                <!--<input type="button" class="btn-save submit" value="提交">-->
+                                <!--<input type="button" class="btn-canel btn-back" value="取消">-->
+                                <!--</div>-->
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="TopujumpInstance TopujumpDiv">
+                        <div class="TopujumpTitle">
+                            <ul class="TopujumpTitleUl clearfix">
+                                <li><i class="fa fa-cog" aria-hidden="true"></i></li>
+                                <li>实例信息</li>
+                                <li><i class="fa fa-times" aria-hidden="true"></i></li>
+                            </ul>
+                        </div>
+                        <div class="TopujumpBody">
+                            <form>
+                                <div class="TopujumpLine">
+                                    <label>实例名称</label>
+                                    <div class="TopujumpLineDiv">
+                                        <input type="text" class="form-input form-input-disabled" disabled>
+                                    </div>
+                                </div>
+                                <div class="TopujumpLine">
+                                    <label>别名</label>
+                                    <div class="TopujumpLineDiv">
+                                        <input type="text" class="form-input" >
+                                    </div>
+                                </div>
+                                <div class="TopujumpLine">
+                                    <label>实例地址</label>
+                                    <div class="TopujumpLineDiv">
+                                        <input type="text" class="form-input form-input-disabled" disabled>
+                                    </div>
+                                </div>
+                                <div class="TopujumpLine">
+                                    <label>实例类型</label>
+                                    <div class="TopujumpLineDiv">
+                                        <input type="text" class="form-input form-input-disabled" disabled>
+                                    </div>
+                                </div>
+                                <div class="TopujumpLine">
+                                    <label>主机IP</label>
+                                    <div class="TopujumpLineDiv">
+                                        <input type="text" class="form-input form-input-disabled" disabled>
+                                    </div>
+                                </div>
+                                <div class="TopujumpLine">
+                                    <label>已关联指标<span>5</span></label>
+                                </div>
+                                <!--<div class="TopujumpLine clearfix text-right">-->
+                                <!--<input type="button" class="btn-save submit " value="提交">-->
+                                <!--<input type="button" class="btn-canel btn-back " value="取消">-->
+                                <!--</div>-->
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="TopujumpSystem TopujumpDiv">
+                        <div class="TopujumpTitle">
+                            <ul class="TopujumpTitleUl clearfix">
+                                <li><i class="fa fa-cog" aria-hidden="true"></i></li>
+                                <li>系统管理</li>
+                                <li><i class="fa fa-times" aria-hidden="true"></i></li>
+                            </ul>
+                        </div>
+                        <div class="TopujumpBody">
+                            <form>
+                                <div class="TopujumpLine">
+                                    <label>节点名称</label>
+                                    <div class="TopujumpLineDiv">
+                                        <input type="text" class="form-input form-input-disabled" disabled>
+                                    </div>
+                                </div>
+                                <div class="TopujumpLine">
+                                    <label>别名</label>
+                                    <div class="TopujumpLineDiv">
+                                        <input type="text" class="form-input">
+                                    </div>
+                                </div>
+                                <div class="TopujumpLine">
+                                    <label>节点类型</label>
+                                    <div class="TopujumpLineDiv">
+                                        <input type="text" class="form-input form-input-disabled" disabled>
+                                    </div>
+                                </div>
+                                <div class="TopujumpLine">
+                                    <label>备注</label>
+                                    <div class="TopujumpLineDiv">
+                                        <textarea class="form-textarea" cols="3" rows="1"></textarea>
+                                    </div>
+                                </div>
+                                <div class="TopujumpLine">
+                                    <label>已关联指标<span>5</span></label>
+                                    <div class="TopujumpLineDiv clearfix">
+                                        <div class="TopujumpLineDiv_div"><span>图标</span><i class="TopujumpLineDiv_div_icon"></i></div>
+                                        <div class="TopujumpLineDiv_div"><span>背景</span><input type="color"></div>
+                                    </div>
+                                </div>
+                                <!--<div class="TopujumpLine clearfix text-right">-->
+                                <!--<input type="button" class="btn-save submit " value="提交">-->
+                                <!--<input type="button" class="btn-canel btn-back " value="取消">-->
+                                <!--</div>-->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <ul id="contextmenuNode" class="contextmenu" style="display:none;">
@@ -182,6 +513,7 @@
         <li><a>撤销上一次操作</a></li>
         <li><a>删除该节点</a></li>
         <li><a>编辑该节点</a></li>
+        <li><a>查看</a></li>
     </ul>
     <ul id="contextmenuContainerNode" class="contextmenu" style="display:none;">
         <li><a>更改颜色</a></li>
@@ -205,351 +537,11 @@
     </div>
 </div>
 
-<!--这是所有的弹窗页面-->
-<div id="allJumpPage" style="display:none">
-<div class="TopujumpServer TopujumpDiv ">
-    <div class="TopujumpTitle">
-        <ul class="TopujumpTitleUl clearfix">
-            <li><i class="fa fa-cog" aria-hidden="true"></i></li>
-            <li>应用系统集群</li>
-            <li><i class="fa fa-times" aria-hidden="true"></i></li>
-        </ul>
-    </div>
-    <div class="TopujumpBody">
-        <div class="TopujumpLine">
-            <label>主机名称</label>
-            <div class="TopujumpLineDiv">
-                <input type="text" class="form-input" disabled value="应用服务器主机1">
-            </div>
-        </div>
-        <div class="TopujumpLine">
-            <label>主机IP</label>
-            <div class="TopujumpLineDiv">
-                <input type="text" class="form-input" disabled value="192.168.2.13">
-            </div>
-        </div>
-        <div class="TopujumpLine">
-            <label>服务地址</label>
-            <div class="TopujumpLineDiv">
-                <input type="text" class="form-input" disabled value="192.168.2.13:8848">
-            </div>
-        </div>
-        <div class="TopujumpLine">
-            <ul class="nav nav-tabs nav-bootstarp">
-                <li class="active"><a data-toggle="tab" href="#tab_server_1" aria-expanded="true"> 告警数目 </a></li>
-                <li class=""><a data-toggle="tab" href="#tab_server_2" aria-expanded="false"> 关联指标 </a></li>
-            </ul>
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade active in" id="tab_server_1" aria-labelledby="home-tab">
-                    <table class="table table-striped responsive-utilities jambo_table treetable" style="table-layout: fixed">
-                        <thead>
-                        <tr>
-                            <td title="" class="td-autocut table_head_font">设备名称</td>
-                            <td title="" class="td-autocut table_head_font">告警信息</td>
-                            <td title="" class="td-autocut table_head_font">告警时间</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="td-autocut" title="127">127</td>
-                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
-                            <td class="td-autocut" title="3">25点40分</td>
-                        </tr>
-                        <tr>
-                            <td class="td-autocut" title="127">127</td>
-                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
-                            <td class="td-autocut" title="3">25点40分</td>
-                        </tr>
 
-                        </tbody>
-                    </table>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="tab_server_2" aria-labelledby="profile-tab">
-                    <table class="table table-striped responsive-utilities jambo_table treetable" style="table-layout: fixed">
-                        <thead>
-                        <tr>
-                            <td title="" class="td-autocut table_head_font">指标名称</td>
-                            <td title="" class="td-autocut table_head_font">所属节点</td>
-                            <td title="" class="td-autocut table_head_font">指标数值</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="td-autocut" title="127">127</td>
-                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
-                            <td class="td-autocut" title="3">25点40分</td>
-                        </tr>
-                        <tr>
-                            <td class="td-autocut" title="127">127</td>
-                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
-                            <td class="td-autocut" title="3">25点40分</td>
-                        </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="TopujumpLine">
-            <label>快速运维</label>
-            <div class="TopujumpLineDiv">
-                <input type="button" class="btn-save" value="重启">
-                <input type="button" class="btn-save" value="巡检">
-                <input type="button" class="btn-save" value="启动">
-                <input type="button" class="btn-save" value="停止">
-                <input type="button" class="btn-save" value="XX">
-            </div>
-        </div>
-    </div>
-</div>
-<div class="TopujumpColony TopujumpDiv">
-    <div class="TopujumpTitle">
-        <ul class="TopujumpTitleUl clearfix">
-            <li><i class="fa fa-cog" aria-hidden="true"></i></li>
-            <li>应用系统集群</li>
-            <li><i class="fa fa-times" aria-hidden="true"></i></li>
-        </ul>
-    </div>
-    <div class="TopujumpBody">
-        <div class="TopujumpColony_title TopujumpLine">集群关联实例 <span>12/18</span></div>
-        <div class="TopujumpLine">
-            <ul class="nav nav-tabs nav-bootstarp">
-                <li class="active"><a data-toggle="tab" href="#tab_div_1" aria-expanded="true"> 告警数目 </a></li>
-                <li class=""><a data-toggle="tab" href="#tab_div_2" aria-expanded="false"> 关联指标 </a></li>
-                <li class=""><a data-toggle="tab" href="#tab_div_3" aria-expanded="false"> 作业执行 </a></li>
-            </ul>
-            <div id="myTabContent" class="tab-content">
-                <div role="tabpanel" class="tab-pane fade active in" id="tab_div_1" aria-labelledby="home-tab">
-                    <table class="table table-striped responsive-utilities jambo_table treetable"
-                           style="table-layout: fixed">
-                        <thead>
-                        <tr>
-                            <td title="" class="td-autocut table_head_font">设备名称</td>
-                            <td title="" class="td-autocut table_head_font">告警信息</td>
-                            <td title="" class="td-autocut table_head_font">告警时间</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="td-autocut" title="127">127</td>
-                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
-                            <td class="td-autocut" title="3">25点40分</td>
-                        </tr>
-                        <tr>
-                            <td class="td-autocut" title="127">127</td>
-                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
-                            <td class="td-autocut" title="3">25点40分</td>
-                        </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="tab_div_2" aria-labelledby="profile-tab">
-                    <table class="table table-striped responsive-utilities jambo_table treetable"
-                           style="table-layout: fixed">
-                        <thead>
-                        <tr>
-                            <td title="" class="td-autocut table_head_font">指标名称</td>
-                            <td title="" class="td-autocut table_head_font">所属节点</td>
-                            <td title="" class="td-autocut table_head_font">指标数值</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="td-autocut" title="127">127</td>
-                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
-                            <td class="td-autocut" title="3">25点40分</td>
-                        </tr>
-                        <tr>
-                            <td class="td-autocut" title="127">127</td>
-                            <td class="td-autocut" title="192.168.11.87">192.168.11.87</td>
-                            <td class="td-autocut" title="3">25点40分</td>
-                        </tr>
-
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="TopujumpLine">
-            <label>快速运维</label>
-            <div class="TopujumpLineDiv">
-                <input type="button" class="btn-save" value="重启">
-                <input type="button" class="btn-save" value="巡检">
-                <input type="button" class="btn-save" value="启动">
-                <input type="button" class="btn-save" value="停止">
-                <input type="button" class="btn-save" value="XX">
-            </div>
-        </div>
-    </div>
-</div>
-<div class="TopujumpHost TopujumpDiv">
-    <div class="TopujumpTitle">
-        <ul class="TopujumpTitleUl clearfix">
-            <li><i class="fa fa-cog" aria-hidden="true"></i></li>
-            <li>主机信息</li>
-            <li><i class="fa fa-times" aria-hidden="true"></i></li>
-        </ul>
-    </div>
-    <div class="TopujumpBody">
-        <form>
-            <div class="TopujumpLine">
-                <label>设备名称</label>
-                <div class="TopujumpLineDiv">
-                    <input type="text" class="form-input">
-                </div>
-            </div>
-            <div class="TopujumpLine">
-                <label>别名</label>
-                <div class="TopujumpLineDiv">
-                    <input type="text" class="form-input">
-                </div>
-            </div>
-            <div class="TopujumpLine">
-                <label>设备IP</label>
-                <div class="TopujumpLineDiv">
-                    <input type="text" class="form-input">
-                </div>
-            </div>
-            <div class="TopujumpLine">
-                <label>设备类型</label>
-                <div class="TopujumpLineDiv">
-                    <input type="text" class="form-input">
-                </div>
-            </div>
-            <div class="TopujumpLine">
-                <label>业务类型</label>
-                <div class="TopujumpLineDiv">
-                    <input type="text" class="form-input">
-                </div>
-            </div>
-            <div class="TopujumpLine">
-                <label>已关联指标<span>5</span></label>
-            </div>
-            <div class="TopujumpLine clearfix text-right">
-                <input type="button" class="btn-save submit" value="提交">
-                <input type="button" class="btn-canel btn-back" value="取消">
-            </div>
-
-        </form>
-    </div>
-</div>
-<div class="TopujumpInstance TopujumpDiv">
-    <div class="TopujumpTitle">
-        <ul class="TopujumpTitleUl clearfix">
-            <li><i class="fa fa-cog" aria-hidden="true"></i></li>
-            <li>实例信息</li>
-            <li><i class="fa fa-times" aria-hidden="true"></i></li>
-        </ul>
-    </div>
-    <div class="TopujumpBody">
-        <form>
-            <div class="TopujumpLine">
-                <label>实例名称</label>
-                <div class="TopujumpLineDiv">
-                    <input type="text" class="form-input">
-                </div>
-            </div>
-            <div class="TopujumpLine">
-                <label>别名</label>
-                <div class="TopujumpLineDiv">
-                    <input type="text" class="form-input">
-                </div>
-            </div>
-            <div class="TopujumpLine">
-                <label>实例地址</label>
-                <div class="TopujumpLineDiv">
-                    <input type="text" class="form-input">
-                </div>
-            </div>
-            <div class="TopujumpLine">
-                <label>实例类型</label>
-                <div class="TopujumpLineDiv">
-                    <input type="text" class="form-input">
-                </div>
-            </div>
-            <div class="TopujumpLine">
-                <label>主机IP</label>
-                <div class="TopujumpLineDiv">
-                    <input type="text" class="form-input">
-                </div>
-            </div>
-            <div class="TopujumpLine">
-                <label>已关联指标<span>5</span></label>
-            </div>
-            <div class="TopujumpLine clearfix text-right">
-                <input type="button" class="btn-save submit " value="提交">
-                <input type="button" class="btn-canel btn-back " value="取消">
-            </div>
-
-        </form>
-    </div>
-</div>
-<div class="TopujumpSystem TopujumpDiv">
-    <div class="TopujumpTitle">
-        <ul class="TopujumpTitleUl clearfix">
-            <li><i class="fa fa-cog" aria-hidden="true"></i></li>
-            <li>系统管理</li>
-            <li><i class="fa fa-times" aria-hidden="true"></i></li>
-        </ul>
-    </div>
-    <div class="TopujumpBody">
-        <form>
-            <div class="TopujumpLine">
-                <label>节点名称</label>
-                <div class="TopujumpLineDiv">
-                    <input type="text" class="form-input">
-                </div>
-            </div>
-            <div class="TopujumpLine">
-                <label>别名</label>
-                <div class="TopujumpLineDiv">
-                    <input type="text" class="form-input">
-                </div>
-            </div>
-            <div class="TopujumpLine">
-                <label>节点类型</label>
-                <div class="TopujumpLineDiv">
-                    <input type="text" class="form-input">
-                </div>
-            </div>
-            <div class="TopujumpLine">
-                <label>备注</label>
-                <div class="TopujumpLineDiv">
-                    <textarea class="form-textarea" cols="3" rows="2"></textarea>
-                </div>
-            </div>
-            <div class="TopujumpLine">
-                <label>已关联指标<span>5</span></label>
-                <div class="TopujumpLineDiv clearfix">
-                    <div class="TopujumpLineDiv_div"><span>图标</span><i class="TopujumpLineDiv_div_icon"></i></div>
-                    <div class="TopujumpLineDiv_div"><span>背景</span><input type="color"></div>
-                </div>
-            </div>
-            <div class="TopujumpLine clearfix text-right">
-                <input type="button" class="btn-save submit " value="提交">
-                <input type="button" class="btn-canel btn-back " value="取消">
-            </div>
-        </form>
-    </div>
-</div>
-</div>
 
 </body>
-<!--这是layer的内容-->
-<div id="addtopuTab">
-    <!--<button class="btn-save" value="1">系统拓扑</button>-->
-    <!--<button class="btn-save" value="2">流程拓扑</button>-->
-    <!--<button class="btn-save" value="3">物理拓扑</button>-->
-    <!--<button class="btn-save" value="4">逻辑拓扑</button>-->
-    <select id="addTabselect" class="form-input">
-        <option value="1">系统拓扑</option>
-        <option value="2">流程拓扑</option>
-        <option value="3">物理拓扑</option>
-        <option value="4">逻辑拓扑</option>
-    </select>
-</div>
+
+
 <script src="./jquery-1.9.1.min.js"></script>
 <script src="./jquery.ztree.core.js"></script>
 <script src="./layer/layer.js"></script>
