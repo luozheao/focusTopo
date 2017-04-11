@@ -64,7 +64,7 @@ table {
 }
 
 .form-input {
-    height: 30px;
+    height: 24px;
     width: 100%;
     padding: 0 5px;
     color: #617083;
@@ -85,7 +85,16 @@ table {
 .form-input:focus {
     border-color: #37a8e0;
 }
-
+.form-input-disabled{
+    border:1px solid #e5e5e5;
+    outline: none;
+    background-color: #f9fafb;
+    color: #e3e9ef;
+}
+.form-input-disabled:hover{
+    cursor: no-drop;
+    border-color: rgb(229, 229, 229);
+}
 .form-textarea:hover {
     box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px inset;
     border-color: rgb(191, 191, 191);
@@ -109,7 +118,7 @@ table {
     margin-right: 2px;
     color: #586b82 !important;
     border: 1px solid #d6dbe6;
-    padding:9px 15px;
+    padding: 5px 8px;
 }
 .nav-bootstarp>li.active>a{
     color: #37a8e0 !important;
@@ -179,6 +188,7 @@ td {
 .btn-save {
     background-color: #37a8e0;
     display: inline-block;
+    margin-top: 5px;
     color: #ffffff;
     padding: 5px 15px;
     border: none;
@@ -739,19 +749,21 @@ text-align: center;
 #equipmentArea #iconArea .basicIconTag {
     min-height: 400px;
 }
-/*弹窗部分样式开始*/
+/*å¼¹çª—éƒ¨åˆ†æ ·å¼å¼€å§‹*/
 .TopujumpDiv {
-    width: 28%;
+    width: 22%;
     transition: 0.3s;
     position: absolute;
     right: 10px;
     top: 90px;
+    display: none;
     background: #fff;
     box-shadow: -1px 1px 8px #bdbdbd;
 }
 .TopujumpDiv .TopujumpTitle {
-    height: 40px;
-    line-height: 40px;
+    height: 32px;
+    line-height: 33px;
+    border-bottom: 1px solid #dcdcdc;
     padding-left: 20px;
     padding-right: 20px;
     font-size: 14px;
@@ -786,18 +798,19 @@ text-align: center;
 }
 
 .TopujumpBody {
-    padding: 20px;
-    max-height: 500px;
-    overflow: auto;
+    padding: 0px 12px;
+    padding-bottom: 12px;
+    font-size:12px;
+    color: #555;
 }
 
 .TopujumpBody label {
     width: 100%;
-    margin-bottom: 10px;
-    margin-top: 16px;
+    margin-bottom: 2px;
+    margin-top: 8px;
     font-size: 12px;
     color: #555555;
-    font-weight: 700;
+    font-weight: 500;
 }
 
 .TopujumpBody .TopujumpLine:first-child label {
@@ -823,15 +836,23 @@ text-align: center;
 }
 .TopujumpColony .TopujumpColony_title ,.TopujumpServer .TopujumpBody .nav-bootstarp{
     color: #555555;
-    font-size: 14px;
+    font-size: 12px;
 }
 .TopujumpColony .TopujumpBody .nav-bootstarp,.TopujumpServer .TopujumpBody .nav-bootstarp{
-    margin-top:16px;
+    margin-top: 8px;
 }
 #addtopuTab{
     padding:20px;
+    /* position: absolute; */
+    /* z-index: -1; */
+    /* left: 50%; */
 }
-/*弹窗部分样式结束*/
+.TopuLabel-font{
+    color: #555;
+    padding-top:5px;
+    font-weight: 400;
+}
+/*å¼¹çª—éƒ¨åˆ†æ ·å¼ç»“æŸ*/
 
 
 .no-margin{
