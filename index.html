@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Focus拓扑图</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/font-awesome.css">
+    <link rel="stylesheet" href="./css/zTreeStyle-topo.css">
+    <link rel="stylesheet" href="./css/topo.css">
+</head>
+<body>
+<div class="main-content" id="main-content">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                拓扑图
+            </li>
+
+        </ul>
+    </div>
+    <div id="appMain">
+        <div class="custom-wraper">
+            <div class="jtp-main">
+                <div id="graph_panel" class="q-panel">
+                    <div id="container" class="q-content clearfix">
+                        <div id="equipmentArea" class="q-panel">
+                            <div id="treeArea">
+                                <div class="title"><i class="fa fa-list-ul" aria-hidden="true"></i>拓扑图目录结构<i
+                                        class="fa fa-search treeSearch" aria-hidden="true"></i></div>
+                                <div class="treeContainer">
+                                    <input type="text" placeholder="回车搜索..." id="treeSearchInput"
+                                           class="form-input AreaSearch">
+                                    <ul id="treeDemo" class="ztree"></ul>
+                                </div>
+                            </div>
+                            <div id="iconArea">
+                                <div class="title">
+                                    <ul class="clearfix iconTitle">
+                                        <li class="entityIcon active">实体图形</li>
+                                        <li class="basicIcon">基本图形</li>
+                                    </ul>
+                                    <div>
+                                        <i class="fa fa-search imgSearch" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <div class="containerSearch clearfix">
+                                    <select class="dropDrown-select imgSearchSelect">
+
+                                    </select>
+                                    <input type="text" placeholder="回车搜索..." id="imgSearchInput"
+                                           class="form-input AreaSearch">
+                                </div>
+                                <div class="iconContainer">
+                                    <div class="entityIconTag none"></div>
+                                    <div class="basicIconTag " style="display: block;"><div class="dragTag android" title="安卓" imgname="android" nodetype="-1" nodename="安卓" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">安卓</div></div><div class="dragTag apache" title="apache" imgname="apache" nodetype="-1" nodename="apache" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">apache</div></div><div class="dragTag apple" title="苹果" imgname="apple" nodetype="-1" nodename="苹果" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">苹果</div></div><div class="dragTag busiSystem" title="busiSystem" imgname="busiSystem" nodetype="-1" nodename="busiSystem" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">busiSystem</div></div><div class="dragTag cache" title="cache" imgname="cache" nodetype="-1" nodename="cache" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">cache</div></div><div class="dragTag cache-cluster" title="cache-cluster" imgname="cache-cluster" nodetype="-1" nodename="cache-cluster" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">cache-cluster</div></div><div class="dragTag cluster" title="cluster" imgname="cluster" nodetype="-1" nodename="cluster" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">cluster</div></div><div class="dragTag database" title="database" imgname="database" nodetype="-1" nodename="database" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">database</div></div><div class="dragTag database-cluster" title="database-cluster" imgname="database-cluster" nodetype="-1" nodename="database-cluster" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">database-cluster</div></div><div class="dragTag firewall" title="firewall" imgname="firewall" nodetype="-1" nodename="firewall" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">firewall</div></div><div class="dragTag host" title="host" imgname="host" nodetype="-1" nodename="host" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">host</div></div><div class="dragTag IE" title="IE" imgname="IE" nodetype="-1" nodename="IE" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">IE</div></div><div class="dragTag interchanger" title="interchanger" imgname="interchanger" nodetype="-1" nodename="interchanger" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">interchanger</div></div><div class="dragTag load-balance" title="load-balance" imgname="load-balance" nodetype="-1" nodename="load-balance" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">load-balance</div></div><div class="dragTag message-queue" title="message-queue" imgname="message-queue" nodetype="-1" nodename="message-queue" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">message-queue</div></div><div class="dragTag router" title="router" imgname="router" nodetype="-1" nodename="router" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">router</div></div><div class="dragTag storage" title="storage" imgname="storage" nodetype="-1" nodename="storage" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">storage</div></div><div class="dragTag user" title="user" imgname="user" nodetype="-1" nodename="user" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">user</div></div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="topoChooseArea">
+                            <div class="topoChooseAreaUlBox">
+                                <ul></ul>
+                            </div>
+                            <div class="topuAdd-tab"></div>
+                        </div>
+                        <div role="toolbar" class="q-toolbar ">
+                            <div>
+                                <div id="toolbar">
+                                    <div class="btn-group patternArea">
+                                        <div class="btn  btn-sm    active" title="默认模式">
+                                            <div class="q-icon toolbar-default"></div>
+                                        </div>
+                                        <div class="btn  btn-sm   NopatternArea " title="边框模式">
+                                            <div class="q-icon toolbar-setBorder"></div>
+                                        </div>
+                                        <div class="btn  btn-sm   NopatternArea " title="框选模式">
+                                            <div class="q-icon toolbar-select"></div>
+                                        </div>
+                                        <div class="btn  btn-sm   NopatternArea " title="浏览模式">
+                                            <div class=" q-icon toolbar-pan"></div>
+                                        </div>
+                                    </div>
+                                    <div class="btn  btn-sm groupWrap hide" title="组">
+                                        <div class="group">组</div>
+                                    </div>
+                                    <div class="btn-group zoomArea">
+                                        <div class="btn  btn-sm     " title="放大">
+                                            <div class="q-icon toolbar-zoomin"></div>
+                                        </div>
+                                        <div class="btn  btn-sm     " title="缩小">
+                                            <div class="q-icon toolbar-zoomout"></div>
+                                        </div>
+                                        <div class="btn  btn-sm     " title="1:1">
+                                            <div class="q-icon toolbar-zoomreset"></div>
+                                        </div>
+                                        <div class="btn  btn-sm     " title="居中">
+                                            <div class="q-icon toolbar-center"></div>
+                                        </div>
+                                        <div class="btn  btn-sm     " title="全屏">
+                                            <div class="q-icon toolbar-overview"></div>
+                                        </div>
+                                    </div>
+                                    <div class="btn-group chooselineArea">
+                                        <div class="btn  btn-sm     " lineType="Link" title="实线">
+                                            <div class="q-icon toolbar-solid"></div>
+                                        </div>
+                                        <div class="btn  btn-sm     " lineType="dashed" title="虚线">
+                                            <div class="q-icon toolbar-dashed"></div>
+                                        </div>
+                                        <div class="btn  btn-sm     " lineType="curve" title="曲线">
+                                            <div class="q-icon toolbar-curve"></div>
+                                        </div>
+                                        <div class="btn  btn-sm     " lineType="arrow" title="箭头">
+                                            <div class="q-icon toolbar-arrow"></div>
+                                        </div>
+                                        <div class="btn  btn-sm     " lineType="dArrow" title="双箭头">
+                                            <div class="q-icon toolbar-dArrow"></div>
+                                        </div>
+                                        <div class="btn  btn-sm     " lineType="flexional" title="折线">
+                                            <div class="q-icon toolbar-flexional "></div>
+                                        </div>
+                                        <div class="btn  btn-sm     " lineType="flow" title="流动">
+                                            <div class="q-icon toolbar-flow"></div>
+                                        </div>
+
+                                    </div>
+                                    <div class="btn  btn-sm  eyesWrap  " title="鹰眼">
+                                        <div class="q-icon toolbar-eyes"></div>
+                                     </div>
+                                    <div class="searchArea">
+                                        <div class="input-group input-group-sm">
+                                            <input type="text" class="form-control" placeholder="请输入节点"
+                                                   id="search_input">
+                                            <span class="input-group-btn searchWrap">
+                                                    <div class="btn searchBtnDiv " type="button">
+                                                    <div class="toolbar-search">
+                                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                                    </div>
+                                                    </div>
+                                                    </span>
+                                        </div>
+                                    </div>
+                                    <div class="btn-group  historyArea">
+                                        <div class="btn  btn-sm  backOff " title="后退">
+                                            <div class="q-icon toolbar-backOff"></div>
+                                        </div>
+                                        <div class="btn  btn-sm  forward " title="前进">
+                                            <div class="q-icon toolbar-forward"></div>
+                                        </div>
+                                        <div class="btn  btn-sm  saveBtn " title="保存">
+                                            <div class="q-icon toolbar-save"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <canvas id="canvas">您的浏览器不支持显示，请换非IE8及以下的浏览器！</canvas>
+                        </div>
+                </div>
+                <ul id="contextmenuNode" class="contextmenu none" >
+                    <li class='editTag'><a>删除该节点</a></li>
+                    <li class='viewTag'><a>查看实例</a></li>
+                </ul>
+                <ul id="contextmenuContainerNode" class="contextmenu none" >
+                    <li class='editTag'><a>删除该节点</a></li>
+                </ul>
+                <ul id="contextmenuContainerbasic" class="contextmenu none"  >
+                    <li class='editTag'><a>重命名</a></li>
+                    <li class='editTag'><a>删除该节点</a></li>
+                </ul>
+                <ul id="contextmenuContainer" class="contextmenu none"  >
+                    <li class='editTag'><a>重命名</a></li>
+                    <li class='editTag'><a>删除该容器</a></li>
+                </ul>
+                <ul id="contextmenuLink" class="contextmenu none"  >
+                    <li class='editTag'><a>重命名</a></li>
+                    <li class='editTag'><a>删除该线条</a></li>
+                </ul>
+                <div id="nodeTitle" class="titleDiv none">
+                    什么模式下显示title，需要确定下
+                </div>
+                <div id="linkTitle" class="titleDiv none">
+                    hello world2 !
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="./js/jquery-1.9.1.min.js"></script>
+<script src="./js/jquery.ztree.core.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script src="./js/drag.js"></script>
+<script src="./js/layer/layer.js"></script>
+<script src="./js/underscore.js"></script>
+<script src="./js/jtopo-0.4.8.js"></script>
+<script src="./js/topo-main.js"></script>
+</html>
