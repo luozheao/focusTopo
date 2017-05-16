@@ -3874,6 +3874,7 @@
             AutoBoundLayout: f,
             CircleLayout: l,
             TreeLayout: k,
+
             getNodesCenter: b,
             circleLayoutNodes: c
         }

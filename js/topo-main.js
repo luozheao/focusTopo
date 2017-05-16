@@ -139,7 +139,7 @@ var toolbarManager = {
                 //缩放并居中显示
                 stateManager.scene.translateX=0;
                 stateManager.scene.translateY=0;
-                scene.centerAndZoom();
+                stateManager.scene.centerAndZoom();
             }
             else if ($zoom.hasClass('toolbar-overview')) {
                 var screenWidth= window.screen.width;
@@ -440,10 +440,7 @@ var canvasManager = {
                      "node_json": {
                          "trunk":true,
                          "startTag":true,
-                         "img_name": "testIcon.png",
-                         "img_width": 42,
-                         "img_height": 42,
-                         "node_class": "imageNode"
+                         "img_name": "testIcon"
                      }
                  },
                  {
@@ -451,10 +448,7 @@ var canvasManager = {
                      "name": "tycj",
                      "node_json": {
                          "trunk":true,
-                         "img_name": "testIcon.png",
-                         "img_width": 42,
-                         "img_height": 42,
-                         "node_class": "imageNode"
+                         "img_name": "testIcon"
                      }
                  },
                  {
@@ -462,10 +456,7 @@ var canvasManager = {
                      "name": "ppmanager",
                      "node_json": {
                          "trunk":true,
-                         "img_name": "testIcon.png",
-                         "img_width": 42,
-                         "img_height": 42,
-                         "node_class": "imageNode"
+                         "img_name": "testIcon"
                      }
                  },
                  {
@@ -473,10 +464,7 @@ var canvasManager = {
                      "name": "mysql:192.168.11.92:3306",
                      "node_json": {
                          "trunk":false,
-                         "img_name": "testIcon.png",
-                         "img_width": 42,
-                         "img_height": 42,
-                         "node_class": "imageNode"
+                         "img_name": "testIcon"
                      }
                  },
                  {
@@ -484,10 +472,7 @@ var canvasManager = {
                      "name": "http://192.168.11.92:8080/tcp",
                      "node_json": {
                          "trunk":false,
-                         "img_name": "testIcon.png",
-                         "img_width": 42,
-                         "img_height": 42,
-                         "node_class": "imageNode"
+                         "img_name": "testIcon"
                      }
                  },
                  {
@@ -495,10 +480,7 @@ var canvasManager = {
                      "name": "mysql:192.168.11.93:3306",
                      "node_json": {
                          "trunk":false,
-                         "img_name": "testIcon.png",
-                         "img_width": 42,
-                         "img_height": 42,
-                         "node_class": "imageNode"
+                         "img_name": "testIcon"
                      }
                  },
                  {
@@ -506,10 +488,7 @@ var canvasManager = {
                      "name": "mysql:192.168.11.93:3307",
                      "node_json": {
                          "trunk":false,
-                         "img_name": "testIcon.png",
-                         "img_width": 42,
-                         "img_height": 42,
-                         "node_class": "imageNode"
+                         "img_name": "testIcon"
                      }
                  },
                  {
@@ -517,10 +496,7 @@ var canvasManager = {
                      "name": "mysql:192.168.11.93:3308",
                      "node_json": {
                          "trunk":false,
-                         "img_name": "testIcon.png",
-                         "img_width": 42,
-                         "img_height": 42,
-                         "node_class": "imageNode"
+                         "img_name": "testIcon"
                      }
                  },
                  {
@@ -528,10 +504,7 @@ var canvasManager = {
                      "name": "mysql:192.168.11.93:3308",
                      "node_json": {
                          "trunk":false,
-                         "img_name": "testIcon.png",
-                         "img_width": 42,
-                         "img_height": 42,
-                         "node_class": "imageNode"
+                         "img_name": "testIcon"
                      }
                  },
              ],
@@ -579,14 +552,14 @@ var canvasManager = {
                      }
                  },
                  {
-                     "from_id": 102,
+                     "from_id": 101,
                      "to_id": 108,
                      "line_json": {
                          "edge_class": "Link"
                      }
                  },
                  {
-                     "from_id": 102,
+                     "from_id": 101,
                      "to_id": 104,
                      "line_json": {
                          "edge_class": "Link"
@@ -599,15 +572,12 @@ var canvasManager = {
     },
     /******************显示层**************************/
     showTopo:function(data){
-       canvasManager.renderCanvasByJson(data);
-
-
-       //居中
+        canvasManager.renderCanvasByJson(data);
         stateManager.scene.translateX=0;
         stateManager.scene.translateY=0;
         stateManager.scene.centerAndZoom();
-
-
+        //stateManager.scene.doLayout(JTopo.layout.CircleLayout(380));
+        // stateManager.scene.doLayout(JTopo.layout.TreeLayout('right',100,150));
     },
     /******************控制层**************************/
     setTopo:function () {
@@ -646,6 +616,7 @@ var canvasManager = {
                 }
             }
         }
+
         //主干节点排序
         var nextTrunkNode=firstTrunkNode;
         var i=0;
@@ -654,6 +625,7 @@ var canvasManager = {
         while(nextTrunkNode){
             nextTrunkNode.setLocation(i*subX,-i*subY);
             ++i;
+
             //1、找到当前节点的所有下一个节点
             var allNextNodesIdArr= canvasManager.findAllNextNodes(nextTrunkNode.id,linksArr);
             //2、分支节点排序
@@ -757,7 +729,6 @@ var canvasManager = {
                         angle=1.04-index*(3.15/(len-1));
                     }
                 }
-
         }
         x=pageX+Math.sin(angle)*distance;
         y=pageY+Math.cos(angle)*distance;
@@ -1016,7 +987,7 @@ var canvasManager = {
         var self = canvasManager;
         var node = new JTopo.Node();
         var img_name=nodeObj.node_json.img_name;
-        var url='./images/'+img_name;
+        var url='./images/'+img_name+'.png';
         img_name && node.setImage(url);
         for (var i in nodeObj) {
             node[i] = nodeObj[i];
@@ -1508,6 +1479,65 @@ var canvasManager = {
         canvasManager.setCanvasStyle();
         canvasManager.initCanvasEvent(); //canvas事件初始化
         canvasManager.setTopo();
+
+
+
+
+
+
+
+
+
+        // function addNode(text, color){
+        //     var node = new JTopo.Node();
+        //     node.setImage('./img/topo/'+ color +'.png', true);
+        //     node.fontColor = '0,0,0';
+        //     scene.add(node);
+        //
+        //     node.mouseover(function(){
+        //         this.text = text;
+        //     });
+        //     node.mouseout(function(){
+        //         this.text = null;
+        //     });
+        //     return node;
+        // }
+        //
+        // function addLink(nodeA, nodeZ){
+        //     var link = new JTopo.Link(nodeA, nodeZ);
+        //     link.strokeColor = '204,204,204';
+        //     link.lineWidth = 1;
+        //     scene.add(link);
+        //     return link;
+        // }
+        //
+        // var rootNode = addNode('root', 'gray');
+        //
+        // var icons = ['green', 'blue', 'red1', 'red2'];
+        // for(var i=0; i<icons.length; i++){
+        //
+        //     var node = addNode('second_' + i, icons[i]);
+        //     addLink(rootNode, node);
+        //     if(i == 0 || i == icons.length - 1){
+        //         for(var j=0; j<4; j++){
+        //             var thirdNode = addNode('third_' + j, 'green');
+        //             addLink(node, thirdNode);
+        //
+        //             if(j == 3){
+        //                 for(var k=0; k<4; k++){
+        //                     var kNode = addNode('leaf_' + k, 'gray');
+        //                     addLink(thirdNode, kNode);
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+
+        // 树形布局
+      // scene.doLayout(JTopo.layout.TreeLayout('down', 60, 100));
+          //  scene.doLayout(JTopo.layout.CircleLayout(180));
+
+
     }
 }
 
