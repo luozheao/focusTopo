@@ -716,10 +716,8 @@ td {
 /********************canvas*********************/
 #canvas {
     float: right;
-    background: url(../images/topobg.png) repeat;
-    /*border-top: 1px solid #E7E7E7;*/
+    background: url(../images/apm_bg.jpg) repeat;
     margin-top:75px;
-    /*transition: all 1s;*/
 }
 
 .contextmenu {

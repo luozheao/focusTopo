@@ -58,6 +58,7 @@ var stateManager = {
         curIndex: -1
     },
     scrollHeight:0,
+
     /**********辅助方法**********/
      //获取链接中的参数，以后提到核心代码中
      getUrlParam:function(name) {
@@ -114,7 +115,6 @@ var toolbarManager = {
         ['click','#toolbar',function () {
             popupManager.popHide();
         }],
-
         //缩放
         ['click', '.zoomArea>.btn', function () {
             var $zoom = $(this).find('>div');
@@ -186,7 +186,7 @@ var toolbarManager = {
             }
         }],
         //鹰眼
-        ['click', '#eyesMap', function () {
+        ['click', '.eyesWrap  ', function () {
             toolbarManager.setEagleEye();
         }],
 
@@ -194,7 +194,6 @@ var toolbarManager = {
         ['click', '.searchWrap>.btn', function () {
             var text = $('#search_input').val().trim().toLowerCase();
             var scene = stateManager.scene;
-
         }],
         ['keyup', '#search_input', function (e) {
             if (e.which == 13) {
@@ -249,10 +248,10 @@ var toolbarManager = {
                                 }
                             })
                             stateManager.currentNode=oldChild[index];
-                            dragManager.setDragIconByTopoTypeFilter(true)
+
                         }
                         else if(oldChild.length<newChild.length){
-                            dragManager.setDragIconByTopoTypeFilter()
+
                         }
                     }
                     else{
@@ -431,6 +430,342 @@ var dragManager = {
 }
 //画布管理者
 var canvasManager = {
+    /******************数据层**************************/
+    getTopo:function (callback) {
+         var data={
+             "nodes": [
+                 {
+                     "id": 100,
+                     "name": "system",
+                     "node_json": {
+                         "trunk":true,
+                         "startTag":true,
+                         "img_name": "testIcon.png",
+                         "img_width": 42,
+                         "img_height": 42,
+                         "node_class": "imageNode"
+                     }
+                 },
+                 {
+                     "id": 101,
+                     "name": "tycj",
+                     "node_json": {
+                         "trunk":true,
+                         "img_name": "testIcon.png",
+                         "img_width": 42,
+                         "img_height": 42,
+                         "node_class": "imageNode"
+                     }
+                 },
+                 {
+                     "id": 102,
+                     "name": "ppmanager",
+                     "node_json": {
+                         "trunk":true,
+                         "img_name": "testIcon.png",
+                         "img_width": 42,
+                         "img_height": 42,
+                         "node_class": "imageNode"
+                     }
+                 },
+                 {
+                     "id": 103,
+                     "name": "mysql:192.168.11.92:3306",
+                     "node_json": {
+                         "trunk":false,
+                         "img_name": "testIcon.png",
+                         "img_width": 42,
+                         "img_height": 42,
+                         "node_class": "imageNode"
+                     }
+                 },
+                 {
+                     "id": 104,
+                     "name": "http://192.168.11.92:8080/tcp",
+                     "node_json": {
+                         "trunk":false,
+                         "img_name": "testIcon.png",
+                         "img_width": 42,
+                         "img_height": 42,
+                         "node_class": "imageNode"
+                     }
+                 },
+                 {
+                     "id": 105,
+                     "name": "mysql:192.168.11.93:3306",
+                     "node_json": {
+                         "trunk":false,
+                         "img_name": "testIcon.png",
+                         "img_width": 42,
+                         "img_height": 42,
+                         "node_class": "imageNode"
+                     }
+                 },
+                 {
+                     "id": 106,
+                     "name": "mysql:192.168.11.93:3307",
+                     "node_json": {
+                         "trunk":false,
+                         "img_name": "testIcon.png",
+                         "img_width": 42,
+                         "img_height": 42,
+                         "node_class": "imageNode"
+                     }
+                 },
+                 {
+                     "id": 107,
+                     "name": "mysql:192.168.11.93:3308",
+                     "node_json": {
+                         "trunk":false,
+                         "img_name": "testIcon.png",
+                         "img_width": 42,
+                         "img_height": 42,
+                         "node_class": "imageNode"
+                     }
+                 },
+                 {
+                     "id": 108,
+                     "name": "mysql:192.168.11.93:3308",
+                     "node_json": {
+                         "trunk":false,
+                         "img_name": "testIcon.png",
+                         "img_width": 42,
+                         "img_height": 42,
+                         "node_class": "imageNode"
+                     }
+                 },
+             ],
+             "links": [
+                 {
+                     "from_id": 100,
+                     "to_id": 101,
+                     "line_json": {
+                         "edge_class": "Link"
+                     }
+                 },
+                 {
+                     "from_id": 101,
+                     "to_id": 102,
+                     "line_json": {
+                         "edge_class": "Link"
+                     }
+                 },
+                 {
+                     "from_id": 101,
+                     "to_id": 103,
+                     "line_json": {
+                         "edge_class": "Link"
+                     }
+                 },
+                 {
+                     "from_id": 102,
+                     "to_id": 105,
+                     "line_json": {
+                         "edge_class": "Link"
+                     }
+                 },
+                 {
+                     "from_id": 102,
+                     "to_id": 106,
+                     "line_json": {
+                         "edge_class": "Link"
+                     }
+                 },
+                 {
+                     "from_id": 102,
+                     "to_id": 107,
+                     "line_json": {
+                         "edge_class": "Link"
+                     }
+                 },
+                 {
+                     "from_id": 102,
+                     "to_id": 108,
+                     "line_json": {
+                         "edge_class": "Link"
+                     }
+                 },
+                 {
+                     "from_id": 102,
+                     "to_id": 104,
+                     "line_json": {
+                         "edge_class": "Link"
+                     }
+                 }
+             ]
+         }
+         stateManager.currentTopo=data;
+         callback(data);
+    },
+    /******************显示层**************************/
+    showTopo:function(data){
+       canvasManager.renderCanvasByJson(data);
+
+
+       //居中
+        stateManager.scene.translateX=0;
+        stateManager.scene.translateY=0;
+        stateManager.scene.centerAndZoom();
+
+
+    },
+    /******************控制层**************************/
+    setTopo:function () {
+           var showTopo=this.showTopo;
+           this.getTopo(showTopo);
+    },
+    /**********************************辅助方法*************************************************/
+    //根据json数据绘制画布,即复现功能
+    renderCanvasByJson: function (data) {
+        var self = canvasManager;
+        var stage = stateManager.stage;
+        stage.remove(stateManager.scene);
+        var scene = stateManager.scene = new JTopo.Scene(stage);
+
+        var idToNode = {};
+        //绑定事件
+        self.initCanvasEvent();
+        if (!data) {
+            return;
+        }
+        //分开绘制是因为必须现有节点，后有容器，最后再有连线
+
+        var nodesArr=data.nodes;
+        var linksArr=data.links;
+        var firstTrunkNode=null;
+        //绘制节点
+        var trunkArr=[];//主干节点
+        for (var i = 0; i < nodesArr.length; i++)  {
+            var obj = nodesArr[i];
+            var nodeObj= self._createNode(obj);
+            idToNode[obj.id] =nodeObj;
+            if(obj.node_json.trunk){
+                trunkArr.push(nodeObj);
+                if(obj.node_json.startTag){
+                    firstTrunkNode=nodeObj;
+                }
+            }
+        }
+        //主干节点排序
+        var nextTrunkNode=firstTrunkNode;
+        var i=0;
+        var subX=150;
+        var subY=87;
+        while(nextTrunkNode){
+            nextTrunkNode.setLocation(i*subX,-i*subY);
+            ++i;
+            //1、找到当前节点的所有下一个节点
+            var allNextNodesIdArr= canvasManager.findAllNextNodes(nextTrunkNode.id,linksArr);
+            //2、分支节点排序
+            var branchNodesArr=canvasManager.findBranchNodes(allNextNodesIdArr,idToNode);
+            var len=branchNodesArr.length;
+            for(var m=0;m<len;m++){
+                canvasManager.setBranchNodesPosition(branchNodesArr[m],nextTrunkNode.x,nextTrunkNode.y,200,len,m)
+            }
+            //3、从下个节点中找到主干节点
+            nextTrunkNode=canvasManager.findTrunkNode(allNextNodesIdArr,idToNode);
+
+        }
+
+        //绘制容器节点、容器
+        // for (var i = 0; i < data.length; i++) {
+        //     var obj = data[i];
+        //     if (obj['elementType'] == 'containerNode') {
+        //         idToNode[obj._id] = self._createContainerNode(obj, idToNode);
+        //     }
+        //     else if (obj['elementType'] == 'container') {
+        //         idToNode[obj._id] = self._createContainer(obj, idToNode);
+        //     }
+        // }
+
+        //绘制线条
+        for (var i = 0; i < linksArr.length; i++) {
+            var obj = linksArr[i];
+            obj.strokeColor='190,218,253';
+            var link = self._createLink(idToNode[obj.from_id], idToNode[obj.to_id], 'arrow', obj);
+            link && scene.add(link);
+        }
+    },
+    //找到当前节点的所有下一个节点的id
+    findAllNextNodes:function (id,linksArr) {
+        var arr=[];
+        for(var j=0;j<linksArr.length;j++){
+            var linkObj=linksArr[j];
+            if(linkObj.from_id==id){
+                arr.push(linkObj.to_id);
+            }
+        }
+        return arr;
+    },
+    //从下个节点id中找到主干节点
+    findTrunkNode:function(allNextNodesIdArr,idToNode) {
+        for(var k=0;k<allNextNodesIdArr.length;k++){
+            var id=allNextNodesIdArr[k];
+            var trunkNode=idToNode[id];
+            if(trunkNode.node_json.trunk){
+                return trunkNode;
+            }
+        }
+        return null;
+    },
+    //从下个节点id中找到分支节点
+    findBranchNodes:function (allNextNodesIdArr,idToNode) {
+        var arr=[];
+        for(var k=0;k<allNextNodesIdArr.length;k++){
+            var id=allNextNodesIdArr[k];
+            var branchNode=idToNode[id];
+
+            if(!branchNode.node_json.trunk){
+                arr.push(branchNode);
+            }
+        }
+        return  arr;
+    },
+    //根据主干节点的位置，设置分支节点的位置
+    setBranchNodesPosition:function (targetNode,pageX,pageY,distance,len,index) {
+          var x,y,angle;
+        switch (len){
+            case 1:
+                //一个节点
+                  angle=1.04;
+
+                break;
+            case 2:
+                //两个节点
+                  angle=index==1?1.04:-2.11;
+
+                break;
+            default:
+                if(len<4) {
+                    if (index == 0) {
+                        angle = 1.04;
+                    }
+                    else if (index == 1) {
+                        angle = 2.11;
+                    }
+                    else if (index == 2) {
+                        angle = -2.11;
+                    }
+                }else{
+                    if (index == 0) {
+                        angle = 1.04;
+                    }
+                    else if (index == len-1) {
+                        angle = -2.11;
+                    }
+                    else{
+                        angle=1.04-index*(3.15/(len-1));
+                    }
+                }
+
+        }
+        x=pageX+Math.sin(angle)*distance;
+        y=pageY+Math.cos(angle)*distance;
+           //三个节点及以上
+         targetNode.setLocation(x,y);
+    },
+
+
     /******************画布处理，start***************************/
     //设置画布大小
     setCanvasStyle: function () {
@@ -481,8 +816,6 @@ var canvasManager = {
         stateManager.scene.translateY = 0;
         stateManager.scene.centerAndZoom();
     },
-
-
     //初始化画布事件
     initCanvasEvent: function () {
         /********动态连线处理*****************/
@@ -556,6 +889,7 @@ var canvasManager = {
             {
 
             }
+
         });
         scene.addEventListener('mousedown', function (e) {
             if ((e.target == null || e.target === beginNode || e.target === link) && e.button !== 2) {
@@ -609,9 +943,8 @@ var canvasManager = {
             }
         });
 
+
     },
-
-
 
     /******************节点处理，start***************************/
     //创建拖拽后的节点，初始化节点
@@ -678,23 +1011,20 @@ var canvasManager = {
         }
     },
     //创建节点
-    _createNode: function (obj) {
+    _createNode: function (nodeObj) {
         var scene = stateManager.scene;
         var self = canvasManager;
         var node = new JTopo.Node();
-        var url="";
-        obj.imgName && node.setImage();
-        for (var i in obj) {
-            node[i] = obj[i];
+        var img_name=nodeObj.node_json.img_name;
+        var url='./images/'+img_name;
+        img_name && node.setImage(url);
+        for (var i in nodeObj) {
+            node[i] = nodeObj[i];
         }
-        if(node.status==='-1'){//-1
-            node.alarm="节点被删除";
-            node.keepChangeColor=true;//保持变色
-            node.fillAlarmForChangeColor=[149,193,90];//底色
-            node.fillAlarmNode=['218','218','218'];
-            node.setImage('changeColor');//触发
-        }
-        node.parentType != 'containerNode' && self._setNodeEvent(node);
+        node.width=65;
+        node.height=58.8;
+        node.text=nodeObj.name;
+        self._setNodeEvent(node);
         scene.add(node);
         return node;
     },
@@ -770,8 +1100,7 @@ var canvasManager = {
                 $thisClone.remove();
                 $thisClone = null;
             }
-            //拖拽图标的控制显示有没有
-            dragManager.setDragIconByTopoTypeFilter();
+
         }
     },
     /******************集合处理，end***************************/
@@ -1159,7 +1488,7 @@ var canvasManager = {
     },
     //设置线条事件
     _setLinkEvent: function (link) {
-        link.addEventListener('mouseup', function (event) {
+        link.addEventListener('mouseup', function (e) {
             stateManager.currentLink = this;
             stateManager.currentChooseElement=this;
         });
@@ -1172,14 +1501,13 @@ var canvasManager = {
     },
     /******************线条处理，end***************************/
 
-
     init: function () {
         var canvas = stateManager.canvas = document.getElementById('canvas');
         var stage = stateManager.stage = new JTopo.Stage(canvas);
         var scene = stateManager.scene = new JTopo.Scene(stage);
         canvasManager.setCanvasStyle();
         canvasManager.initCanvasEvent(); //canvas事件初始化
-
+        canvasManager.setTopo();
     }
 }
 

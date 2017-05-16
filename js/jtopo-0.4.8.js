@@ -2095,7 +2095,7 @@
                                 cxt.fillStyle='rgba(43,43,43,1)';
                                 cxt.fillText(arr[1],startP3,nBegin_height);
 
-                            }else if(longtext.indexOf('/')>0){
+                            }else if(longtext.indexOf('$')>0){
                                 var text = "";
                                 var count = 0;
                                 var begin_width = 0;
@@ -2112,7 +2112,7 @@
                                 for( var i = 0; i <= stringLenght ; i++)
                                 {
 
-                                    if(longtext[i] == '/')
+                                    if(longtext[i] == '$')
                                     {
                                         context.fillText(text,begin_width,begin_height);
                                         begin_height = begin_height + lineHeight;
