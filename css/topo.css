@@ -817,10 +817,18 @@ td {
     color: #b3baca;
     padding:0 10px;
 }
-#treeArea .title i.fa-search{
+/*#treeArea .title i.fa-search{
     float: right;
     margin-top: 10px;
     cursor: pointer;
+}*/
+#treeArea .title span {
+  margin-left: 10px;
+}
+#treeArea .title img {
+  float: right;
+  margin: 10px 10px 0 0;
+  cursor: pointer;
 }
 
 #treeArea .treeContainer {
@@ -1070,6 +1078,12 @@ td {
 .jtp-main .processZtree li span.button.bottom_open {
   background-position: 0px 4px;
 }
+.jtp-main .processZtree li span.button.center_docu {
+  background-position: -30px 1px;
+}
+.jtp-main .processZtree li span.button.bottom_docu {
+  background-position: -30px 1px;
+}
 .jtp-main .processZtree li span.button {
   background: url(../images/imgSearchImg.png) no-repeat -15px 1px;
 }
@@ -1091,19 +1105,65 @@ td {
   margin-top: 8px;
 }
 
-.jtp-main .processZtree li span.button.center_docu {
-  background-position: -30px 1px;
-}
-
-.jtp-main .processZtree li span.button.bottom_docu {
-  background-position: -30px 1px;
-}
-
 .jtp-main .processZtree li a {
   height: 20px;
   line-height: 20px;
 }
 
-.jtp-main .processZtree * {
-  font-size: 14px;
+/********************processBar*********************/
+.processBarWrap {
+  width: 88px;
+  min-height:504px;
+  background-color: #fff;
+  position: fixed;
+  left: 250px;
+  top: 60px;
+  z-index: 999999;
+  text-align: center;
+  box-shadow:0px 0px 6px #dedede;
+  border-radius: 3px;
+}
+
+.processBarWrap li {
+  width:88px;
+  height:88px;
+}
+
+.processBarWrap li .listCtn {
+  height: 81px;
+  position: relative;
+  padding-top: 10px;
+}
+
+.processBarWrap ul li:first-child>.listCtn {
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.processBarWrap li .listCtn.selected {
+  background-color: #4fa4da;
+}
+
+.processBarWrap li .listCtn.selected p {
+  color: #fff;
+}
+
+.processBarWrap li .listCtn .nextImg {
+  width: 21px;
+  height: 17px;
+  position:absolute;
+  top: 70px;
+  left:50%;
+  margin-left: -10px;
+  background: url(../images/process_next_07.png) no-repeat 0 0;
+}
+
+.processBarWrap li .listCtn.selected .nextImg {
+  background: url(../images/process_next_blue.png) no-repeat 0 0;
+}
+
+.processBarWrap li .listCtn p {
+  color: #c1bfbf;
+  font-size:12px;
+  padding-top: 7px;
 }
