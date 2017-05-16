@@ -328,7 +328,8 @@ td {
 }
 
 .q-panel .q-toolbar {
-    top: 91px;
+    /*top: 91px;*/
+    top: 0;
     border-bottom:1px solid #E7E7E7;
     height: 40px;
     width: 100%;
@@ -718,7 +719,8 @@ td {
     float: right;
     background: url(../images/topobg.png) repeat;
     /*border-top: 1px solid #E7E7E7;*/
-    margin-top:75px;
+    /*margin-top:75px;*/
+    margin-top: 50px;
     /*transition: all 1s;*/
 }
 
@@ -798,7 +800,8 @@ td {
 .viewMode .q-panel .q-toolbar{margin-left:0;}
 
 #treeArea {
-    min-height: 215px;
+    /*min-height: 215px;*/
+    height: 100%;
     margin-bottom:10px;
     box-shadow: 0px 0px 7px #dedede;
 }
@@ -821,14 +824,15 @@ td {
 }
 
 #treeArea .treeContainer {
-    height: 180px;
+    /*height: 180px;*/
+    min-height: 800px;
     padding: 5px;
     overflow-y: auto;
     background: #f8f8f8;
 }
-.sidebar-menu #treeArea .treeContainer {
+/*.sidebar-menu #treeArea .treeContainer {
     height: 500px;
-}
+}*/
 
 #equipmentArea #iconArea .title {
     height: 35px;
@@ -1047,6 +1051,59 @@ td {
     text-align: left;
 }
 
+/********************processZtree*********************/
+.jtp-main .processZtree li span.button.roots_close {
+  background-position: -15px 4px;
+}
+.jtp-main .processZtree li span.button.center_close {
+  background-position: -15px 4px;
+}
+.jtp-main .processZtree li span.button.bottom_close {
+  background-position: -15px 4px;
+}
+.jtp-main .processZtree li span.button.roots_open {
+  background-position: 0px 4px;
+}
+.jtp-main .processZtree li span.button.center_open {
+  background-position: 0px 4px;
+}
+.jtp-main .processZtree li span.button.bottom_open {
+  background-position: 0px 4px;
+}
+.jtp-main .processZtree li span.button {
+  background: url(../images/imgSearchImg.png) no-repeat -15px 1px;
+}
+.jtp-main ul.processZtree>li>a>span {
+  font-size: 14px !important;
+}
+.jtp-main .processZtree li ul.line {
+  background: none;
+}
+.jtp-main .processZtree li ul {
+  padding: 0 0 0 15px;
+}
+.jtp-main .processZtree li span.button.switch {
+  width: 15px;
+  height: 20px;
+}
 
+.jtp-main .processZtree li {
+  margin-top: 8px;
+}
 
+.jtp-main .processZtree li span.button.center_docu {
+  background-position: -30px 1px;
+}
 
+.jtp-main .processZtree li span.button.bottom_docu {
+  background-position: -30px 1px;
+}
+
+.jtp-main .processZtree li a {
+  height: 20px;
+  line-height: 20px;
+}
+
+.jtp-main .processZtree * {
+  font-size: 14px;
+}
