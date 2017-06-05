@@ -10,6 +10,15 @@
 </head>
 <body>
 <div class="main-content" id="main-content">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                拓扑图
+            </li>
+
+        </ul>
+    </div>
     <div id="appMain">
         <div class="custom-wraper">
             <div class="jtp-main">
@@ -17,49 +26,39 @@
                     <div id="container" class="q-content clearfix">
                         <div id="equipmentArea" class="q-panel">
                             <div id="treeArea">
-                                <div class="title">
-                                    <!-- <i class="fa fa-list-ul" aria-hidden="true"></i> -->
-                                    <span>流程步骤</span>
-                                    <!-- <i class="fa fa-search treeSearch" aria-hidden="true"></i> -->
-                                    <img src="./images/add.png" alt="">
-                                </div>
-
+                                <div class="title"><i class="fa fa-list-ul" aria-hidden="true"></i>拓扑图目录结构<i
+                                        class="fa fa-search treeSearch" aria-hidden="true"></i></div>
                                 <div class="treeContainer">
-                                    <!-- <input type="text" placeholder="回车搜索..." id="treeSearchInput"
-                                           class="form-input AreaSearch"> -->
-                                    <ul id="treeDemo" class="ztree processZtree"></ul>
+                                    <input type="text" placeholder="回车搜索..." id="treeSearchInput"
+                                           class="form-input AreaSearch">
+                                    <ul id="treeDemo" class="ztree"></ul>
                                 </div>
-
                             </div>
-                            <!-- <div id="iconArea">
+                            <div id="iconArea">
                                 <div class="title">
                                     <ul class="clearfix iconTitle">
                                         <li class="entityIcon active">实体图形</li>
                                         <li class="basicIcon">基本图形</li>
                                     </ul>
-                                    <div>
-                                        <i class="fa fa-search imgSearch" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                                <div class="containerSearch clearfix">
-                                    <select class="dropDrown-select imgSearchSelect">
-
-                                    </select>
-                                    <input type="text" placeholder="回车搜索..." id="imgSearchInput"
-                                           class="form-input AreaSearch">
                                 </div>
                                 <div class="iconContainer">
-                                    <div class="entityIconTag none"></div>
-                                    <div class="basicIconTag " style="display: block;"><div class="dragTag android" title="安卓" imgname="android" nodetype="-1" nodename="安卓" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">安卓</div></div><div class="dragTag apache" title="apache" imgname="apache" nodetype="-1" nodename="apache" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">apache</div></div><div class="dragTag apple" title="苹果" imgname="apple" nodetype="-1" nodename="苹果" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">苹果</div></div><div class="dragTag busiSystem" title="busiSystem" imgname="busiSystem" nodetype="-1" nodename="busiSystem" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">busiSystem</div></div><div class="dragTag cache" title="cache" imgname="cache" nodetype="-1" nodename="cache" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">cache</div></div><div class="dragTag cache-cluster" title="cache-cluster" imgname="cache-cluster" nodetype="-1" nodename="cache-cluster" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">cache-cluster</div></div><div class="dragTag cluster" title="cluster" imgname="cluster" nodetype="-1" nodename="cluster" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">cluster</div></div><div class="dragTag database" title="database" imgname="database" nodetype="-1" nodename="database" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">database</div></div><div class="dragTag database-cluster" title="database-cluster" imgname="database-cluster" nodetype="-1" nodename="database-cluster" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">database-cluster</div></div><div class="dragTag firewall" title="firewall" imgname="firewall" nodetype="-1" nodename="firewall" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">firewall</div></div><div class="dragTag host" title="host" imgname="host" nodetype="-1" nodename="host" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">host</div></div><div class="dragTag IE" title="IE" imgname="IE" nodetype="-1" nodename="IE" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">IE</div></div><div class="dragTag interchanger" title="interchanger" imgname="interchanger" nodetype="-1" nodename="interchanger" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">interchanger</div></div><div class="dragTag load-balance" title="load-balance" imgname="load-balance" nodetype="-1" nodename="load-balance" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">load-balance</div></div><div class="dragTag message-queue" title="message-queue" imgname="message-queue" nodetype="-1" nodename="message-queue" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">message-queue</div></div><div class="dragTag router" title="router" imgname="router" nodetype="-1" nodename="router" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">router</div></div><div class="dragTag storage" title="storage" imgname="storage" nodetype="-1" nodename="storage" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">storage</div></div><div class="dragTag user" title="user" imgname="user" nodetype="-1" nodename="user" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">user</div></div></div>
+                                    <div class="basicIconTag " style="display: block;">
+
+                                        <!--<div class="dragTag android" title="安卓" imgname="android" nodetype="-1" nodename="安卓" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">安卓</div></div><div class="dragTag apache" title="apache" imgname="apache" nodetype="-1" nodename="apache" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">apache</div></div><div class="dragTag apple" title="苹果" imgname="apple" nodetype="-1" nodename="苹果" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">苹果</div></div><div class="dragTag busiSystem" title="busiSystem" imgname="busiSystem" nodetype="-1" nodename="busiSystem" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">busiSystem</div></div><div class="dragTag cache" title="cache" imgname="cache" nodetype="-1" nodename="cache" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">cache</div></div><div class="dragTag cache-cluster" title="cache-cluster" imgname="cache-cluster" nodetype="-1" nodename="cache-cluster" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">cache-cluster</div></div><div class="dragTag cluster" title="cluster" imgname="cluster" nodetype="-1" nodename="cluster" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">cluster</div></div><div class="dragTag database" title="database" imgname="database" nodetype="-1" nodename="database" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">database</div></div><div class="dragTag database-cluster" title="database-cluster" imgname="database-cluster" nodetype="-1" nodename="database-cluster" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">database-cluster</div></div><div class="dragTag firewall" title="firewall" imgname="firewall" nodetype="-1" nodename="firewall" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">firewall</div></div><div class="dragTag host" title="host" imgname="host" nodetype="-1" nodename="host" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">host</div></div><div class="dragTag IE" title="IE" imgname="IE" nodetype="-1" nodename="IE" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">IE</div></div><div class="dragTag interchanger" title="interchanger" imgname="interchanger" nodetype="-1" nodename="interchanger" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">interchanger</div></div><div class="dragTag load-balance" title="load-balance" imgname="load-balance" nodetype="-1" nodename="load-balance" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">load-balance</div></div><div class="dragTag message-queue" title="message-queue" imgname="message-queue" nodetype="-1" nodename="message-queue" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">message-queue</div></div><div class="dragTag router" title="router" imgname="router" nodetype="-1" nodename="router" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">router</div></div><div class="dragTag storage" title="storage" imgname="storage" nodetype="-1" nodename="storage" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">storage</div></div><div class="dragTag user" title="user" imgname="user" nodetype="-1" nodename="user" busi_type="-1" busi_id="-1"  style="cursor: move;"><div class="dragNodeName">user</div></div>-->
+
+
+
+                                    </div>
+
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
-                        <!-- <div class="topoChooseArea">
+                        <div class="topoChooseArea">
                             <div class="topoChooseAreaUlBox">
                                 <ul></ul>
                             </div>
                             <div class="topuAdd-tab"></div>
-                        </div> -->
+                        </div>
                         <div role="toolbar" class="q-toolbar ">
                             <div>
                                 <div id="toolbar">
@@ -155,47 +154,17 @@
                         </div>
                 </div>
                 <ul id="contextmenuNode" class="contextmenu none" >
-                    <li class='editTag'><a>删除该节点</a></li>
-                    <li class='viewTag'><a>查看实例</a></li>
-                </ul>
-                <ul id="contextmenuContainerNode" class="contextmenu none" >
-                    <li class='editTag'><a>删除该节点</a></li>
-                </ul>
-                <ul id="contextmenuContainerbasic" class="contextmenu none"  >
-                    <li class='editTag'><a>重命名</a></li>
-                    <li class='editTag'><a>删除该节点</a></li>
-                </ul>
-                <ul id="contextmenuContainer" class="contextmenu none"  >
-                    <li class='editTag'><a>重命名</a></li>
-                    <li class='editTag'><a>删除该容器</a></li>
+                    <li class='del'><a>删除该节点</a></li>
                 </ul>
                 <ul id="contextmenuLink" class="contextmenu none"  >
                     <li class='editTag'><a>重命名</a></li>
-                    <li class='editTag'><a>删除该线条</a></li>
+                    <li class='del'><a>删除该线条</a></li>
                 </ul>
                 <div id="nodeTitle" class="titleDiv none">
                     什么模式下显示title，需要确定下
                 </div>
                 <div id="linkTitle" class="titleDiv none">
                     hello world2 !
-                </div>
-                <div id="processBar" class="processBarWrap">
-                  <ul>
-                    <li>
-                      <div class="listCtn selected">
-                        <img src="./images/process.png" height="30px" width="30px" alt="">
-                        <p>客户下单</p>
-                        <div class="nextImg"></div>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="listCtn">
-                        <img src="./images/process.png" height="30px" width="30px" alt="">
-                        <p>确认收货信息</p>
-                        <div class="nextImg"></div>
-                      </div>
-                    </li>
-                  </ul>
                 </div>
             </div>
         </div>
@@ -210,33 +179,5 @@
 <script src="./js/underscore.js"></script>
 <script src="./js/jtopo-0.4.8.js"></script>
 <script src="./js/topo-main.js"></script>
-<script type="text/javascript">
-  var setting = {
-      data: {
-          simpleData: {
-              enable: true,
-              idKey: "id",
-              pIdKey: "pId",
-              rootPId: 0
-          }
-      },
-      view: {
-          dblClickExpand: false,
-          showIcon: false,
-          fontCss: self.showZtreeSearchStyle
-      },
-      callback: {
-          beforeClick:function(){
-              popupManager.popHide();
-          },
-          beforeExpand: self._beforeExpand,
-          onExpand: self._onExpand,
-          onClick: self._menuClickEvent
-      }
-  };
-
-  var zNodes = [{"code":"default_area","name":"默认域","pId":"0","id":"1","type":"0","isLeaf":"false"},{"code":"default_group","name":"默认组","pId":"1","id":"2","type":"1","isLeaf":"true"},{"code":"guangdong","name":"广东","pId":"0","id":"3","type":"0","isLeaf":"false"},{"code":"guangzhou","name":"10086系统","pId":"3","id":"4","type":"1","isLeaf":"true"},{"code":"foshan","name":"CRM系统","pId":"3","id":"5","type":"1","isLeaf":"true"},{"code":"sichun","name":"四川","pId":"0","id":"10","type":"0","isLeaf":"false"},{"code":"chengdu","name":"内部ERP系统","pId":"10","id":"11","type":"1","isLeaf":"false"},{"code":"hunan","name":"湖南","pId":"0","id":"12","type":"0","isLeaf":"false"},{"code":"changsha","name":"微信平台系统","pId":"12","id":"13","type":"1","isLeaf":"true"},{"code":"anwei","name":"安徽","pId":"0","id":"14","type":"0","isLeaf":"false"},{"code":"hefei","name":"内部OA系统","pId":"14","id":"15","type":"1","isLeaf":"true"},{"code":"hubei","name":"湖北","pId":"0","id":"16","type":"0","isLeaf":"false"},{"code":"wuhan","name":"电子渠道系统","pId":"16","id":"17","type":"1","isLeaf":"true"},{"code":"gfrms","name":"票据系统","pId":"3","id":"18","type":"1","isLeaf":"true"},{"code":"apm","name":"应用性能管理","pId":"3","id":"19","type":"1","isLeaf":"true"},{"code":"netmgr","name":"性能监控","pId":"3","id":"20","type":"1","isLeaf":"true"},{"code":"setmeal","name":"内部定餐系统","pId":"12","id":"21","type":"1","isLeaf":"true"},{"code":"dcos","name":"DCOS平台","pId":"0","id":"34","type":"0","isLeaf":"false"},{"code":"移动数据中心","name":"移动数据中心","pId":"34","id":"35","type":"1","isLeaf":"false"},{"code":"cmcc_serv1","name":"cmcc_serv1","pId":"35","id":"36","type":"1","isLeaf":"false"},{"code":"history","name":"历史","pId":"36","id":"37","type":"1","isLeaf":"true"},{"code":"cmcc_serv2","name":"cmcc_serv2","pId":"35","id":"38","type":"1","isLeaf":"true"},{"code":"移动数据中心1","name":"移动数据中心1","pId":"34","id":"39","type":"1","isLeaf":"false"},{"code":"cmcc_serv2","name":"cmcc_serv2","pId":"39","id":"40","type":"1","isLeaf":"false"},{"code":"移动数据中心2","name":"移动数据中心2","pId":"34","id":"41","type":"1","isLeaf":"false"},{"code":"cmcc_serv2","name":"cmcc_serv2","pId":"41","id":"42","type":"1","isLeaf":"false"},{"code":"history","name":"历史","pId":"42","id":"43","type":"1","isLeaf":"true"},{"code":"history","name":"历史","pId":"40","id":"44","type":"1","isLeaf":"true"},{"code":"sd-b","name":"B业务域","pId":"0","id":"56","type":"0","isLeaf":"false"},{"code":"sdcrm","name":"CRM","pId":"56","id":"57","type":"1","isLeaf":"false"},{"code":"1010","name":"10101","pId":"11","id":"59","type":"1","isLeaf":"true"},{"code":"sdcrmyyt","name":"营业厅","pId":"57","id":"61","type":"1","isLeaf":"true"},{"code":"mir","name":"临时组","pId":"3","id":"66","type":"1","isLeaf":"true"}];
-
-  $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-</script>
+<script src="./js/topo-focus.js"></script>
 </html>

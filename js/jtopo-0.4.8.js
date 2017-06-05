@@ -291,6 +291,29 @@
             var c = b.x, d = b.y, e = b.width, f = b.height;
             return a.x > c && a.x < c + e && a.y > d && a.y < d + f
         }
+        function isRectOverlapRect(rect1,rect2) {
+            function  sugar(rect1,rect2) {
+                var rect=rect1;
+                var leftTop={
+                    x:rect.x,
+                    y:rect.y
+                }
+                var leftBottom={
+                    x:rect.x,
+                    y:rect.y+rect.height
+                }
+                var rightTop={
+                    x:rect.x+rect.width,
+                    y:rect.y
+                }
+                var rightBottom={
+                    x:rect.x+rect.width,
+                    y:rect.y+rect.height
+                }
+                return isPointInRect(leftTop,rect2)|| isPointInRect(leftBottom,rect2)|| isPointInRect(rightTop,rect2)|| isPointInRect(rightBottom,rect2)
+            }
+            return sugar(rect1,rect2)||sugar(rect2,rect1)
+        }
         function isPointInLine(a, b, c) {
             var d = JTopo.util.getDistance(b, c), e = JTopo.util.getDistance(b, a), f = JTopo.util.getDistance(c, a), g = Math.abs(e + f - d) <= .5;
             return g
@@ -520,6 +543,7 @@
             isChrome: null != navigator.userAgent.toLowerCase().match(/chrome/),
             clone: clone,//克隆json对象
             isPointInRect: isPointInRect,//判断点是否在矩形内部
+            isRectOverlapRect:isRectOverlapRect,//判断两个矩形是否重叠
             isPointInLine: isPointInLine,//判断点是否在线上，很巧妙
             removeFromArray: removeFromArray,
             cloneEvent: cloneEvent,
@@ -532,7 +556,20 @@
             getOffsetPosition: getOffsetPosition,
             lineF: lineF,//
             intersection: intersection, //交叉
-            intersectionLineBound: intersectionLineBound //连接两条线
+            intersectionLineBound: intersectionLineBound, //连接两条线
+            //拷贝一个json
+            copy:function (jsonObj) {
+                return JSON.parse(JSON.stringify(jsonObj));
+            },
+            //根据key获取链接中的参数value
+            getUrlParam:function(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+                var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+                if (r != null) return unescape(r[2]); return null; //返回参数值
+            }
+        },
+        JTopo.flag={
+            clearAllAnimateT:false
         },
             window.$for = $for,
             window.$foreach = $foreach
@@ -1995,31 +2032,44 @@
                     this.transformAble = !0,
                     this.inLinks = null,
                     this.outLinks = null;
+                    this.linearGradient=null;
+                    this.colorStop=null;
                 var d = "text,font,fontColor,textPosition,textOffsetX,textOffsetY,borderRadius".split(",");
                 this.serializedProperties = this.serializedProperties.concat(d)
             },
                 this.initialize(c),
-                this.paint = function(a) {
-                    if (this.image) {
-                        var b = a.globalAlpha;
+                    this.paint = function(a) {
+                        if (this.image) {
+                            var b = a.globalAlpha;
                             a.globalAlpha = this.alpha,
-                            this.keepChangeColor?(
-                                a.drawImage(this.image.alarm, -this.width / 2, -this.height / 2, this.width, this.height)
-                            ):(
-                                null != this.image.alarm && null != this.alarm ? a.drawImage(this.image.alarm, -this.width / 2, -this.height / 2, this.width, this.height) : a.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height)
-                            ),
-                                    a.globalAlpha = b
-                    } else
-                        a.beginPath(),
-                            a.fillStyle = "rgba(" + this.fillColor + "," + this.alpha + ")",
-                            null == this.borderRadius || 0 == this.borderRadius ? a.rect(-this.width / 2, -this.height / 2, this.width, this.height) : a.JTopoRoundRect(-this.width / 2, -this.height / 2, this.width, this.height, this.borderRadius),
-                            a.fill(),
-                            a.closePath();
+                                this.keepChangeColor?(
+                                    a.drawImage(this.image.alarm, -this.width / 2, -this.height / 2, this.width, this.height)
+                                ):(
+                                    null != this.image.alarm && null != this.alarm ? a.drawImage(this.image.alarm, -this.width / 2, -this.height / 2, this.width, this.height) : a.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height)
+                                ),
+                                a.globalAlpha = b
+                        } else{
+                            a.beginPath(),
+                                a.fillStyle ="rgba(" + this.fillColor + "," + this.alpha + ")",
+                                null == this.borderRadius || 0 == this.borderRadius ? a.rect(-this.width / 2, -this.height / 2, this.width, this.height) : a.JTopoRoundRect(-this.width / 2, -this.height / 2, this.width, this.height, this.borderRadius),
+                                a.fill();
+                        }
+                        if(this.linearGradient) {
+                            var kVal = this.kVal;
+                            var grd = a.createLinearGradient(this.linearGradient[0], this.linearGradient[1], this.linearGradient[2]*kVal, this.linearGradient[3])
+                            for (var grdCount = 0; grdCount < this.colorStop.length / 2; grdCount++) {
+                                grd.addColorStop(this.colorStop[grdCount * 2], this.colorStop[grdCount * 2 + 1]);
+                            }
+                            a.fillStyle = grd;
+                            null == this.borderRadius || 0 == this.borderRadius ? a.rect(-this.width / 2, -this.height / 2, this.width*kVal, this.height) : a.JTopoRoundRect(-this.width / 2, -this.height / 2, this.width*kVal, this.height, this.borderRadius);
+                            a.fill();
+                        }
+                        a.closePath();
                         this.paintText(a),
-                        this.paintBorder(a),
-                        this.paintCtrl(a),
-                        this.paintAlarmText(a)
-                },
+                            this.paintBorder(a),
+                            this.paintCtrl(a),
+                            this.paintAlarmText(a)
+                    },
                 this.paintAlarmText = function(a) {
                     if (null != this.alarm && "" != this.alarm&&this.showAlarm) {
                         var b = this.alarmColor
@@ -2512,6 +2562,7 @@
                         this.dashedPattern = null,
                         this.path = [];
                         this.linkType=null;//线条类型
+                        this.animateNode=null;//线条上的动画节点
                         this.linkConnectType='toBorder';//连接类型，null为连接到中心点，toBorder为连接到边缘
                         var e = "text,font,fontColor,lineWidth,lineJoin".split(",");
                         this.serializedProperties = this.serializedProperties.concat(e)
@@ -2964,7 +3015,7 @@
                     }
                 }
         }
-        function jk(imgurl,scene,width,height,row,col,time,offsetRow){
+        function jk(imgurl,scene,rate,speed,width,height,row,col,time,offsetRow){
             var w=width||16;
             var h=height||16;
             var imgnode = new JTopo.AnimateNode(imgurl, row, col, time, offsetRow);// 1行4列，1000毫秒播放一轮，行偏移量
@@ -2972,12 +3023,25 @@
             imgnode.zIndex=2.5;
             imgnode.isNeedSave=false;
             imgnode.repeatPlay = true;
-            imgnode.visible=false;
+
+            imgnode.elementType='linkAnimateNode';
+            imgnode.dragable=false;
+            imgnode.selected=false;
+            imgnode.paintMouseover=function () {
+
+            };
+            imgnode.addEventListener('mouseup',function(e){
+                imgnode.selected=false;
+            });
             imgnode.play();
+            imgnode.visible=true;
             var thislink=this;
+            thislink.animateNode=imgnode;
             var timeT=0;
-            var animateT=null;
+            thislink.animateT=null;
             var currentPathIndex=0;
+            var _rate=rate||200;
+            var _speed=speed||10;
             this.isremove=false;
 
             function b(a, b) {
@@ -3002,7 +3066,6 @@
                 })
             }
             thislink.removeHandler = function() {
-                clearInterval(animateT);
                 this.isremove=true;
                 var a = this;
                 this.nodeA && this.nodeA.outLinks && (this.nodeA.outLinks = this.nodeA.outLinks.filter(function(b) {
@@ -3065,12 +3128,11 @@
                                 subY=0;
                             }
                         }
-                        var lenX=timeT*xl*10;
-                        var lenY=timeT*yl*10;
+                        var lenX=timeT*xl*_speed;
+                        var lenY=timeT*yl*_speed;
                         imgnode.rotate=(Math.atan(xy/xs))+(xs>0?Math.PI:0);
                         imgnode.cx=nodeA.x-lenX-subX;
                         imgnode.cy=nodeA.y-lenY-subY;
-                        imgnode.visible=true;
                         if(L<=Math.floor(Math.sqrt(lenX * lenX + lenY * lenY))) {
                             timeT = 0;
                             ++currentPathIndex;
@@ -3083,13 +3145,18 @@
 
                     }
                 }else{
+                    clearInterval(thislink.animateT);
                     scene.remove(imgnode)
                 }
             }
 
-            animateT=setInterval(function(){
-                imgnodeanime()
-            },200);
+            thislink.animateT=setInterval(function(){
+                imgnodeanime();
+                if(JTopo.flag.clearAllAnimateT){
+                    clearInterval(thislink.animateT);
+                }
+            },_rate);
+
             scene.add(imgnode);
             return imgnode;
         };
@@ -4545,4 +4612,7 @@
             j.scale = f,
             a.Logo = j
     }(window);
+
+
+
 
