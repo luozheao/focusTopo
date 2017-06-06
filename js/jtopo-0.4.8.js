@@ -3380,7 +3380,18 @@
                         a.shadowColor = this.shadowColor,
                         a.shadowOffsetX = this.shadowOffsetX,
                         a.shadowOffsetY = this.shadowOffsetY
-                }
+                },
+                this.removeHandler = function(a) {
+                        var b = this;
+                        this.outLinks && (this.outLinks.forEach(function(c) {
+                            c.nodeA === b && a.remove(c)
+                        }),
+                            this.outLinks = null),
+                        this.inLinks && (this.inLinks.forEach(function(c) {
+                            c.nodeZ === b && a.remove(c)
+                        }),
+                            this.inLinks = null)
+                    }
         }
         b.prototype = new a.InteractiveElement,
             a.Container = b

@@ -7,16 +7,19 @@
 /***********数据管理者*************/
 //获取后台拓扑图数据
 dataManager.getTopoData=function (callback) {
+      /**
+      * json中的imgName属性，用于存储节点图片名字
+       * elementType用于标志节点类型(node、container、containerNode)，必填
+      * */
        var data= {
            "nodes": [
                {
                    "id": "100",
-
-                   "json":"{x:100,y:100}"
+                   "json":"{x:100,y:100,elementType:'node'}"
                },
                {
                    "id": "101",
-                   "json":"{x:300,y:300}"
+                   "json":"{x:150,y:150,elementType:'node'}"
                }
            ],
 
@@ -26,7 +29,7 @@ dataManager.getTopoData=function (callback) {
                    "from_id": "100",
                    "to_id": "101",
                    "id": "1000",
-                   "json":"{}"
+                   "json":"{elementType:'link'}"
                }
            ]
        }
@@ -41,9 +44,9 @@ dataManager.saveTopoData=function (data) {
 //用于搜索的属性
 toolbarManager.searchArr=['id'];
 /*************画布管理者*********/
+//结点事件
 canvasManager.nodeEvent={
         mouseup:function (e) {
-             console.log(e);
              if(e.which==3){
                  //右键
                   $('#contextmenuNode').css({
@@ -56,12 +59,201 @@ canvasManager.nodeEvent={
         mouseout:null,
         dbclick:null
 };
+//线条事件
 canvasManager.linkEvent={
-        mouseup:null,
+    mouseup:function (e) {
+        if(e.which==3){
+            //右键
+            $('#contextmenuLink').css({
+                "left":e.pageX+40,
+                "top":e.pageY-75
+            }).show();
+        }
+    },
         mouseover:null,
         mouseout:null,
         mousemove:null
 };
+//容器事件
+canvasManager.containerEvent={
+    mouseup:function (e) {
+
+        if(e.which==3){
+            //右键
+            $('#contextmenuContainer').css({
+                "left":e.pageX+40,
+                "top":e.pageY-75
+            }).show();
+        }
+    },
+    mouseover:null,
+    mouseout:null,
+    mousemove:null,
+    dbclick:null
+}
+//自定义节点拓展，样例
+canvasManager.userDefinedNodes=[
+    function(_nodeX,_nodeY,_nodeName,_imgName,_num,dataArr){
+    //系统节点
+    var scene = stateManager.scene;
+    var nodeName=_nodeName;
+    var nodeX=_nodeX;
+    var nodeY=_nodeY;
+    var url='./images/'+_imgName+'.png';
+    var num=_num.toString();
+    var containerWidth=218;
+    var containerHeight=90;
+    var traget1_text=dataArr[0][0];
+    var traget1_kVal=dataArr[0][1];
+    var traget2_text=dataArr[1][0];
+    var traget2_kVal=dataArr[1][1];
+
+    var traget3_text=dataArr[2][0];
+
+    var traget3_text_val=dataArr[2][1];
+    var traget4_text=dataArr[3][0];
+
+    var traget4_text_val=dataArr[3][1];
+    var traget5_text=dataArr[4][0];
+    var tragetX=90;
+    var tragetY=30;
+    var tragetSubY=15.7;
+    var scene=stateManager.scene;
+    //图片
+    var node = new JTopo.Node();
+    node.setSize(50, 50);
+    node.setLocation(nodeX + 15, nodeY + 10);
+    node.showSelected = false;
+    node.alarm = null;
+    node.setImage(url);
+    node.parentType = 'containerNode';
+    node.dragable=false;
+    node.nodeFn='icon';
+
+    //数字
+    var circleNode =new JTopo.CircleNode();
+    circleNode.setSize(19,19);
+    circleNode.setLocation(nodeX+5,nodeY+5);
+    circleNode.fillColor='192,223,246';
+    circleNode.font='12px Consolas';
+    circleNode.text=num;
+    circleNode.textOffsetY=-2;
+    circleNode.textPosition = "Middle_Center";
+    circleNode.fontColor = '63,123,189';
+    circleNode.parentType = 'containerNode';
+
+
+    //容器标题文字
+    var textNode = new JTopo.Node();
+    textNode.fontColor = '43,43,43';
+    textNode.font = "14px Consolas";
+    textNode.text =nodeName;
+    textNode.textPosition = "Bottom_Center";
+    textNode.showSelected = false;
+    textNode.setSize(0, 0);
+    textNode.setLocation(nodeX + 35, nodeY + 68);
+    textNode.parentType = 'containerNode';
+    textNode.nodeFn='title';
+
+
+
+
+    //容器位置,左上角
+    var containerLeftTop = new JTopo.Node();
+    containerLeftTop.setSize(0, 0);
+    containerLeftTop.showSelected = false;
+    containerLeftTop.setLocation(nodeX, nodeY);
+    containerLeftTop.parentType = 'containerNode';
+    containerLeftTop.nodeFn='pLeft';
+
+    //容器位置,右下角
+    var containerRightBottom = new JTopo.Node();
+    containerRightBottom.setSize(0, 0);
+    containerRightBottom.showSelected = false;
+    containerRightBottom.setLocation(nodeX + containerWidth, nodeY + containerHeight);
+    containerRightBottom.parentType = 'containerNode';
+    containerRightBottom.nodeFn='pRight';
+
+    //容器本尊
+    var container = new JTopo.ContainerNode();
+    container.textPosition = 'Bottom_Center';
+    container.fontColor = '232,31,0';
+    container.font = '16px 微软雅黑';
+    container.alpha = 1;
+    container.childDragble = false;
+    container.borderRadius = 5; // 圆角
+    container.borderWidth=1;
+    container.borderColor='223,226,228';
+    container.fillColor = '255,255,255';
+    container.shadowBlur = 10;
+    container.shadowColor = "rgba(79,165,219,0.8)";
+    container.zIndex = 2;
+    container.nodeFn='containerNode';
+
+    //指标信息
+    sugarTragetText(traget1_text,0);
+    sugarTragetText(traget2_text,1);
+    sugarTragetText(traget3_text,2);
+    sugarTragetText(traget3_text_val,2,"107,205,243",null,70);
+    sugarTragetText(traget4_text,3);
+    sugarTragetText(traget4_text_val,3,"107,205,243",null,70);
+    sugarTragetText(traget5_text,4.2,'198,200,201',12);
+    sugarProgressNode('213,223,235',"#f4c63a",traget1_kVal,85,7,125,10);
+    sugarProgressNode('213,223,235',"#1bbab9",traget2_kVal,85,7,125,25);
+    function sugarTragetText(text,subYIndex,textColor,fontSize,offsetX) {
+        var _offsetX=offsetX||0;
+        var tragetNode = new JTopo.Node();
+        tragetNode.fontColor = textColor||'94,144,198';
+        tragetNode.font = (fontSize||14)+"px Consolas";
+        tragetNode.text =text;
+        tragetNode.textPosition = "Bottom_Right";
+        tragetNode.showSelected = false;
+        tragetNode.setSize(0, 0);
+        tragetNode.setLocation(nodeX + tragetX+_offsetX, nodeY + tragetY+subYIndex*tragetSubY);
+        tragetNode.parentType = 'containerNode';
+        tragetNode.borderWidth=0;
+        tragetNode.textOffsetY=-25;
+        tragetNode.nodeFn='traget';
+        scene.add(tragetNode);
+        container.add(tragetNode);
+    }
+    function sugarProgressNode(fillColor,targetColor,kVal,_width,_height,pos_x,pos_y) {
+        var progressNode=new JTopo.Node();
+        var width=_width||85;
+        var height=_height||7;
+        var _pos_x=pos_x||125;
+        var _pos_y=pos_y||10
+        progressNode.setSize(width,height);
+        progressNode.setLocation(nodeX+_pos_x,nodeY+_pos_y);
+        progressNode.linearGradient=[0,0,width,height];
+        progressNode.colorStop=[0,targetColor,1,targetColor];//"#f4c63a"
+        progressNode.kVal=kVal;
+        progressNode.borderRadius=4;
+        progressNode.showSelected=false;
+        progressNode.fillColor=fillColor;//'213,223,235';
+        progressNode.parentType = 'containerNode';
+        scene.add(progressNode);
+        container.add(progressNode);
+    }
+
+    container.add(textNode);
+    container.add(node);
+    container.add(circleNode);
+    container.add(containerLeftTop);
+    container.add(containerRightBottom);
+
+    scene.add(textNode);
+    scene.add(node);
+    scene.add(circleNode);
+    scene.add(containerLeftTop);
+    scene.add(containerRightBottom);
+    scene.add(container);
+
+    return container ;
+
+}
+];
+
 /****拖拽管理者**************/
 //鼠标按下时的处理
 dragManager.dragMouseDown=function($thisClone,positionX,positionY){
@@ -78,16 +270,18 @@ dragManager.dragMouseDown=function($thisClone,positionX,positionY){
 dragManager.dragMouseUp=function ($thisClone, mDown, thisWidth, thisHeight, pageX, pageY) {
     if ($thisClone) {
         canvasManager.createNodeByDrag($thisClone, mDown, thisWidth, thisHeight, pageX, pageY);
-
     }
 }
 
-/*********其他开发者自定义拓展************************************************/
+/*********其他开发者自定义拓展**********************************************************/
 //右键删除
 $('.contextmenu li').click(function () {
      var $this=$(this);
      if($this.hasClass('del')){
          stateManager.scene.remove(stateManager.currentChooseElement);
+     }
+     else if($this.hasClass('rename')){
+
      }
      $('.contextmenu').hide();
 });

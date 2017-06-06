@@ -30,7 +30,6 @@ var stateManager = {
     currentActiveIndex:null,//当前选中拓扑图的序号
     currentTreeNode:null,//当前选中的树节点
     isFirstLoad:true,//初次加载页面
-    isNeedSave:false,//判断切换拓扑图是否需要保存数据
     isLocalhost:window.location.href.indexOf('localhost:')>=0,//判断是否属于本地环境
     isFromParentTree:false,//点击系统视图节点，触发子拓扑图打开，并切换到系统视图或逻辑拓扑
     isFullScreen:false,//当前是否全屏的状态
@@ -51,7 +50,7 @@ var stateManager = {
     },
     //判断对象中的属性是否应该保存
     attrIsNeedSave:function (attr,value,elementType) {
-        var attrArr=['image','inLinks','messageBus','outLinks','json','nodeA','nodeZ','selectedLocation'];
+        var attrArr=['childs','image','inLinks','messageBus','outLinks','json','nodeA','nodeZ','selectedLocation'];
         if(elementType=='containerNode'){
             attrArr.push('childs');
         }
@@ -325,10 +324,12 @@ var dragManager = {
     /**********************************************************视觉层*****/
 
     /**********************************************************控制层*****/
-    //todo:封装成底层功能，作为中间层，用于拖拽图标的初始化，
      dragInit: function () {
         var $dragContainer = $('#container');
-        var fnCreateNodeOrContainerNodeByDrag = this.dragMouseUp;
+        var fnCreateNodeOrContainerNodeByDrag = function ($thisClone, mDown, thisWidth, thisHeight, pageX, pageY) {
+            dragManager.dragMouseUp($thisClone, mDown, thisWidth, thisHeight, pageX, pageY);
+            toolbarManager.history.save();
+        };
         $('#equipmentArea .dragTag').each(function () {
             $(this).dragging({
                 move: 'both', //拖动方向，x y both
@@ -340,7 +341,6 @@ var dragManager = {
             });
         });
     },
-
      init: function () {
         this.dragInit();
      }
@@ -359,7 +359,21 @@ var canvasManager = {
         mouseout:null,
         mousemove:null
     },
+    containerEvent:{
+        mouseup:null,
+        mouseover:null,
+        mouseout:null,
+        mousemove:null,
+        dbclick:null
+    },
+    userDefinedNodes:[],//自定义结点样例
+
     /******************画布处理，start***************************/
+    /**
+     * 创建节点、容器、自定义结点、线条时
+     * id为后台提供，_id由前端提供，由于创建时，id不存在，故一定要给id赋值为_id
+     * 后台拿到id可以改一下，也可不改
+     * */
     //设置画布大小
     setCanvasStyle: function () {
         var oCanvas = stateManager.canvas;
@@ -430,6 +444,7 @@ var canvasManager = {
             }
         });
         scene.addEventListener('mouseup', function (e) {
+            var isInstanceofElement=e.target instanceof JTopo.Node || e.target instanceof JTopo.Container || e.target instanceof JTopo.ContainerNode;
             if (e.button == 2) {
                 // scene.remove(link);
                 return;
@@ -437,27 +452,31 @@ var canvasManager = {
             //开启连线模式
             if (setLink.isSetting) {
 
-                if (e.target != null && (e.target instanceof JTopo.Node || e.target instanceof JTopo.Container || e.target instanceof JTopo.ContainerNode))
+                if (e.target != null &&  isInstanceofElement)
                 {
 
                     if (beginNode == null) {
+                        //第一次点击，生成连线
+
                         beginNode = e.target;
                         link = self._createLink(tempNodeA, tempNodeZ);
                         scene.add(link);
                         tempNodeA.setLocation(e.x, e.y);
                         tempNodeZ.setLocation(e.x, e.y);
+
                     }
                     else if (beginNode !== e.target) {
+                        //第二次点击，完成连线
                         var endNode = e.target;
                         //如果是容器节点和其内部的节点连线,或者其内部节点之间连线，则不应该连线
                         if([beginNode.parentType,endNode.parentType].indexOf('containerNode')<0){
                             var l = self._createLink(beginNode, endNode);//正式连线
                             scene.add(l);
                         }
-
-
                         beginNode = null;
                         scene.remove(link);
+
+                        toolbarManager.history.save();
                     }
                     else {
                         beginNode = null;
@@ -465,22 +484,9 @@ var canvasManager = {
                 }
 
                 else {
+
                     link&&scene.remove(link);
                 }
-            }
-            //点击节点
-            if (e.target != null && (e.target instanceof JTopo.Node || e.target instanceof JTopo.Container || e.target instanceof JTopo.ContainerNode))
-            {
-                //连线需要点击两次节点
-                if (!beginNode) {
-
-                }
-                stateManager.isNeedSave=true;
-
-            }
-            else if(!(e.target instanceof JTopo.Node || e.target instanceof JTopo.Container || e.target instanceof JTopo.ContainerNode))
-            {
-
             }
         });
         scene.addEventListener('mousedown', function (e) {
@@ -559,31 +565,34 @@ var canvasManager = {
         //绘制节点
         for (var i = 0; i < nodesArr.length; i++)  {
             var obj = nodesArr[i];
-            var nodeObj= self._createNode(obj);
-            idToNode[obj.id] =nodeObj;
+            if(typeof obj.json=='string'){
+                obj.json =eval('('+obj.json+')');
+            }
+            if (obj.json.elementType=='node') {
+                idToNode[obj.id] =self._createNode(obj);
+            }
         }
 
-
-        //绘制容器节点、容器
-        for (var i = 0; i < data.length; i++) {
-            var obj = data[i];
-            if (obj['elementType'] == 'containerNode') {
-                idToNode[obj._id] = self._createContainerNode(obj, idToNode);
+        //绘制容器、自定义节点
+        for (var i = 0; i < nodesArr.length; i++)  {
+            var obj = nodesArr[i];
+            if (obj.json.elementType=='container') {
+                idToNode[obj.id] = self._createContainer(obj, idToNode);
             }
-            else if (obj['elementType'] == 'container') {
-                idToNode[obj._id] = self._createContainer(obj, idToNode);
+            else if(obj.json.elementType=='containerNode'){
+
             }
         }
 
         //绘制线条
         for (var i = 0; i < linksArr.length; i++) {
             var obj = linksArr[i];
-            var type = obj.json.linkType;
-            var link = self._createLink(idToNode[obj.from_id], idToNode[obj.to_id], type, obj);
+            if(typeof obj.json=='string'){
+                obj.json= eval('('+obj.json+')');
+            }
+            var link = self._createLink(idToNode[obj.from_id], idToNode[obj.to_id], obj);
             link && scene.add(link);
         }
-
-
 
     },
     //保存
@@ -594,12 +603,17 @@ var canvasManager = {
         var links=[];
         //拼接
         stateManager.scene.childs.filter(function (child) {
-            if(child.parentType != 'containerNode'&&(child.elementType=='node' || child.elementType=='containerNode')){
+            var isContainer=['container'].indexOf(child.elementType)>=0;
+            if(child.parentType != 'containerNode'&&['node','container','containerNode'].indexOf(child.elementType)>=0)
+            {
                 var nodeObj={};
                 //后台所需数据
                 for(var m =0;m<saveNodeAttr.length;m++){
                     var attr=saveNodeAttr[m];
                     nodeObj[attr]=child[attr];
+                    // if(['id'].indexOf(attr)>=0&&!child.id){
+                    //     nodeObj[attr]=child._id;
+                    // }
                 }
 
                 //前端数据
@@ -610,18 +624,35 @@ var canvasManager = {
                     var value=child[m1];
                     if(stateManager.attrIsNeedSave(m1,value,child.elementType)){
                         nodeObj.json[m1]=value;
+                    }else if(isContainer&&m1=='childs'){
+                        nodeObj.json.childsArr=[];
+                        //保存容器的child的id到childsArr
+                        for(var m2=0;m2<value.length;m2++){
+                            nodeObj.json.childsArr.push(value[m2].id);
+                        }
                     }
                 }
 
-                    nodeObj.json=JSON.stringify(nodeObj.json);
+                 nodeObj.json=JSON.stringify(nodeObj.json);
 
-                nodes.push(nodeObj);
+                 nodes.push(nodeObj);
             }
             else if(child.elementType=='link'){
                 var linkObj={};
                 for(var n =0;n<saveLinkAttr.length;n++){
                     var attr=saveLinkAttr[n];
-                    linkObj[attr]=child[attr];
+                    if(['from_id'].indexOf(attr)>=0){
+                        linkObj[attr]=child.nodeA.id;
+                    }
+                    else  if(['to_id'].indexOf(attr)>=0){
+                        linkObj[attr]=child.nodeZ.id;
+                    }
+                    // else  if(['id'].indexOf(attr)>=0&&!child.id){
+                    //     linkObj[attr]=child._id;
+                    // }
+                    else{
+                        linkObj[attr]=child[attr];
+                    }
                 }
                 if(!linkObj.json) {
                     linkObj.json = {};
@@ -662,16 +693,12 @@ var canvasManager = {
         var nodeWidth = thisWidth;
         var nodeHight = thisHeight;
         var imgName = '';
-        var busi_id='';
-        var busi_type='';
         var flowIconTag=$thisClone.attr('flowIconTag');//表示属于流程图标
         var isOtherRectIcon=['android','apple','IE'].indexOf($thisClone.attr('imgname'))>=0;//安卓苹果IE图标
 
         if ($thisClone) {
             nodeName = $thisClone.attr('nodeName');
             imgName = $thisClone.attr('imgName');
-            busi_id = $thisClone.attr('busi_id');
-            busi_type = $thisClone.attr('busi_type');
             if(flowIconTag){
                 nodeWidth=2.923*parseFloat(nodeHight);
             }else if(isOtherRectIcon){
@@ -686,23 +713,17 @@ var canvasManager = {
             node.setLocation(nodeX, nodeY);
             node.font = "14px Consolas";
             node.fillColor = '255,255,255';
-
-
             node.fontColor = flowIconTag?'255,255,255':'85,85,85';
             if(nodeName=='开始'||nodeName=='结束'){
                 node.fontColor = '85,85,85';
             }
-
-
             node.textPosition = 'Bottom_Center';
             node.textOffsetY = flowIconTag?-34:5;
 
             var url='./images/'+imgName+'_g.png';
             node.setImage(url);
             node.imgName = imgName;
-            node.busi_id=busi_id;
-            node.busi_type=busi_type;
-            node.equipmentType=imgName;
+            node.id=node._id;
             node.setSize(nodeWidth, nodeHight);
             self._setNodeEvent(node);
             scene.add(node);
@@ -714,9 +735,6 @@ var canvasManager = {
         var scene = stateManager.scene;
         var self = canvasManager;
         var node = new JTopo.Node();
-        if(typeof obj.json=='string'){
-            obj.json =eval('('+obj.json+')');
-        }
 
         //设置后台数据
         for (var i in obj) {
@@ -728,6 +746,7 @@ var canvasManager = {
                 node[j]= obj.json[j];
             }
         }
+        node.imgName&&node.setImage('./images/'+node.imgName+'_g.png');
         self._setNodeEvent(node);
         scene.add(node);
         return node;
@@ -736,9 +755,9 @@ var canvasManager = {
     _setNodeEvent: function (node) {
         var nodeEventObj= canvasManager.nodeEvent;
         node.addEventListener('mouseup', function (e) {
+            toolbarManager.history.save();
             stateManager.currentChooseElement=this;
             stateManager.currentNode = this;
-            toolbarManager.history.save();
             nodeEventObj.mouseup&&nodeEventObj.mouseup(e);
         });
         node.addEventListener('mousemove', function (e) {
@@ -771,7 +790,6 @@ var canvasManager = {
             container.font = '16px 微软雅黑';
             container.fillColor = '79,164,218';
             container.textOffsetY = -5;
-            // container.alarm = 'haha';
             container.alpha=0;
             container.textAlpha=1;
             container.shadowBlur =5;
@@ -780,11 +798,7 @@ var canvasManager = {
             container.borderWidth=1;
             container.borderDashed=false;//边框成虚线，一定要设置borderRadius大于0
             container.borderRadius = 5; // 圆角
-
-            container.busi_id='-1';
-            container.busi_type='-1';
-            container.equipmentType='-1';
-
+            container.id=container._id;
             for(var k in jsonObj){
                 container[k]=jsonObj[k];
             }
@@ -805,13 +819,23 @@ var canvasManager = {
         var self = canvasManager;
         var container = new JTopo.Container('');
 
+
+
+        //设置后台数据
         for (var i in obj) {
-            if (i == 'childsArr') {
-                for (var j = 0; j < obj[i].length; j++) {
-                    container.add(idToNode[obj[i][j]]);
+            container[i] = obj[i];
+        }
+
+        //设置前端元素数据
+        for(var j in  obj.json){
+            if(stateManager.formatNodes.indexOf(j)<0){
+                container[j]= obj.json[j];
+            }
+            if (j == 'childsArr') {
+                for (var k = 0; k < obj.json[j].length; k++) {
+                    container.add(idToNode[obj.json[j][k]]);
                 }
             }
-            container[i] = obj[i];
         }
 
         self._setGroupEvent(container);
@@ -820,31 +844,44 @@ var canvasManager = {
     },
     //设置容器的事件
     _setGroupEvent: function (container) {
+        var containerEventObj= canvasManager.containerEvent;
         container.addEventListener('mouseup', function (e) {
-
+          toolbarManager.history.save();
             stateManager.currentContainer = this;
             stateManager.currentChooseElement=this;
-            toolbarManager.history.save();
+            containerEventObj.mouseup&&containerEventObj.mouseup(e);
+        });
+        container.addEventListener('mouseover', function (e){
+
+            containerEventObj.mouseover&&containerEventObj.mouseover(e);
+        });
+        container.addEventListener('mouseout', function (e){
+
+            containerEventObj.mouseout&&containerEventObj.mouseout(e);
+        });
+        container.addEventListener('mousemove', function (e){
+            containerEventObj.mousemove&&containerEventObj.mousemove(e);
         });
         container.addEventListener('dbclick', function (e){
             stateManager.currentContainer = this;
             stateManager.currentChooseElement=this;
-
+            containerEventObj.dbclick&&containerEventObj.dbclick(e);
         });
-        if (container.alarm) {
-            var str = container.alarm;
-            setInterval(function () {
-                container.alarm = container.alarm ? null : str;
-            }, 1000);
-        }
+
+
     },
     /******************容器处理，end***************************/
 
     /******************线条处理，start***************************/
     //创建节点间的连线
-    _createLink: function (sNode, tNode, slinkType,linkObj) {
+    _createLink: function (sNode, tNode,linkObj) {
         var link;
+        var slinkType= null;
+        if(linkObj){
+            slinkType=linkObj.json.linkType;
+        }
         var linkType = slinkType ? slinkType : (stateManager.setLink.linkType||'arrow');
+
         if (!sNode || !tNode) {
             return;
         }
@@ -885,13 +922,8 @@ var canvasManager = {
             this._setLinkEvent(link);
             link.linkType = linkType;
             link.strokeColor = '216,223,230';
+            link.id=link._id;
             if(linkObj){
-
-if(typeof linkObj.json=='string'){
-    linkObj.json= eval('('+linkObj.json+')')
-}
-
-
                 for(var i in linkObj){
                     link[i]=linkObj[i]
                 }
