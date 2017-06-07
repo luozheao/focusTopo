@@ -5,7 +5,7 @@
             this.elementType = "element",
                 this.serializedProperties = ["elementType"],
                 this.propertiesStack = [],
-                this._id = "front" + (new Date).getTime()+Math.round(Math.random()*1000000)
+                this._id=JTopo.util.creatId()
         },
             this.distroy = function() {},
             this.removeHandler = function() {},
@@ -566,6 +566,9 @@
                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
                 var r = window.location.search.substr(1).match(reg);  //匹配目标参数
                 if (r != null) return unescape(r[2]); return null; //返回参数值
+            },
+            creatId:function () {
+                return "front" + (new Date).getTime()+Math.round(Math.random()*1000000);
             }
         },
         JTopo.flag={
@@ -2113,14 +2116,12 @@
                         a.fillStyle = "rgba(" + this.fontColor + ", " + this.alpha + ")";
                         var e = this.getTextPostion(this.textPosition, c, d);
 
-                         draw_long_text(b,a, e.x, e.y,this),
+                        draw_long_text(b,a, e.x, e.y,this,d),
                             a.closePath();
-                       //处理节点文字的换行问题
-                        function draw_long_text(longtext,cxt,nBegin_width,nBegin_height,obj)
+                        //处理节点文字的换行问题
+                        function draw_long_text(longtext,cxt,nBegin_width,nBegin_height,obj,textHeight)
                         {
-
                             var lineHeight= obj.textLineHeight;
-                            var nNumber= obj.textBreakNumber;
                             if(obj.nodeFn=='alarm'){
                                 //告警类型节点，改变字体颜色
                                 var arr=longtext.split(/\d+/);
@@ -2145,24 +2146,38 @@
                                 cxt.fillStyle='rgba(43,43,43,1)';
                                 cxt.fillText(arr[1],startP3,nBegin_height);
 
-                            }else if(longtext.indexOf('$')>0){
+                            }
+                            else if(longtext.indexOf('$')>0){
                                 var text = "";
                                 var count = 0;
-                                var begin_width = 0;
+                                var begin_width;//基准位，默认为节点中心点的x坐标
                                 var begin_height = nBegin_height;
                                 var lineHeight=lineHeight||12;
                                 var stringLenght = longtext.length;
 
                                 var newtext = longtext.split("");
                                 var context = cxt;
+                                context.textAlign = obj.textAlign;
+                                switch(obj.textAlign){
+                                    case "center":
+                                        begin_width=0;
+                                        break;
+                                    case "left":
+                                        begin_width=nBegin_width+7;
+                                        var cn=(longtext.split('$')).length;//行数
+                                        var csh=cn*lineHeight-textHeight; //总高度
+                                        begin_height=nBegin_height-csh/2;
+                                        break;
+                                    default:
+                                        console.log('少年，等待你来拓展'+obj.textAlign+'这个功能');
+                                }
 
-                                //context.clearRect(0,0, 50,50);
-                                context.textAlign = 'center';
+
 
                                 for( var i = 0; i <= stringLenght ; i++)
                                 {
 
-                                    if(longtext[i] == '$')
+                                    if(newtext[0] == '$')
                                     {
                                         context.fillText(text,begin_width,begin_height);
                                         begin_height = begin_height + lineHeight;
@@ -3200,8 +3215,9 @@
                     this.textAlpha=1;
                     this.textPosition = "Bottom_Center",
                     this.textOffsetX = 0,
-                    this.textOffsetY = 0,
-                    this.layout = new a.layout.AutoBoundLayout
+                    this.textOffsetY = -16,
+                    this.layout = new a.layout.AutoBoundLayout,
+                    this.borderPadding=15;
             },
                 this.initialize(c),
                 this.add = function(a) {
@@ -3257,7 +3273,8 @@
                             bottom:null
                         };
                         thisObj.childs.forEach(function(p,index){
-                            var textWidth = a.measureText(p.text).width;
+                            var textWidth = a.measureText(p.text||'').width;
+
                             var pObj = p.getTextPostion(p.textPosition, textWidth,textHeight);//获取文字的相对位置
                             //获取文字左下角的位置，注意不是左上角
                             pObj.x+=p.x+p.width/2;
@@ -3289,11 +3306,20 @@
                                 thisObj.height=compareObj.bottom-thisObj.y;
                             }
 
-                            var len=15;
+                            var len=thisObj.borderPadding;
                             thisObj.x-=len;
-                            thisObj.y-=len;
+                            thisObj.y-=len*1.8;
                             thisObj.width+=len*2;
                             thisObj.height+=len*2;
+
+                            //跟title比较宽度
+                            var titleWidth = a.measureText(thisObj.text||'').width+60;
+                            var subWidth=titleWidth-thisObj.width;
+                            if(subWidth>0){
+                                thisObj.x-=subWidth/2+len;
+                                thisObj.width=titleWidth+2*len;
+                            }
+
                         }
 
                         a.beginPath(),
@@ -3314,7 +3340,7 @@
                     if (null != b && "" != b) {
                         a.beginPath(),
                             a.font = this.font;
-                        var c = a.measureText(b).width
+                        var c = a.measureText(b||'').width
                             , d = a.measureText("田").width;
                         var e = this.getTextPostion(this.textPosition, c, d);
 

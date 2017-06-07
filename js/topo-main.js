@@ -50,7 +50,7 @@ var stateManager = {
     },
     //判断对象中的属性是否应该保存
     attrIsNeedSave:function (attr,value,elementType) {
-        var attrArr=['childs','image','inLinks','messageBus','outLinks','json','nodeA','nodeZ','selectedLocation'];
+        var attrArr=['propertiesStack','serializedProperties','animateNode','childs','image','inLinks','messageBus','outLinks','json','nodeA','nodeZ','selectedLocation'];
         if(elementType=='containerNode'){
             attrArr.push('childs');
         }
@@ -257,6 +257,7 @@ var toolbarManager = {
         //设置成组
         ['click', '.groupWrap.btn', function () {
             canvasManager.setNodesToGroup();
+            toolbarManager.history.save();
         }],
     ],
     //设置当前选中按钮激活样式
@@ -580,7 +581,10 @@ var canvasManager = {
                 idToNode[obj.id] = self._createContainer(obj, idToNode);
             }
             else if(obj.json.elementType=='containerNode'){
-
+                var nodeFn=obj.json.nodeFn;
+                var userDefinedNode= self[nodeFn](obj);
+                idToNode[obj.id] =userDefinedNode;
+                self._setUserDefinedNodeEvent(userDefinedNode,canvasManager['userDefinedNodeEvent_'+nodeFn])
             }
         }
 
@@ -768,11 +772,36 @@ var canvasManager = {
             nodeEventObj.mouseout&&nodeEventObj.mouseout(e);
         });
         node.addEventListener('dbclick', function (e) {
+
+            stateManager.currentChooseElement=this;
+            stateManager.currentNode = this;
             nodeEventObj.dbclick&&nodeEventObj.dbclick(e);
         });
     },
     /******************节点处理，end***************************/
 
+    /******自定义节点处理，start*************/
+    //设置自定义节点的事件
+    _setUserDefinedNodeEvent:function (definedNode,eventObj) {
+        for(var eventName in eventObj){
+            var fn=eventObj[eventName];
+            (function (definedNode,eventName,fn) {
+                definedNode.addEventListener(eventName, function (e) {
+                    //通用事件
+                    if(eventName=='mouseup'){
+
+                        toolbarManager.history.save();
+                        stateManager.currentChooseElement=this;
+                    }else if(eventName=='dbclick'){
+                        stateManager.currentChooseElement=this;
+                    }
+                    //自定义事件
+                    fn&&fn(e);
+                });
+           })(definedNode,eventName,fn);
+        }
+    },
+    /******自定义节点处理，end*************/
 
     /******************容器处理，start***************************/
     //设置节点成容器,初始化容器
@@ -789,7 +818,6 @@ var canvasManager = {
             container.fontColor = '255,255,255';
             container.font = '16px 微软雅黑';
             container.fillColor = '79,164,218';
-            container.textOffsetY = -5;
             container.alpha=0;
             container.textAlpha=1;
             container.shadowBlur =5;
@@ -865,6 +893,7 @@ var canvasManager = {
         container.addEventListener('dbclick', function (e){
             stateManager.currentContainer = this;
             stateManager.currentChooseElement=this;
+
             containerEventObj.dbclick&&containerEventObj.dbclick(e);
         });
 
@@ -962,6 +991,10 @@ var canvasManager = {
         var canvas = stateManager.canvas = document.getElementById('canvas');
         var stage = stateManager.stage = new JTopo.Stage(canvas);
         var scene = stateManager.scene = new JTopo.Scene(stage);
+        canvasManager.userDefinedNodes.filter(function (p1, p2, p3) {
+            canvasManager[p1.fnName]=p1.fn;
+            canvasManager['userDefinedNodeEvent_'+p1.fnName]=p1.event;
+        })
         canvasManager.setCanvasStyle();
         canvasManager.initCanvasEvent(); //canvas事件初始化
 
