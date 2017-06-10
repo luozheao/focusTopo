@@ -2064,8 +2064,9 @@
                                 grd.addColorStop(this.colorStop[grdCount * 2], this.colorStop[grdCount * 2 + 1]);
                             }
                             a.fillStyle = grd;
-                            null == this.borderRadius || 0 == this.borderRadius ? a.rect(-this.width / 2, -this.height / 2, this.width*kVal, this.height) : a.JTopoRoundRect(-this.width / 2, -this.height / 2, this.width*kVal, this.height, this.borderRadius);
+                            null == this.borderRadius || 0 == this.borderRadius ? a.rect(-this.width / 2, -this.height / 2, this.width*kVal, this.height) : a.JTopoRoundRect(-this.width / 2, -this.height / 2, this.width*kVal, this.height,kVal<0.03?0:this.borderRadius);
                             a.fill();
+
                         }
                         a.closePath();
                         this.paintText(a),

@@ -27,7 +27,7 @@ dataManager.getTopoData=function (callback) {
                },
                {
               "id": '102',
-              "json":'{"imgName":"testIcon","nodeNum":123,"name":"业务系统","msgArr":[["CPU","0.2"],["MEM","0.9"],["Incoming","6.72GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
+              "json":'{"imgName":"testIcon","nodeNum":123,"name":"业务系统","msgArr":[["CPU","0.122"],["MEM","0.9"],["Incoming","6.72GB|23.GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
              }
            ],
 
@@ -118,24 +118,27 @@ canvasManager.userDefinedNodes=[
             var nodeY=_nodeY;
             var url='./images/'+_imgName+'.png';
             var num=_num.toString();
-            var containerWidth=218;
+            var containerWidth=238;
             var containerHeight=90;
             var traget1_text=dataArr[0][0];
             var traget1_kVal=dataArr[0][1];
+
             var traget2_text=dataArr[1][0];
             var traget2_kVal=dataArr[1][1];
 
             var traget3_text=dataArr[2][0];
+            var traget3_text_val=dataArr[2][1];//update
 
-            var traget3_text_val=dataArr[2][1];
             var traget4_text=dataArr[3][0];
+            var traget4_text_val=dataArr[3][1];//updata
 
-            var traget4_text_val=dataArr[3][1];
             var traget5_text=dataArr[4][0];
             var tragetX=90;
             var tragetY=30;
             var tragetSubY=15.7;
             var scene=stateManager.scene;
+
+            nodeX + tragetX+70+Math.max(JTopo.flag. traget3_text_val,traget4_text_val)
             //图片
             var node = new JTopo.Node();
             node.setSize(50, 50);
@@ -148,15 +151,16 @@ canvasManager.userDefinedNodes=[
             node.nodeFn='icon';
 
             //数字
-            var circleNode =new JTopo.CircleNode();
+            var circleNode =new JTopo.Node();
             circleNode.setSize(19,19);
             circleNode.setLocation(nodeX+5,nodeY+5);
             circleNode.fillColor='192,223,246';
             circleNode.font='12px Consolas';
-            circleNode.text=num;
-            circleNode.textOffsetY=-2;
-            circleNode.textPosition = "Middle_Center";
-            circleNode.fontColor = '63,123,189';
+            circleNode.setImage('./images/alertIcon.png');
+            // circleNode.text=num;
+            // circleNode.textOffsetY=-2;
+            // circleNode.textPosition = "Middle_Center";
+            // circleNode.fontColor = '63,123,189';
             circleNode.parentType = 'containerNode';
 
 
@@ -216,8 +220,8 @@ canvasManager.userDefinedNodes=[
             sugarTragetText(traget4_text,3);
             sugarTragetText(traget4_text_val,3,"107,205,243",null,70);
             sugarTragetText(traget5_text,4.2,'198,200,201',12);
-            sugarProgressNode('213,223,235',"#f4c63a",traget1_kVal,85,7,125,10);
-            sugarProgressNode('213,223,235',"#1bbab9",traget2_kVal,85,7,125,25);
+            sugarProgressNode('213,223,235',"#f4c63a",traget1_kVal,80,7,120,10,traget1_kVal*100+'%');//update
+            sugarProgressNode('213,223,235',"#1bbab9",traget2_kVal,80,7,120,25,traget2_kVal*100+'%');
             function sugarTragetText(text,subYIndex,textColor,fontSize,offsetX) {
                 var _offsetX=offsetX||0;
                 var tragetNode = new JTopo.Node();
@@ -235,12 +239,13 @@ canvasManager.userDefinedNodes=[
                 scene.add(tragetNode);
                 container.add(tragetNode);
             }
-            function sugarProgressNode(fillColor,targetColor,kVal,_width,_height,pos_x,pos_y) {
+            function sugarProgressNode(fillColor,targetColor,kVal,_width,_height,pos_x,pos_y,percVal) {//update
                 var progressNode=new JTopo.Node();
                 var width=_width||85;
                 var height=_height||7;
                 var _pos_x=pos_x||125;
-                var _pos_y=pos_y||10
+                var _pos_y=pos_y||10;
+                var _percVal=percVal||0;
                 progressNode.setSize(width,height);
                 progressNode.setLocation(nodeX+_pos_x,nodeY+_pos_y);
                 progressNode.linearGradient=[0,0,width,height];
@@ -250,6 +255,12 @@ canvasManager.userDefinedNodes=[
                 progressNode.showSelected=false;
                 progressNode.fillColor=fillColor;//'213,223,235';
                 progressNode.parentType = 'containerNode';
+                progressNode.textPosition="Middle_Right";
+                progressNode.fontColor = '94,144,198';
+                progressNode.font = '10px 微软雅黑';
+                progressNode.text=percVal;
+                progressNode.textOffsetY=-2;
+                progressNode.textOffsetX=2;
                 scene.add(progressNode);
                 container.add(progressNode);
             }
