@@ -27,7 +27,7 @@ dataManager.getTopoData=function (callback) {
                },
                {
               "id": '102',
-              "json":'{"imgName":"testIcon","nodeNum":123,"name":"业务系统","msgArr":[["CPU","0.122"],["MEM","0.9"],["Incoming","6.72GB|23.GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
+              "json":'{"imgName":"testIcon","alertLevel":3,"name":"业务系统","msgArr":[["CPU","0.122"],["MEM","0.9"],["Incoming","6.72GB|2GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
              }
            ],
 
@@ -37,7 +37,7 @@ dataManager.getTopoData=function (callback) {
                    "from_id": "100",
                    "to_id": "101",
                    "id": "1000",
-                   "json":"{elementType:'link'}"
+                   "json":"{elementType:'link',text:'我是线条名字'}"
                }
            ]
        }
@@ -109,7 +109,7 @@ canvasManager.userDefinedNodes=[
                  _nodeY=jsonObj.y,
                  _nodeName=jsonObj.name,
                  _imgName=jsonObj.imgName,
-                 _num=jsonObj.nodeNum,
+                 _alertLevel=jsonObj.alertLevel,
                  dataArr=jsonObj.msgArr;
             //系统节点
             var scene = stateManager.scene;
@@ -117,8 +117,10 @@ canvasManager.userDefinedNodes=[
             var nodeX=_nodeX;
             var nodeY=_nodeY;
             var url='./images/'+_imgName+'.png';
-            var num=_num.toString();
-            var containerWidth=238;
+            var alertLevel=_alertLevel.toString();//告警级别
+
+
+            var containerWidth=245;
             var containerHeight=90;
             var traget1_text=dataArr[0][0];
             var traget1_kVal=dataArr[0][1];
@@ -138,7 +140,12 @@ canvasManager.userDefinedNodes=[
             var tragetSubY=15.7;
             var scene=stateManager.scene;
 
-            nodeX + tragetX+70+Math.max(JTopo.flag. traget3_text_val,traget4_text_val)
+            var max1=JTopo.flag.graphics.measureText(traget3_text_val).width;
+            var max2=JTopo.flag.graphics.measureText(traget4_text_val).width;
+           var max=Math.max(max1,max2);
+           if(max>70){
+               containerWidth+=max-60;
+           }
             //图片
             var node = new JTopo.Node();
             node.setSize(50, 50);
@@ -150,18 +157,36 @@ canvasManager.userDefinedNodes=[
             node.dragable=false;
             node.nodeFn='icon';
 
-            //数字
+            //告警
             var circleNode =new JTopo.Node();
             circleNode.setSize(19,19);
             circleNode.setLocation(nodeX+5,nodeY+5);
             circleNode.fillColor='192,223,246';
             circleNode.font='12px Consolas';
-            circleNode.setImage('./images/alertIcon.png');
-            // circleNode.text=num;
-            // circleNode.textOffsetY=-2;
-            // circleNode.textPosition = "Middle_Center";
-            // circleNode.fontColor = '63,123,189';
+            var alertImgName=null;
+            switch (alertLevel){
+                case "0":
+                    //正常
+                    circleNode.visible=false;
+                    break;
+                case "1":
+                    //没数据
+                    circleNode.setImage('./images/alertIcon.png');
+                    break;
+                case "2":
+                    //黄色告警
+                    circleNode.setImage('./images/alertIcon2.png');
+                    JTopo.util.nodeFlash(circleNode,true,true,[203,203,203],[244,102,58]);//node,isChangeColor,isFlash,originColor,changeColor
+                     break;
+                case "3":
+                    //红色告警
+                    circleNode.setImage('./images/alertIcon2.png');
+                    JTopo.util.nodeFlash(circleNode,true,true,[203,203,203],[222,81,69]);
+                    break;
+            }
+
             circleNode.parentType = 'containerNode';
+
 
 
             //容器标题文字

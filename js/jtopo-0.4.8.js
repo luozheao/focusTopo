@@ -569,11 +569,35 @@
             },
             creatId:function () {
                 return "front" + (new Date).getTime()+Math.round(Math.random()*1000000);
-            }
+            },
+            nodeFlash:function (node,isChangeColor,isFlash,originColor,changeColor) {
+                //结点闪动
+                node.fillAlarmForChangeColor=originColor;
+                node.alarm=isChangeColor?"true":null;
+                node.fillAlarmNode=changeColor;
+                node.setImage('changeColor');
+                clearInterval(node.flashT);
+
+                if(isChangeColor&&isFlash){
+                    //闪动
+                    var i=1;
+                    var tag=null;
+                    node.flashT=setInterval(function () {
+                        tag=  ++i%2;
+                        node.alarm=tag?"true":null;
+                        if(JTopo.flag.clearAllAnimateT){
+                            clearInterval(node.flashT);
+                        }
+                    },1000)
+                }
+            },
         },
-        JTopo.flag={
-            clearAllAnimateT:false
-        },
+            JTopo.flag = {
+                clearAllAnimateT: false,
+                imageUrl: "./images/",
+                graphics: graphics,
+                curScene: null
+            },
             window.$for = $for,
             window.$foreach = $foreach
     }(JTopo),
@@ -2026,7 +2050,8 @@
                     this.alarmColor="255,0,0";
                     this.fillAlarmNode=[255,0,0];
                     this.fillAlarmForChangeColor=null;
-                    this.showAlarm=false;
+
+                    this.showAlarmText=false;
                     this.keepChangeColor=false;//true则保持改变后的颜色不变
                     this.dragable = !0,
                     this.textPosition = "Bottom_Center",
@@ -2075,7 +2100,7 @@
                             this.paintAlarmText(a)
                     },
                 this.paintAlarmText = function(a) {
-                    if (null != this.alarm && "" != this.alarm&&this.showAlarm) {
+                    if (null != this.alarm && "" != this.alarm&&this.showAlarmText) {
                         var b = this.alarmColor
                             , c = this.alarmAlpha || .5;
                         a.beginPath(),
