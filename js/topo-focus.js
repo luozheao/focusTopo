@@ -27,7 +27,7 @@ dataManager.getTopoData=function (callback) {
                },
                {
               "id": '102',
-              "json":'{"imgName":"testIcon","alertLevel":3,"name":"业务系统","msgArr":[["CPU","0.122"],["MEM","0.9"],["Incoming","6.72GB|2GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
+              "json":'{"imgName":"testIcon","alertLevel":2,"name":"业务系统","msgArr":[["CPU","0.122"],["MEM","0.9"],["Incoming","6.72GB|2GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
              }
            ],
 
@@ -37,7 +37,7 @@ dataManager.getTopoData=function (callback) {
                    "from_id": "100",
                    "to_id": "101",
                    "id": "1000",
-                   "json":"{elementType:'link',text:'我是线条名字'}"
+                   "json":"{elementType:'link',text:'我是线条名字',fontColor:'237,165,72'}"
                }
            ]
        }
@@ -175,13 +175,13 @@ canvasManager.userDefinedNodes=[
                     break;
                 case "2":
                     //黄色告警
-                    circleNode.setImage('./images/alertIcon2.png');
-                    JTopo.util.nodeFlash(circleNode,true,true,[203,203,203],[244,102,58]);//node,isChangeColor,isFlash,originColor,changeColor
-                     break;
+                    circleNode.setImage('./images/alertIcon.png');
+                    JTopo.util.nodeFlash(circleNode,true,true,[202,202,202],[244,102,58]);//node,isChangeColor,isFlash,originColor,changeColor
+                    break;
                 case "3":
                     //红色告警
                     circleNode.setImage('./images/alertIcon2.png');
-                    JTopo.util.nodeFlash(circleNode,true,true,[203,203,203],[222,81,69]);
+                    JTopo.util.nodeFlash(circleNode,true,true,[202,202,202],[222,81,69]);
                     break;
             }
 

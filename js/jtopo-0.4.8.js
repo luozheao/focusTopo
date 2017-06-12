@@ -576,7 +576,7 @@
                 node.alarm=isChangeColor?"true":null;
                 node.fillAlarmNode=changeColor;
                 node.setImage('changeColor');
-                clearInterval(node.flashT);
+                node.flashT&&clearInterval(node.flashT);
 
                 if(isChangeColor&&isFlash){
                     //闪动
@@ -2283,15 +2283,17 @@
                     var d = this;
                     if (b=='changeColor') {
                         d.image&&(d.image.alarm=a.util.getImageAlarm(d.image,null,d.fillAlarmNode,d.fillAlarmForChangeColor));
-                    }
+                     }
                     else if("string" == typeof b){
                         //var e = j[b];//不能用缓存，j为作用域较大，每次切换都不会清空
                         var e=null;
+
                         null == e ? (e = new Image,
                                     e.src = b,
                                     e.onload = function() {
                                         j[b] = e,
                                         1 == c && d.setSize(e.width, e.height);
+
                                         var f = a.util.getImageAlarm(e,null,d.fillAlarmNode,d.fillAlarmForChangeColor);
                                         f && (e.alarm = f),
                                             d.image = e
