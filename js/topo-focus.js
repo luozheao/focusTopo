@@ -19,11 +19,11 @@ dataManager.getTopoData=function (callback) {
            "nodes": [
                {
                    "id": "100",
-                   "json":"{x:100,y:100,elementType:'node',text:'cluster'}"
+                   "json":"{x:100,y:100,width:52,height:52,elementType:'node',text:'cluster',imgName:'ActiveMQ'}"
                },
                {
                    "id": "101",
-                   "json":"{x:150,y:150,elementType:'node'}"
+                   "json":"{x:250,y:250,width:52,height:52,elementType:'node',imgName:'ActiveMQ'}"
                },
                {
               "id": '102',
@@ -62,6 +62,7 @@ canvasManager.nodeEvent={
                       "top":e.pageY-75
                   }).show();
              }
+             console.log(e.target);
          },
         mousemove:null,
         mouseout:null,
@@ -77,6 +78,7 @@ canvasManager.linkEvent={
                 "top":e.pageY-75
             }).show();
         }
+        console.log(e.target);
     },
         mouseover:null,
         mouseout:null,
@@ -175,13 +177,13 @@ canvasManager.userDefinedNodes=[
                     break;
                 case "2":
                     //黄色告警
-                    circleNode.setImage('./images/alertIcon.png');
-                    JTopo.util.nodeFlash(circleNode,true,true,[202,202,202],[244,102,58]);//node,isChangeColor,isFlash,originColor,changeColor
+                    circleNode.setImage('./images/alertIcon2.png');
+                   JTopo.util.nodeFlash(circleNode,true,true,[202,202,202],[244,102,58]);//node,isChangeColor,isFlash,originColor,changeColor
                     break;
                 case "3":
                     //红色告警
                     circleNode.setImage('./images/alertIcon2.png');
-                    JTopo.util.nodeFlash(circleNode,true,true,[202,202,202],[222,81,69]);
+                     JTopo.util.nodeFlash(circleNode,true,true,[202,202,202],[222,81,69]);
                     break;
             }
 
@@ -398,6 +400,7 @@ var setDragIcon=function () {
      var data=getDragData();
      var html=showDragIcon(data);
      $('.iconContainer .basicIconTag').html(html);
+
 }
 /************执行*************/
 setDragIcon();

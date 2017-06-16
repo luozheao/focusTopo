@@ -1,7 +1,7 @@
-    //全局
-    !function(window) {
+//全局
+!function(window) {
     function Element() {
-            this.initialize = function() {
+        this.initialize = function() {
             this.elementType = "element",
                 this.serializedProperties = ["elementType"],
                 this.propertiesStack = [],
@@ -17,7 +17,7 @@
                 return this
             },
             this.save = function() {
-                 //this可以是scene、node、link，每次save只保留自身的数据，创建时的状态不能保存
+                //this可以是scene、node、link，每次save只保留自身的数据，创建时的状态不能保存
                 var a = this
                     , b = {};
                 this.serializedProperties.forEach(function(c) {
@@ -47,40 +47,40 @@
                     b += "}"
             }
     }
-        CanvasRenderingContext2D.prototype.JTopoRoundRect = function(a, b, c, d, e,f) {
-       //f表示边框为虚线
-            if(f){
-                "undefined" == typeof e && (e = 5),
-                    this.beginPath(),
-                    // this.moveTo(a + e, b),
-                    // this.lineTo(a + c - e, b),
-                    this.JTopoDashedLineTo(a + e, b,a + c - e, b),
-                    this.quadraticCurveTo(a + c, b, a + c, b + e),
-                    //this.lineTo(a + c, b + d - e),
-                    this.JTopoDashedLineTo(a + c, b + e,a + c, b + d - e),
-                    this.quadraticCurveTo(a + c, b + d, a + c - e, b + d),
-                    //this.lineTo(a + e, b + d),
-                    this.JTopoDashedLineTo(a + c - e, b + d,a + e, b + d),
-                    this.quadraticCurveTo(a, b + d, a, b + d - e),
-                   // this.lineTo(a, b + e),
-                    this.JTopoDashedLineTo(a, b + d - e,a, b + e),
-                    this.quadraticCurveTo(a, b, a + e, b),
-                    this.JTopoDashedLineTo(a, b, a + e, b),
-                    this.closePath()
-            }else {
-                "undefined" == typeof e && (e = 5),
-                    this.beginPath(),
-                    this.moveTo(a + e, b),
-                    this.lineTo(a + c - e, b),
-                    this.quadraticCurveTo(a + c, b, a + c, b + e),
-                    this.lineTo(a + c, b + d - e),
-                    this.quadraticCurveTo(a + c, b + d, a + c - e, b + d),
-                    this.lineTo(a + e, b + d),
-                    this.quadraticCurveTo(a, b + d, a, b + d - e),
-                    this.lineTo(a, b + e),
-                    this.quadraticCurveTo(a, b, a + e, b),
-                    this.closePath()
-            }
+    CanvasRenderingContext2D.prototype.JTopoRoundRect = function(a, b, c, d, e,f) {
+        //f表示边框为虚线
+        if(f){
+            "undefined" == typeof e && (e = 5),
+                this.beginPath(),
+                // this.moveTo(a + e, b),
+                // this.lineTo(a + c - e, b),
+                this.JTopoDashedLineTo(a + e, b,a + c - e, b),
+                this.quadraticCurveTo(a + c, b, a + c, b + e),
+                //this.lineTo(a + c, b + d - e),
+                this.JTopoDashedLineTo(a + c, b + e,a + c, b + d - e),
+                this.quadraticCurveTo(a + c, b + d, a + c - e, b + d),
+                //this.lineTo(a + e, b + d),
+                this.JTopoDashedLineTo(a + c - e, b + d,a + e, b + d),
+                this.quadraticCurveTo(a, b + d, a, b + d - e),
+                // this.lineTo(a, b + e),
+                this.JTopoDashedLineTo(a, b + d - e,a, b + e),
+                this.quadraticCurveTo(a, b, a + e, b),
+                this.JTopoDashedLineTo(a, b, a + e, b),
+                this.closePath()
+        }else {
+            "undefined" == typeof e && (e = 5),
+                this.beginPath(),
+                this.moveTo(a + e, b),
+                this.lineTo(a + c - e, b),
+                this.quadraticCurveTo(a + c, b, a + c, b + e),
+                this.lineTo(a + c, b + d - e),
+                this.quadraticCurveTo(a + c, b + d, a + c - e, b + d),
+                this.lineTo(a + e, b + d),
+                this.quadraticCurveTo(a, b + d, a, b + d - e),
+                this.lineTo(a, b + e),
+                this.quadraticCurveTo(a, b, a + e, b),
+                this.closePath()
+        }
     },
         CanvasRenderingContext2D.prototype.JTopoDashedLineTo = function(a, b, c, d, e) {
             "undefined" == typeof e && (e = 5);
@@ -91,32 +91,32 @@
             this.stroke()
         },
         CanvasRenderingContext2D.prototype.JtopoDrawPointPath = function (a, b, c, d, e, f) {
-                var animespeed = (new Date()) / 10;
-                var xs = c - a,
-                    xy = d - b,
-                    l = Math.floor(Math.sqrt(xs * xs + xy * xy)),
-                    colorlength = 50,
-                    j = l;
-                    xl = xs / l,
-                    yl = xy / l;
-                var colorpoint = animespeed % (l + colorlength) - colorlength;
-                for (var i = 0; i < j; i++) {
-                    if (((i) > colorpoint) && ((i) < (colorpoint + colorlength))) {
-                        this.beginPath();
-                        this.strokeStyle = e;
-                        this.moveTo(a + (i - 1) * xl, b + (i - 1) * yl);
-                        this.lineTo(a + i * xl, b + i * yl);
-                        this.stroke();
-                    }
-                    else {
-                        this.beginPath();
-                        this.strokeStyle = f;
-                        this.moveTo(a + (i - 1) * xl, b + (i - 1) * yl);
-                        this.lineTo(a + i * xl, b + i * yl)
-                        this.stroke();
-                    }
+            var animespeed = (new Date()) / 10;
+            var xs = c - a,
+                xy = d - b,
+                l = Math.floor(Math.sqrt(xs * xs + xy * xy)),
+                colorlength = 50,
+                j = l;
+            xl = xs / l,
+                yl = xy / l;
+            var colorpoint = animespeed % (l + colorlength) - colorlength;
+            for (var i = 0; i < j; i++) {
+                if (((i) > colorpoint) && ((i) < (colorpoint + colorlength))) {
+                    this.beginPath();
+                    this.strokeStyle = e;
+                    this.moveTo(a + (i - 1) * xl, b + (i - 1) * yl);
+                    this.lineTo(a + i * xl, b + i * yl);
+                    this.stroke();
                 }
-            },//拓展byluozheao
+                else {
+                    this.beginPath();
+                    this.strokeStyle = f;
+                    this.moveTo(a + (i - 1) * xl, b + (i - 1) * yl);
+                    this.lineTo(a + i * xl, b + i * yl)
+                    this.stroke();
+                }
+            }
+        },//拓展byluozheao
         JTopo = {
             version: "0.4.8",
             zIndex_Container: 1,
@@ -196,17 +196,17 @@
                     if (null != e)
                         for (var f = 0; f < e.length; f++)
                             d ? !function(a, b) {
-                                    setTimeout(function() {
-                                        a(b)
-                                    }, 10)
-                                }(e[f], c) : e[f](c)
+                                setTimeout(function() {
+                                    a(b)
+                                }, 10)
+                            }(e[f], c) : e[f](c)
                 }
         }
         function getDistance(a, b, c, d) {
             var e, f;
             return null == c && null == d ? (e = b.x - a.x,
-                    f = b.y - a.y) : (e = c - a,
-                    f = d - b),
+                f = b.y - a.y) : (e = c - a,
+                f = d - b),
                 Math.sqrt(e * e + f * f)
         }
         function getElementsBound(a) {
@@ -390,7 +390,7 @@
         function changeColor(a, b, c, d, e,c1,d1,e1) {
             var f = canvas.width = b.width, g = canvas.height = b.height;
             a.clearRect(0, 0, canvas.width, canvas.height),
-            a.drawImage(b, 0, 0);
+                a.drawImage(b, 0, 0);
             for (var h = a.getImageData(0, 0, b.width, b.height), i = h.data, j = 0; f > j; j++) {
                 for (var k = 0; g > k; k++) {
                     var l = 4 * (j + k * f);//第l个像素点
@@ -406,7 +406,7 @@
             var m = canvas.toDataURL();
             // return alarmImageCache[b.src+nodeId] = m,
             //     m
-           return m;
+            return m;
 
         }
 
@@ -420,7 +420,7 @@
                 var c = new Image;
 
                 return f&&m?c.src = changeColor(graphics, a,f[0],f[1],f[2],m[0],m[1],m[2]):c.src = changeColor(graphics, a, b),
-                     //  alarmImageCache[a.src] = c,
+                    //  alarmImageCache[a.src] = c,
                     c
             } catch (d) {}
             return null
@@ -474,13 +474,13 @@
         function intersection(a, b) {
             var c, d;
             return a.k == b.k ? null : (1 / 0 == a.k || a.k == -1 / 0 ? (c = a.x1,
-                        d = b(a.x1)) : 1 / 0 == b.k || b.k == -1 / 0 ? (c = b.x1,
-                            d = a(b.x1)) : (c = (b.b - a.b) / (a.k - b.k),
-                            d = a(c)),
-                    0 == isPointInLineSeg(c, d, a) ? null : 0 == isPointInLineSeg(c, d, b) ? null : {
-                                x: c,
-                                y: d
-                            })
+                d = b(a.x1)) : 1 / 0 == b.k || b.k == -1 / 0 ? (c = b.x1,
+                d = a(b.x1)) : (c = (b.b - a.b) / (a.k - b.k),
+                d = a(c)),
+                0 == isPointInLineSeg(c, d, a) ? null : 0 == isPointInLineSeg(c, d, b) ? null : {
+                    x: c,
+                    y: d
+                })
         }
         function intersectionLineBound(a, b) {
             var c = JTopo.util.lineF(b.left, b.top, b.left, b.bottom), d = JTopo.util.intersection(a, c);
@@ -495,7 +495,7 @@
         requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame || function(a) {
                 setTimeout(a, 1e3 / 24)
             },
-        Array.prototype.del = function(a) {
+            Array.prototype.del = function(a) {
                 if ("number" != typeof a) {
                     for (var b = 0; b < this.length; b++)
                         if (this[b] === a)
@@ -504,22 +504,22 @@
                 }
                 return 0 > a ? this : this.slice(0, a).concat(this.slice(a + 1, this.length))
             },
-        Array.prototype.unique = function(){
-                    this.sort(); //先排序
-                    var res = [this[0]];
-                    for(var i = 1; i < this.length; i++){
-                        if(this[i] !== res[res.length - 1]){
-                            res.push(this[i]);
-                        }
+            Array.prototype.unique = function(){
+                this.sort(); //先排序
+                var res = [this[0]];
+                for(var i = 1; i < this.length; i++){
+                    if(this[i] !== res[res.length - 1]){
+                        res.push(this[i]);
                     }
-                    return res;
-                }, //数组去重方法
+                }
+                return res;
+            }, //数组去重方法
         [].indexOf || (Array.prototype.indexOf = function(a) {
-                for (var b = 0; b < this.length; b++)
-                    if (this[b] === a)
-                        return b;
-                return -1
-            }),
+            for (var b = 0; b < this.length; b++)
+                if (this[b] === a)
+                    return b;
+            return -1
+        }),
         window.console || (window.console = {
             log: function() {},
             info: function() {},
@@ -570,8 +570,13 @@
             creatId:function () {
                 return "front" + (new Date).getTime()+Math.round(Math.random()*1000000);
             },
+            setCurHandUrl: function(url) {
+                JTopo.flag.imageUrl = url;
+                JTopo.MouseCursor.open_hand = "url(" + url + "openhand.cur) 8 8, default";
+                JTopo.MouseCursor.closed_hand = "url(" + url + "closedhand.cur) 8 8, default"
+            },
+            //结点本身图片闪动
             nodeFlash:function (node,isChangeColor,isFlash,originColor,changeColor) {
-                //结点闪动
                 node.fillAlarmForChangeColor=originColor;
                 node.alarm=isChangeColor?"true":null;
                 node.fillAlarmNode=changeColor;
@@ -591,12 +596,44 @@
                     },1000)
                 }
             },
+            //节点左上角图片闪动
+            smallNodeFlash:function (node,isChangeColor,isFlash,originColor,changeColor) {
+                node.smallImageOriginColor=originColor;
+                node.smallImageChangeColor =changeColor;
+                node.smallAlarmImageTag=isChangeColor?"true":null;
+
+                node.setImage('changeSmallImageColor');
+                node.samllflashT&&clearInterval(node.samllflashT);
+
+                if(isChangeColor&&isFlash){
+                    //闪动
+                    var i=1;
+                    var tag=null;
+                    node.samllflashT=setInterval(function () {
+                        tag=  ++i%2;
+                        node.smallAlarmImageTag=tag?"true":null;
+                        if(JTopo.flag.clearAllAnimateT){
+                            clearInterval(node.samllflashT);
+                        }
+                    },1000)
+                }
+            },
+            //获取两点的连线倾斜角度
+            getRotateAng:function (nodeA,nodeZ) {
+                var xs=nodeA.x- nodeZ.x,
+                    xy=nodeA.y- nodeZ.y;
+                return Math.atan(xy/xs)+(xs>0?Math.PI:0);
+            }
         },
             JTopo.flag = {
                 clearAllAnimateT: false,
                 imageUrl: "./images/",
                 graphics: graphics,
-                curScene: null
+                curScene: null,
+                linkConfigure:{
+                    textIsTilt:false,
+                    textIsNearToNodeZ:false
+                }
             },
             window.$for = $for,
             window.$foreach = $foreach
@@ -615,10 +652,10 @@
                     this.exportCanvas.width = a.canvas.width,
                         this.exportCanvas.height = a.canvas.height,
                         null != b && null != c ? (this.exportCanvas.width = b,
-                                this.exportCanvas.height = c,
-                                e = b / d.width,
-                                f = c / d.height) : (d.width > a.canvas.width && (this.exportCanvas.width = d.width),
-                            d.height > a.canvas.height && (this.exportCanvas.height = d.height));
+                            this.exportCanvas.height = c,
+                            e = b / d.width,
+                            f = c / d.height) : (d.width > a.canvas.width && (this.exportCanvas.width = d.width),
+                        d.height > a.canvas.height && (this.exportCanvas.height = d.height));
                     var g = this.exportCanvas.getContext("2d");
                     return a.childs.length > 0 && (g.save(),
                         g.clearRect(0, 0, this.exportCanvas.width, this.exportCanvas.height),
@@ -793,7 +830,7 @@
                         n.dispatchEventToScenes("mousedrag", b),
                         n.dispatchEvent("mousedrag", b),
                     1 == n.eagleEye.visible && n.eagleEye.update()) : (n.dispatchEventToScenes("mousemove", b),
-                        n.dispatchEvent("mousemove", b))
+                    n.dispatchEvent("mousemove", b))
             }
             function j(a) {
                 var b = d(a);
@@ -810,12 +847,12 @@
                 n.dispatchEventToScenes("mousewheel", b),
                     n.dispatchEvent("mousewheel", b),
                 null != n.wheelZoom && (a.preventDefault ? a.preventDefault() : (a = a || window.event,
-                        a.returnValue = !1),
+                    a.returnValue = !1),
                 1 == n.eagleEye.visible && n.eagleEye.update())
             }
             function m(b) {
                 a.util.isIE || !window.addEventListener ?
-                       (b.onmouseout = f,
+                    (b.onmouseout = f,
                         b.onmouseover = e,
                         b.onmousedown = g,
                         b.onmouseup = h,
@@ -827,7 +864,7 @@
                         b.touchmove = i,
                         b.touchend = h)
                     :
-                       (b.addEventListener("mouseout", f),
+                    (b.addEventListener("mouseout", f),
                         b.addEventListener("mouseover", e),
                         b.addEventListener("mousedown", g),
                         b.addEventListener("mouseup", h),
@@ -837,23 +874,23 @@
                         a.util.isFirefox ? b.addEventListener("DOMMouseScroll", l)
                             :
                             b.addEventListener("mousewheel", l)),
-                            window.addEventListener && (window.addEventListener("keydown", function(b) {
+                window.addEventListener && (window.addEventListener("keydown", function(b) {
                     n.dispatchEventToScenes("keydown", a.util.cloneEvent(b));
                     var c = b.keyCode;
                     (37 == c || 38 == c || 39 == c || 40 == c) && (b.preventDefault ? b.preventDefault() : (b = b || window.event,
-                            b.returnValue = !1))
+                        b.returnValue = !1))
                 }, !0),
-                                window.addEventListener("keyup", function(b) {
+                    window.addEventListener("keyup", function(b) {
                         n.dispatchEventToScenes("keyup", a.util.cloneEvent(b));
                         var c = b.keyCode;
                         (37 == c || 38 == c || 39 == c || 40 == c) && (b.preventDefault ? b.preventDefault() : (b = b || window.event,
-                                b.returnValue = !1))
+                            b.returnValue = !1))
                     }, !0))
             }
             a.stage = this;
             var n = this;
             this.initialize = function(c) {
-                    m(c),//添加事件
+                m(c),//添加事件
                     this.canvas = c,
                     this.graphics = c.getContext("2d"),
                     this.childs = [],
@@ -870,7 +907,7 @@
             },
             null != c && this.initialize(c);
             var o = !0, p = null;
-                document.oncontextmenu = function() {
+            document.oncontextmenu = function() {
                 return o
             },
                 this.dispatchEventToScenes = function(a, b) {
@@ -930,7 +967,7 @@
                 }
             ;
             var q = "click,dbclick,mousedown,mouseup,mouseover,mouseout,mousemove,mousedrag,mousewheel,touchstart,touchmove,touchend,keydown,keyup".split(","), r = this;
-                q.forEach(function(a) {
+            q.forEach(function(a) {
                 r[a] = function(b) {
                     null != b ? this.addEventListener(a, b) : this.dispatchEvent(a)
                 }
@@ -990,7 +1027,7 @@
                     this.childs.forEach(function(d) {
                         var e = a - c.canvas.width / 2
                             ,f = b - c.canvas.height / 2;
-                            d.translateX = -e,
+                        d.translateX = -e,
                             d.translateY = -f
                     })
                 },
@@ -1037,8 +1074,8 @@
                 },
                 function() {
                     0 == n.frames ? setTimeout(arguments.callee, 100) : n.frames < 0 ? (n.repaint(),
-                                setTimeout(arguments.callee, 1e3 / -n.frames)) : (n.repaint(),
-                                setTimeout(arguments.callee, 1e3 / n.frames))
+                        setTimeout(arguments.callee, 1e3 / -n.frames)) : (n.repaint(),
+                        setTimeout(arguments.callee, 1e3 / n.frames))
                 }(),
                 setTimeout(function() {
                     n.mousewheel(function(a) {
@@ -1090,8 +1127,9 @@
                 }
             }
             var e = this;
+            JTopo.flag.curScene = this;
             /********************scene属性定制************************************/
-                this.initialize = function() {
+            this.initialize = function() {
                 b.prototype.initialize.apply(this, arguments),
                     this.messageBus = new a.util.MessageBus,
                     this.elementType = "scene",
@@ -1127,7 +1165,7 @@
                 this.addTo = function(a) {
                     this.stage !== a && null != a && (this.stage = a)
                 },
-                null != c && (c.add(this),
+            null != c && (c.add(this),
                 this.addTo(c)),
                 this.show = function() {
                     this.visible = !0
@@ -1158,9 +1196,9 @@
                 },
                 this.paintBackgroud = function(a) {
                     null != this.background ? a.drawImage(this.background, 0, 0, a.canvas.width, a.canvas.height) : (a.beginPath(),
-                            a.fillStyle = "rgba(" + this.backgroundColor + "," + this.alpha + ")",
-                            a.fillRect(0, 0, a.canvas.width, a.canvas.height),
-                            a.closePath())
+                        a.fillStyle = "rgba(" + this.backgroundColor + "," + this.alpha + ")",
+                        a.fillRect(0, 0, a.canvas.width, a.canvas.height),
+                        a.closePath())
                 },
                 this.getDisplayedElements = function() {
                     for (var a = [], b = 0; b < this.zIndexArray.length; b++)
@@ -1209,7 +1247,7 @@
                         , f = {
                         translateX: this.translateX + (d - d * this.scaleX),
                         translateY: this.translateY + (e - e * this.scaleY)
-                    }; 
+                    };
                     return f
                 },//获取相对位移
                 this.isVisiable = function(b) {
@@ -1378,7 +1416,7 @@
                             if (0 != d.dragable) {
                                 var e = a.util.clone(b);
                                 e.target = d,
-                                d.mousedragHandler(e)
+                                    d.mousedragHandler(e)
                             }
                         }
                 },
@@ -1393,14 +1431,14 @@
                             :
                             this.dragElements(c):
                         this.mode == a.SceneMode.drag ?
-                                1 == this.translate && (this.stage.cursor = a.MouseCursor.closed_hand,
+                            1 == this.translate && (this.stage.cursor = a.MouseCursor.closed_hand,
                                 this.translateX = this.lastTranslateX + c.dx,
                                 this.translateY = this.lastTranslateY + c.dy)
                             :
                             this.mode == a.SceneMode.select ?
-                                 null != this.currentElement ? 1 == this.currentElement.dragable && this.dragElements(c)
-                                     :
-                                     1 == this.areaSelect && this.areaSelectHandle(c)
+                                null != this.currentElement ? 1 == this.currentElement.dragable && this.dragElements(c)
+                                    :
+                                    1 == this.areaSelect && this.areaSelectHandle(c)
                                 :
                                 this.mode == a.SceneMode.edit && (null == this.currentElement || this.currentElement instanceof a.Link ?
                                     1 == this.translate && (this.stage.cursor = a.MouseCursor.closed_hand,
@@ -1408,7 +1446,7 @@
                                         this.translateY = this.lastTranslateY + c.dy)
                                     :
                                     this.dragElements(c)),
-                                    this.dispatchEvent("mousedrag", c)
+                        this.dispatchEvent("mousedrag", c)
                 },
                 this.areaSelectHandle = function(a) {
                     var b = a.offsetLeft
@@ -1447,17 +1485,17 @@
                     this.mode == a.SceneMode.normal ? this.stage.cursor = a.MouseCursor.normal : this.mode == a.SceneMode.select && (this.stage.cursor = a.MouseCursor.normal);
                     var d = e.getElementByXY(c.x, c.y);
                     null != d ? (e.mouseOverelement && e.mouseOverelement !== d && (c.target = d,
-                            e.mouseOverelement.mouseoutHandler(c)),
-                            e.mouseOverelement = d,
-                            0 == d.isMouseOver ? (c.target = d,
-                                    d.mouseoverHandler(c),
-                                    e.dispatchEvent("mouseover", c)) : (c.target = d,
-                                    d.mousemoveHandler(c),
-                                    e.dispatchEvent("mousemove", c))) : e.mouseOverelement ? (c.target = d,
-                                e.mouseOverelement.mouseoutHandler(c),
-                                e.mouseOverelement = null,
-                                e.dispatchEvent("mouseout", c)) : (c.target = null,
-                                e.dispatchEvent("mousemove", c))
+                        e.mouseOverelement.mouseoutHandler(c)),
+                        e.mouseOverelement = d,
+                        0 == d.isMouseOver ? (c.target = d,
+                            d.mouseoverHandler(c),
+                            e.dispatchEvent("mouseover", c)) : (c.target = d,
+                            d.mousemoveHandler(c),
+                            e.dispatchEvent("mousemove", c))) : e.mouseOverelement ? (c.target = d,
+                        e.mouseOverelement.mouseoutHandler(c),
+                        e.mouseOverelement = null,
+                        e.dispatchEvent("mouseout", c)) : (c.target = null,
+                        e.dispatchEvent("mousemove", c))
                 },
                 this.mouseoverHandler = function(a) {
                     var b = this.toSceneEvent(a);
@@ -1476,7 +1514,7 @@
                 this.dbclickHandler = function(a) {
                     var b = this.toSceneEvent(a);
                     this.currentElement ? (b.target = this.currentElement,
-                            this.currentElement.dbclickHandler(b)) : e.cancelAllSelected(),
+                        this.currentElement.dbclickHandler(b)) : e.cancelAllSelected(),
                         this.dispatchEvent("dbclick", b)
                 },
                 this.mousewheelHandler = function(a) {
@@ -1635,12 +1673,12 @@
                 }
             }
         }),
-        a.Scene = b
+            a.Scene = b
     }(JTopo),
-    //displayElement的具体实现，挂载在jTopo上
+    //displayElement的具体实现,包含所有元素默认展示属性，挂载在jTopo上
     function(a) {
         function b() {
-               this.initialize = function() {
+            this.initialize = function() {
                 b.prototype.initialize.apply(this, arguments),
                     this.elementType = "displayElement",
                     this.x = 0,
@@ -1654,7 +1692,7 @@
                     this.scaleY = 1,
                     this.strokeColor = "22,124,255",
                     this.borderColor = "22,124,255",
-                    this.fillColor = "22,124,255",
+                    this.fillColor = "255,255,255",
                     this.shadow = !1,
                     this.shadowBlur = 5,
                     this.shadowColor = "rgba(0,0,0,0.5)",
@@ -1740,36 +1778,36 @@
                 this.getPosition = function(a) {
                     var b, c = this.getBound();
                     return "Top_Left" == a ? b = {
-                            x: c.left,
-                            y: c.top
-                        } : "Top_Center" == a ? b = {
-                                x: this.cx,
-                                y: c.top
-                            } : "Top_Right" == a ? b = {
-                                    x: c.right,
-                                    y: c.top
-                                } : "Middle_Left" == a ? b = {
-                                        x: c.left,
-                                        y: this.cy
-                                    } : "Middle_Center" == a ? b = {
-                                            x: this.cx,
-                                            y: this.cy
-                                        } : "Middle_Right" == a ? b = {
-                                                x: c.right,
-                                                y: this.cy
-                                            } : "Bottom_Left" == a ? b = {
-                                                    x: c.left,
-                                                    y: c.bottom
-                                                } : "Bottom_Center" == a ? b = {
-                                                        x: this.cx,
-                                                        y: c.bottom
-                                                    } : "Bottom_Top" == a ? b = {
-                                                            x: this.cx,
-                                                            y: c.bottom
-                                                        } :"Bottom_Right" == a && (b = {
-                                                        x: c.right,
-                                                        y: c.bottom
-                                                    }),
+                        x: c.left,
+                        y: c.top
+                    } : "Top_Center" == a ? b = {
+                        x: this.cx,
+                        y: c.top
+                    } : "Top_Right" == a ? b = {
+                        x: c.right,
+                        y: c.top
+                    } : "Middle_Left" == a ? b = {
+                        x: c.left,
+                        y: this.cy
+                    } : "Middle_Center" == a ? b = {
+                        x: this.cx,
+                        y: this.cy
+                    } : "Middle_Right" == a ? b = {
+                        x: c.right,
+                        y: this.cy
+                    } : "Bottom_Left" == a ? b = {
+                        x: c.left,
+                        y: c.bottom
+                    } : "Bottom_Center" == a ? b = {
+                        x: this.cx,
+                        y: c.bottom
+                    } : "Bottom_Top" == a ? b = {
+                        x: this.cx,
+                        y: c.bottom
+                    } :"Bottom_Right" == a && (b = {
+                            x: c.right,
+                            y: c.bottom
+                        }),
                         b
                 }
         }
@@ -1854,7 +1892,7 @@
                 },
                 this.dispatchEvent = function(a, b) {
                     return this.messageBus ? (this.messageBus.publish(a, b),
-                            this) : null
+                        this) : null
                 },
                 this.removeEventListener = function(a) {
                     this.messageBus.unsubscribe(a)
@@ -1944,7 +1982,7 @@
                     if (null == this.selectedPoint) {
                         var b = this.selectedLocation.x + a.dx
                             ,c = this.selectedLocation.y + a.dy;
-                            this.setLocation(b, c),//tag:节点拖动时设置位置
+                        this.setLocation(b, c),//tag:节点拖动时设置位置
                             this.dispatchEvent("mousedrag", a)
                     } else {
                         if ("Top_Left" == this.selectedPoint) {
@@ -2034,71 +2072,85 @@
     //node的具体实现（包括textNode和linkNode、CircleNode、AnimateNode）
     function(a) {
         function b(c) {
-                this.initialize = function(c) {
+            this.initialize = function(c) {
                 b.prototype.initialize.apply(this, arguments),
                     this.elementType = "node",
                     this.zIndex = a.zIndex_Node,
                     this.text = c,
                     this.nodeFn=null,
                     this.textBreakNumber=5;
-                    this.textLineHeight=15;
-                    this.font = "12px Consolas",
+                this.textLineHeight=15;
+                this.font = "12px Consolas",
                     this.fontColor = "85,85,85",
                     this.borderWidth = 0,
                     this.borderColor = "255,255,255",
                     this.borderRadius = null,
                     this.alarmColor="255,0,0";
-                    this.fillAlarmNode=[255,0,0];
-                    this.fillAlarmForChangeColor=null;
-
-                    this.showAlarmText=false;
-                    this.keepChangeColor=false;//true则保持改变后的颜色不变
-                    this.dragable = !0,
+                this.fillAlarmNode=[255,0,0];
+                this.fillAlarmForChangeColor=null;
+                this.showAlarmText=false;
+                this.keepChangeColor=false;//true则保持改变后的颜色不变
+                this.dragable = !0,
                     this.textPosition = "Bottom_Center",
                     this.textOffsetX = 0,
                     this.textOffsetY = 0,
                     this.transformAble = !0,
                     this.inLinks = null,
                     this.outLinks = null;
-                    this.linearGradient=null;
-                    this.colorStop=null;
+                this.linearGradient=null;
+                this.colorStop=null;
+                this.smallAlarmImage_w=20;
+                this.smallAlarmImage_h=20;
+                this.smallAlarmImageTag=false;
+                 this.smallAlarmImageObj=null;
+                 this.smallAlarmImageChangeObj=null;
+                this.smallImageOriginColor=[255,0,0];
+                this.smallImageChangeColor=null;
+
+
+
+
                 var d = "text,font,fontColor,textPosition,textOffsetX,textOffsetY,borderRadius".split(",");
                 this.serializedProperties = this.serializedProperties.concat(d)
             },
                 this.initialize(c),
-                    this.paint = function(a) {
-                        if (this.image) {
-                            var b = a.globalAlpha;
-                            a.globalAlpha = this.alpha,
-                                this.keepChangeColor?(
-                                    a.drawImage(this.image.alarm, -this.width / 2, -this.height / 2, this.width, this.height)
-                                ):(
-                                    null != this.image.alarm && null != this.alarm ? a.drawImage(this.image.alarm, -this.width / 2, -this.height / 2, this.width, this.height) : a.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height)
-                                ),
-                                a.globalAlpha = b
-                        } else{
-                            a.beginPath(),
-                                a.fillStyle ="rgba(" + this.fillColor + "," + this.alpha + ")",
-                                null == this.borderRadius || 0 == this.borderRadius ? a.rect(-this.width / 2, -this.height / 2, this.width, this.height) : a.JTopoRoundRect(-this.width / 2, -this.height / 2, this.width, this.height, this.borderRadius),
-                                a.fill();
-                        }
-                        if(this.linearGradient) {
-                            var kVal = this.kVal;
-                            var grd = a.createLinearGradient(this.linearGradient[0], this.linearGradient[1], this.linearGradient[2]*kVal, this.linearGradient[3])
-                            for (var grdCount = 0; grdCount < this.colorStop.length / 2; grdCount++) {
-                                grd.addColorStop(this.colorStop[grdCount * 2], this.colorStop[grdCount * 2 + 1]);
-                            }
-                            a.fillStyle = grd;
-                            null == this.borderRadius || 0 == this.borderRadius ? a.rect(-this.width / 2, -this.height / 2, this.width*kVal, this.height) : a.JTopoRoundRect(-this.width / 2, -this.height / 2, this.width*kVal, this.height,kVal<0.03?0:this.borderRadius);
-                            a.fill();
+                this.paint = function(a) {
 
+                    if (this.image) {
+                        var b = a.globalAlpha;
+                        a.globalAlpha = this.alpha,
+                            this.keepChangeColor?(
+                                a.drawImage(this.image.alarm, -this.width / 2, -this.height / 2, this.width, this.height)
+                            ):(
+                                null != this.image.alarm && null != this.alarm ? a.drawImage(this.image.alarm, -this.width / 2, -this.height / 2, this.width, this.height) : a.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height)
+                            ),
+                            a.globalAlpha = b;
+                        this.paintAlarmImage(a);
+                    } else{
+                        a.beginPath(),
+                            a.fillStyle ="rgba(" + this.fillColor + "," + this.alpha + ")",
+                            null == this.borderRadius || 0 == this.borderRadius ? a.rect(-this.width / 2, -this.height / 2, this.width, this.height) : a.JTopoRoundRect(-this.width / 2, -this.height / 2, this.width, this.height, this.borderRadius),
+                            a.fill();
+                    }
+                    if(this.linearGradient) {
+                        var kVal = this.kVal;
+                        var grd = a.createLinearGradient(this.linearGradient[0], this.linearGradient[1], this.linearGradient[2]*kVal, this.linearGradient[3])
+                        for (var grdCount = 0; grdCount < this.colorStop.length / 2; grdCount++) {
+                            grd.addColorStop(this.colorStop[grdCount * 2], this.colorStop[grdCount * 2 + 1]);
                         }
-                        a.closePath();
-                        this.paintText(a),
-                            this.paintBorder(a),
-                            this.paintCtrl(a),
-                            this.paintAlarmText(a)
-                    },
+                        a.fillStyle = grd;
+                        null == this.borderRadius || 0 == this.borderRadius ? a.rect(-this.width / 2, -this.height / 2, this.width*kVal, this.height) : a.JTopoRoundRect(-this.width / 2, -this.height / 2, this.width*kVal, this.height,kVal<0.03?0:this.borderRadius);
+                        a.fill();
+
+                    }
+                    a.closePath();
+
+                    this.paintText(a),
+                        this.paintBorder(a),
+                        this.paintCtrl(a),
+                        this.paintAlarmText(a)
+
+                },
                 this.paintAlarmText = function(a) {
                     if (null != this.alarm && "" != this.alarm&&this.showAlarmText) {
                         var b = this.alarmColor
@@ -2130,6 +2182,24 @@
                             a.fillStyle = "rgba(" + this.fontColor + ", " + this.alpha + ")",//告警文字颜色
                             a.fillText(this.alarm, f + 16.5, g + e - 4),
                             a.closePath()
+                    }
+                },
+                //luozheao20170616
+                this.paintAlarmImage=function (a) {
+                     //this.smallAlarmImageTag  是否开启告警图片变色
+                     //this.smallAlarmImage  告警图片名称
+                     //smallAlarmImage_w,smallAlarmImage_h   你猜这是什么
+                    //this.smallAlarmImageObj 为告警图片对象
+                    //this.smallAlarmImageChangeObj 为告警变色图片对象
+                    if (null != this.smallAlarmImageObj && "" != this.smallAlarmImageObj) {
+                        var b = a.globalAlpha;
+                        a.globalAlpha = this.alpha,
+                         this.smallAlarmImageChangeObj&&this.smallAlarmImageTag
+                            ?
+                            a.drawImage(this.smallAlarmImageChangeObj, -this.width / 2, -this.height / 2, this.smallAlarmImage_w, this.smallAlarmImage_h)
+                            :
+                            a.drawImage(this.smallAlarmImageObj , -10-this.width / 2, -this.height / 2, this.smallAlarmImage_w, this.smallAlarmImage_h),
+                        a.globalAlpha = b
                     }
                 },
                 this.paintText = function(a) {
@@ -2242,37 +2312,37 @@
                 this.getTextPostion = function(a, b, c) {
                     var d = null;
                     return null == a || "Bottom_Center" == a ? d = {
-                            x: -this.width / 2 + (this.width - b) / 2,
-                            y: this.height / 2 + c
-                        } :"Bottom_Top" == a ? d = {
-                                x: -this.width / 2 + (this.width - b) / 2,
-                                // y: this.height / 2 + c
-                                y:  c
-                            } : "Top_Center" == a ? d = {
-                                x: -this.width / 2 + (this.width - b) / 2,
-                                y: -this.height / 2 - c / 2
-                            } : "Top_Right" == a ? d = {
-                                    x: this.width / 2,
-                                    y: -this.height / 2 - c / 2
-                                } : "Top_Left" == a ? d = {
-                                        x: -this.width / 2 - b,
-                                        y: -this.height / 2 - c / 2
-                                    } : "Bottom_Right" == a ? d = {
-                                            x: this.width / 2,
-                                            y: this.height / 2 + c
-                                        } : "Bottom_Left" == a ? d = {
-                                                x: -this.width / 2 - b,
-                                                y: this.height / 2 + c
-                                            } : "Middle_Center" == a ? d = {
-                                                    x: -this.width / 2 + (this.width - b) / 2,
-                                                    y: c / 2
-                                                } : "Middle_Right" == a ? d = {
-                                                        x: this.width / 2,
-                                                        y: c / 2
-                                                    } : "Middle_Left" == a && (d = {
-                                                        x: -this.width / 2 - b,
-                                                        y: c / 2
-                                                    }),
+                        x: -this.width / 2 + (this.width - b) / 2,
+                        y: this.height / 2 + c
+                    } :"Bottom_Top" == a ? d = {
+                        x: -this.width / 2 + (this.width - b) / 2,
+                        // y: this.height / 2 + c
+                        y:  c
+                    } : "Top_Center" == a ? d = {
+                        x: -this.width / 2 + (this.width - b) / 2,
+                        y: -this.height / 2 - c / 2
+                    } : "Top_Right" == a ? d = {
+                        x: this.width / 2,
+                        y: -this.height / 2 - c / 2
+                    } : "Top_Left" == a ? d = {
+                        x: -this.width / 2 - b,
+                        y: -this.height / 2 - c / 2
+                    } : "Bottom_Right" == a ? d = {
+                        x: this.width / 2,
+                        y: this.height / 2 + c
+                    } : "Bottom_Left" == a ? d = {
+                        x: -this.width / 2 - b,
+                        y: this.height / 2 + c
+                    } : "Middle_Center" == a ? d = {
+                        x: -this.width / 2 + (this.width - b) / 2,
+                        y: c / 2
+                    } : "Middle_Right" == a ? d = {
+                        x: this.width / 2,
+                        y: c / 2
+                    } : "Middle_Left" == a && (d = {
+                            x: -this.width / 2 - b,
+                            y: c / 2
+                        }),
                     null != this.textOffsetX && (d.x += this.textOffsetX),
                     null != this.textOffsetY && (d.y += this.textOffsetY),
                         d
@@ -2282,24 +2352,37 @@
                         throw new Error("Node.setImage(): 参数Image对象为空!");
                     var d = this;
                     if (b=='changeColor') {
+
                         d.image&&(d.image.alarm=a.util.getImageAlarm(d.image,null,d.fillAlarmNode,d.fillAlarmForChangeColor));
-                     }
+                    }
+                    else if(b=='changeSmallImageColor'){
+
+                        d.smallAlarmImageObj&&(d.smallAlarmImageChangeObj=a.util.getImageAlarm(d.smallAlarmImageObj,null,d.smallImageOriginColor,d.smallImageChangeColor));
+                    }else if("string" == typeof b && c=='setSmallImage'){
+                        var e=null;
+                        e = new Image,
+                            e.src = b,
+                            e.onload = function() {
+
+                                var f= a.util.getImageAlarm(e,null,d.smallImageOriginColor,d.smallImageChangeColor);
+                                d.smallAlarmImageChangeObj=f;
+                                d.smallAlarmImageObj = e;
+                            }
+                    }
                     else if("string" == typeof b){
                         //var e = j[b];//不能用缓存，j为作用域较大，每次切换都不会清空
                         var e=null;
-
                         null == e ? (e = new Image,
-                                    e.src = b,
-                                    e.onload = function() {
-                                        j[b] = e,
-                                        1 == c && d.setSize(e.width, e.height);
-
-                                        var f = a.util.getImageAlarm(e,null,d.fillAlarmNode,d.fillAlarmForChangeColor);
-                                        f && (e.alarm = f),
-                                            d.image = e
-                                    }
-                            ) : (c && this.setSize(e.width, e.height),
-                                this.image = e)
+                                e.src = b,
+                                e.onload = function() {
+                                    j[b] = e,
+                                    1 == c && d.setSize(e.width, e.height);
+                                    var f = a.util.getImageAlarm(e,null,d.fillAlarmNode,d.fillAlarmForChangeColor);
+                                    f && (e.alarm = f),
+                                        d.image = e
+                                }
+                        ) : (c && this.setSize(e.width, e.height),
+                            this.image = e)
                     }
                     else{
                         this.image = b,
@@ -2325,7 +2408,7 @@
             this.initialize(),
                 this.text = a,
                 this.elementType = "TextNode",
-                 //textnode放到容器中，容器再外加一个容器，移动容器，textnode不能触发位移
+                //textnode放到容器中，容器再外加一个容器，移动容器，textnode不能触发位移
                 this.paint = function(a) {
 
                     a.beginPath(),
@@ -2356,8 +2439,8 @@
                         this.width = a.measureText(this.text).width,
                         this.height = a.measureText("田").width,
                         this.isVisited && null != this.visitedColor ? (a.strokeStyle = "rgba(" + this.visitedColor + ", " + this.alpha + ")",
-                                a.fillStyle = "rgba(" + this.visitedColor + ", " + this.alpha + ")") : (a.strokeStyle = "rgba(" + this.fontColor + ", " + this.alpha + ")",
-                                a.fillStyle = "rgba(" + this.fontColor + ", " + this.alpha + ")"),
+                            a.fillStyle = "rgba(" + this.visitedColor + ", " + this.alpha + ")") : (a.strokeStyle = "rgba(" + this.fontColor + ", " + this.alpha + ")",
+                            a.fillStyle = "rgba(" + this.fontColor + ", " + this.alpha + ")"),
                         a.fillText(this.text, -this.width / 2, this.height / 2),
                     this.isMouseOver && (a.moveTo(-this.width / 2, this.height),
                         a.lineTo(this.width / 2, this.height),
@@ -2494,7 +2577,7 @@
                 a
         }
         var j = {};
-            b.prototype = new a.EditableElement,
+        b.prototype = new a.EditableElement,
             c.prototype = new b,
             d.prototype = new c,
             e.prototype = new d,
@@ -2574,12 +2657,12 @@
                     , f = a.util.intersectionLineBound(d, e);
                 return f
             }
-            this.initialize = function(b, c, d) {
+
+            this.initialize = function (b, c, d) {
                 if (f.prototype.initialize.apply(this, arguments),
                         this.elementType = "link",
                         this.zIndex = a.zIndex_Link,
-                    0 != arguments.length)
-                {
+                    0 != arguments.length) {
                     this.text = d,
                         this.nodeA = b,
                         this.nodeZ = c,
@@ -2592,7 +2675,7 @@
                         this.caculateIndex(),
                         this.font = "12px Consolas",
                         this.fontColor = "255,255,255",
-                        this.isShowLinkName=true,
+                        this.isShowLinkName = true,
                         this.lineWidth = 2,
                         this.lineJoin = "miter",
                         this.transformAble = !1,
@@ -2604,53 +2687,54 @@
                         this.arrowsOffset = 0,
                         this.dashedPattern = null,
                         this.path = [];
-                        this.linkType=null;//线条类型
-                        this.animateNode=null;//线条上的动画节点
-                        this.linkConnectType='toBorder';//连接类型，null为连接到中心点，toBorder为连接到边缘
-                        var e = "text,font,fontColor,lineWidth,lineJoin".split(",");
-                        this.serializedProperties = this.serializedProperties.concat(e)
+                    this.linkType = null;//线条类型
+                    this.animateNode = null;//线条上的动画节点
+                    this.linkConnectType = 'toBorder';//连接类型，null为连接到中心点，toBorder为连接到边缘
+                    var e = "text,font,fontColor,lineWidth,lineJoin".split(",");
+                    this.serializedProperties = this.serializedProperties.concat(e)
                 }
             },
-                this.caculateIndex = function() {
+                this.caculateIndex = function () {
                     var a = e(this.nodeA, this.nodeZ);
                     a > 0 && (this.nodeIndex = a - 1)
                 },
                 this.initialize(b, c, g),
-                this.removeHandler = function() {
+                this.removeHandler = function () {
                     var a = this;
-                    this.nodeA && this.nodeA.outLinks && (this.nodeA.outLinks = this.nodeA.outLinks.filter(function(b) {
+                    this.nodeA && this.nodeA.outLinks && (this.nodeA.outLinks = this.nodeA.outLinks.filter(function (b) {
                         return b !== a
                     })),
-                    this.nodeZ && this.nodeZ.inLinks && (this.nodeZ.inLinks = this.nodeZ.inLinks.filter(function(b) {
+                    this.nodeZ && this.nodeZ.inLinks && (this.nodeZ.inLinks = this.nodeZ.inLinks.filter(function (b) {
                         return b !== a
                     }));
                     var b = d(this);
-                    b.forEach(function(a, b) {
+                    b.forEach(function (a, b) {
                         a.nodeIndex = b
                     })
                 },
 
-                this.getStartPosition = function() {
+                this.getStartPosition = function () {
                     var a = {};
-                    switch(this.linkConnectType){
+                    switch (this.linkConnectType) {
                         case 'toBorder':
-                                a = h(this.nodeA, this.nodeZ),
-                                 null == a && (a = {
+                            a = h(this.nodeA, this.nodeZ),
+                            null == a && (a = {
                                 x: this.nodeA.cx,
                                 y: this.nodeA.cy
                             });
                             break;
                         default:
-                            a={
+                            a = {
                                 x: this.nodeA.cx,
                                 y: this.nodeA.cy
                             };
-                    } ;
+                    }
+                    ;
                     return a
                 },
-                this.getEndPosition = function() {
+                this.getEndPosition = function () {
                     var a;
-                    switch(this.linkConnectType){
+                    switch (this.linkConnectType) {
                         case 'toBorder':
                             a = h(this.nodeZ, this.nodeA),
                             null == a && (a = {
@@ -2668,7 +2752,7 @@
                     return a
                 },
 
-                this.getPath = function() {
+                this.getPath = function () {
                     var a = []
                         //tag4
                         , b = this.getStartPosition()
@@ -2725,17 +2809,18 @@
                         }),
                         a
                 },
-                this.paintPath = function(a, b) {
-                    switch(this.linkType){
+                this.paintPath = function (a, b) {
+                    switch (this.linkType) {
                         case 'dArrow':
                             if (this.nodeA === this.nodeZ) return void this.paintLoop(a);
-                            a.beginPath(),a.moveTo(b[0].x, b[0].y);
+                            a.beginPath(), a.moveTo(b[0].x, b[0].y);
                             for (var c = 1; c < b.length; c++) {
 
                                 null == this.dashedPattern ? (
                                     (null == this.PointPathColor ? a.lineTo(b[c].x, b[c].y) : a.JtopoDrawPointPath(b[c - 1].x, b[c - 1].y, b[c].x, b[c].y, a.strokeStyle, this.PointPathColor))
                                 ) : a.JTopoDashedLineTo(b[c - 1].x, b[c - 1].y, b[c].x, b[c].y, this.dashedPattern)
-                            };
+                            }
+                            ;
                             if (a.stroke(), a.closePath(), null != this.arrowsRadius) {
                                 var d = b[b.length - 2],
                                     e = b[b.length - 1];
@@ -2772,10 +2857,11 @@
                                 var d = b[b.length - 2]
                                     , e = b[b.length - 1];
                                 this.paintArrow(a, d, e)
-                            };
+                            }
+                            ;
                     }
                 },
-                this.paintLoop = function(a) {
+                this.paintLoop = function (a) {
                     a.beginPath();
                     {
                         var b = this.bundleGap * (this.nodeIndex + 1) / 2;
@@ -2785,7 +2871,7 @@
                         a.stroke(),
                         a.closePath()
                 },
-                this.paintArrow = function(b, c, d) {
+                this.paintArrow = function (b, c, d) {
                     var e = this.arrowsOffset
                         , f = this.arrowsRadius / 2
                         , g = c
@@ -2813,7 +2899,7 @@
                         b.stroke(),
                         b.closePath()
                 },
-                this.paint = function(a) {
+                this.paint = function (a) {
                     if (null != this.nodeA && null != !this.nodeZ) {
                         var b = this.getPath(this.nodeIndex);
                         this.path = b,
@@ -2824,40 +2910,62 @@
                     }
                 };
             var i = -(Math.PI / 2 + Math.PI / 4);
-            this.paintText = function(a, b) {
+            this.paintText = function (a, b) {
                 var c = b[0]
                     , d = b[b.length - 1];
-                if(!this.isShowLinkName){return;}
+                if (!this.isShowLinkName) {
+                    return;
+                }
+
                 if (4 == b.length && (c = b[1],
                         d = b[2]),
                     this.text && this.text.length > 0) {
-                    var e = (d.x + c.x) / 2 + this.textOffsetX
-                        , f = (d.y + c.y) / 2 + this.textOffsetY;
+
+                    if(JTopo.flag.linkConfigure.textIsNearToNodeZ){
+                        var e = (d.x + c.x) / 2
+                            , f = (d.y + c.y) / 2;
+                        e = (d.x + e) / 2+this.textOffsetX
+                            , f = (d.y + f) / 2+ this.textOffsetY;
+                    }else{
+                        var e = (d.x + c.x) / 2 + this.textOffsetX
+                            , f = (d.y + c.y) / 2 + this.textOffsetY;
+                    }
                     a.save(),
                         a.beginPath(),
                         a.font = this.font;
+
                     var g = a.measureText(this.text).width
                         , h = a.measureText("田").width;
+
                     if (a.fillStyle = "rgba(" + this.fontColor + ", " + this.alpha + ")",
                         this.nodeA === this.nodeZ) {
                         var j = this.bundleGap * (this.nodeIndex + 1) / 2
                             , e = this.nodeA.x + j * Math.cos(i)
                             , f = this.nodeA.y + j * Math.sin(i);
                         a.fillText(this.text, e, f)
-                    } else
+                    } else {
+                        if (JTopo.flag.linkConfigure.textIsTilt) {
+                            //todo:倾斜算法还有点问题
+                            a.translate(e - g / 2, f - h / 2);
+                            var rotate=JTopo.util.getRotateAng(this.nodeA,this.nodeZ);
+                            a.rotate(rotate);
+                            a.translate(-e + g / 2, -f + h / 2);
+                        }
                         a.fillText(this.text, e - g / 2, f - h / 2);
+
+                    }
                     a.stroke(),
                         a.closePath(),
                         a.restore()
                 }
             },
-                this.paintSelected = function(a) {
+                this.paintSelected = function (a) {
                     a.shadowBlur = 10,
                         a.shadowColor = "rgba(0,0,0,1)",
                         a.shadowOffsetX = 0,
                         a.shadowOffsetY = 0
                 },
-                this.isInBound = function(b, c) {
+                this.isInBound = function (b, c) {
                     if (this.nodeA === this.nodeZ) {
                         var d = this.bundleGap * (this.nodeIndex + 1) / 2
                             , e = a.util.getDistance(this.nodeA, {
@@ -2910,32 +3018,32 @@
                         return [c, d];
                     var f, g, h = e(this.nodeA, this.nodeZ), i = (h - 1) * this.bundleGap, j = this.bundleGap * a - i / 2;
                     return "horizontal" == this.direction ? (f = d.x + j,
-                            g = c.y - j,
-                            b.push({
-                                x: c.x,
-                                y: g
-                            }),
-                            b.push({
-                                x: f,
-                                y: g
-                            }),
-                            b.push({
-                                x: f,
-                                y: d.y
-                            })) : (f = c.x + j,
-                            g = d.y - j,
-                            b.push({
-                                x: f,
-                                y: c.y
-                            }),
-                            b.push({
-                                x: f,
-                                y: g
-                            }),
-                            b.push({
-                                x: d.x,
-                                y: g
-                            })),
+                        g = c.y - j,
+                        b.push({
+                            x: c.x,
+                            y: g
+                        }),
+                        b.push({
+                            x: f,
+                            y: g
+                        }),
+                        b.push({
+                            x: f,
+                            y: d.y
+                        })) : (f = c.x + j,
+                        g = d.y - j,
+                        b.push({
+                            x: f,
+                            y: c.y
+                        }),
+                        b.push({
+                            x: f,
+                            y: g
+                        }),
+                        b.push({
+                            x: d.x,
+                            y: g
+                        })),
                         b
                 },
                 this.paintText = function(a, b) {
@@ -2990,24 +3098,24 @@
                         , h = this.bundleGap * a - g / 2
                         , i = this.offsetGap;
                     return "horizontal" == this.direction ? (this.nodeA.cx > this.nodeZ.cx && (i = -i),
-                            d.push({
-                                x: b.x,
-                                y: b.y + h
-                            }),
-                            d.push({
-                                x: b.x + i,
-                                y: b.y + h
-                            }),
-                            d.push({
-                                x: c.x - i,
-                                y: c.y + h
-                            }),
-                            d.push({
-                                x: c.x,
-                                y: c.y + h
-                            }))
+                        d.push({
+                            x: b.x,
+                            y: b.y + h
+                        }),
+                        d.push({
+                            x: b.x + i,
+                            y: b.y + h
+                        }),
+                        d.push({
+                            x: c.x - i,
+                            y: c.y + h
+                        }),
+                        d.push({
+                            x: c.x,
+                            y: c.y + h
+                        }))
                         :
-                           (this.nodeA.cy > this.nodeZ.cy && (i = -i),
+                        (this.nodeA.cy > this.nodeZ.cy && (i = -i),
                             d.push({
                                 x: b.x + h,
                                 y: b.y
@@ -3173,7 +3281,7 @@
                         }
                         var lenX=timeT*xl*_speed;
                         var lenY=timeT*yl*_speed;
-                        imgnode.rotate=(Math.atan(xy/xs))+(xs>0?Math.PI:0);
+                        imgnode.rotate=(Math.atan(xy/xs))+(xs>0?Math.PI:0);//todo:算法有问题
                         imgnode.cx=nodeA.x-lenX-subX;
                         imgnode.cy=nodeA.y-lenY-subY;
                         if(L<=Math.floor(Math.sqrt(lenX * lenX + lenY * lenY))) {
@@ -3204,8 +3312,8 @@
             return imgnode;
         };
         f.prototype = new a.InteractiveElement,
-        f.prototype.drawanimepic=jk;
-            g.prototype = new f,
+            f.prototype.drawanimepic=jk;
+        g.prototype = new f,
             h.prototype = new f,
             i.prototype = new f,
             a.Link = f,
@@ -3214,81 +3322,93 @@
             a.CurveLink = i
     }(JTopo),
     //container的具体实现
-    function(a) {
-        function b(c) {
-                this.initialize = function(c) {
-                b.prototype.initialize.apply(this, null),
+    function(d) {
+        function c(a) {
+            this.initialize = function(b) {
+                c.prototype.initialize.apply(this, null),
                     this.elementType = "container",
-                    this.zIndex = a.zIndex_Container,
+                    this.zIndex = d.zIndex_Container,
                     this.width = 100,
                     this.height = 100,
                     this.childs = [],
-                    this.alpha = .5,
+                    this.alpha = 0,
                     this.dragable = !0,
                     this.childDragble = !0,
                     this.visible = !0,
-                    this.fillColor = "10,100,80",
-                    this.borderWidth = 0,
-                    this.shadowBlur = 10,
-                    this.shadowColor = "rgba(255,255,255,1)",
+                    this.fillColor = "79,164,218",
+                    this.borderWidth = 1,
+                    this.shadowBlur = 5,
+                    this.shadowColor = "rgba(43,43,43,0.5)",
                     this.shadowOffsetX = 0,
                     this.shadowOffsetY = 0,
-                    this.borderColor = "255,255,255",
-                    this.borderRadius = null,
-                    this.borderDashed=false,
-                    this.borderAlpha=1,
-                    this.font = "12px Consolas",
+                    this.borderColor = "108,208,226",
+                    this.borderRadius = 5,
+                    this.borderDashed = false,
+                    this.borderAlpha = 1,
+                    this.font = "16px 微软雅黑",
                     this.fontColor = "255,255,255",
-                    this.text = c,
-                    this.textAlpha=1;
-                    this.textPosition = "Bottom_Center",
+                    this.text = b,
+                    this.textAlpha = 1,
+                    this.textPosition = "Top_Bottom",
                     this.textOffsetX = 0,
-                    this.textOffsetY = -16,
-                    this.layout = new a.layout.AutoBoundLayout,
-                    this.borderPadding=15;
-            },
-                this.initialize(c),
-                this.add = function(a) {
-                    this.childs.push(a),
-                        a.dragable = this.childDragble
-                },
-                this.remove = function(a) {
-                    for (var b = 0; b < this.childs.length; b++)
-                        if (this.childs[b] === a) {
-                            a.parentContainer = null,
-                                this.childs = this.childs.del(b),
-                                a.lastParentContainer = this;
+                    this.textOffsetY = -34  ,
+                    this.textPositionMsg = {
+                        x: null,
+                        y: null,
+                        width: null,
+                        height: null
+                    };
+                this.layout = new d.layout.AutoBoundLayout,
+                    this.borderPadding = 15
+            }
+                ,
+                this.initialize(a),
+                this.add = function(b) {
+                    this.childs.push(b),
+                        b.dragable = this.childDragble
+                }
+                ,
+                this.remove = function(f) {
+                    for (var e = 0; e < this.childs.length; e++) {
+                        if (this.childs[e] === f) {
+                            f.parentContainer = null,
+                                this.childs = this.childs.del(e),
+                                f.lastParentContainer = this;
                             break
                         }
-                },
+                    }
+                }
+                ,
                 this.removeAll = function() {
                     this.childs = []
-                },
-                this.setLocation = function(a, b) {
-                   //拖拽容器本身时激活
-                    var c = a - this.x
-                        , d = b - this.y;
-                    this.x = a,
-                        this.y = b;
-                    for (var e = 0; e < this.childs.length; e++) {
-                        var f = this.childs[e];
-                        f.setLocation(f.x + c, f.y + d) //相对位置
+                }
+                ,
+                this.setLocation = function(h, g) {
+                    var l = h - this.x
+                        , k = g - this.y;
+                    this.x = h,
+                        this.y = g;
+                    for (var j = 0; j < this.childs.length; j++) {
+                        var i = this.childs[j];
+                        i.setLocation(i.x + l, i.y + k)
                     }
-                },
-                this.doLayout = function(a) {
-                    a && a(this, this.childs)
-                },
-                this.paint = function(a) {
+                }
+                ,
+                this.doLayout = function(b) {
+                    b && b(this, this.childs)
+                }
+                ,
+                this.paint = function(b) {
                     this.visible && (this.layout && this.layout(this, this.childs),
-                        a.beginPath(),
-                        a.fillStyle = "rgba(" + this.fillColor + "," + this.alpha + ")",
-                         null == this.borderRadius || 0 == this.borderRadius ? a.rect(this.x, this.y, this.width, this.height) : a.JTopoRoundRect(this.x, this.y, this.width, this.height, this.borderRadius),
-                        a.fill(),
-                        a.closePath(),
-                        this.paintText(a),
-                        this.paintBorder(a))
-
-                },
+                        b.beginPath(),
+                        b.fillStyle = "rgba(" + this.fillColor + "," + this.alpha + ")",
+                        null == this.borderRadius || 0 == this.borderRadius ? b.rect(this.x, this.y, this.width, this.height) : b.JTopoRoundRect(this.x, this.y, this.width, this.height, this.borderRadius),
+                        b.fill(),
+                        b.closePath(),
+                        this.paintText(b),
+                        this.paintBorder(b))
+                }
+                ,
                 this.paintBorder = function(a) {
                     if (0 != this.borderWidth) {
                         //获取容器内部所有的子元素
@@ -3335,10 +3455,10 @@
                             }
 
                             var len=thisObj.borderPadding;
-                            thisObj.x-=len;
-                            thisObj.y-=len*1.8;
-                            thisObj.width+=len*2;
-                            thisObj.height+=len*2;
+                            thisObj.x-=len*2;
+                            thisObj.y-=len*3;
+                            thisObj.width+=len*4;
+                            thisObj.height+=len*5;
 
                             //跟title比较宽度
                             var titleWidth = a.measureText(thisObj.text||'').width+60;
@@ -3362,98 +3482,103 @@
                             a.stroke(),
                             a.closePath()
                     }
-                },
-                this.paintText = function(a) {
-                    var b = this.text;
-                    if (null != b && "" != b) {
-                        a.beginPath(),
-                            a.font = this.font;
-                        var c = a.measureText(b||'').width
-                            , d = a.measureText("田").width;
-                        var e = this.getTextPostion(this.textPosition, c, d);
-
-                        a.fillStyle = "rgba(108,208,226,1)";
-                        //a.rect(e.x-20,e.y-d-3,c+40,d+6);
-                        a.beginPath();
-                        a.moveTo(e.x-20,e.y-d-3);
-                        a.lineTo(e.x+c+20,e.y-d-3);
-                        a.lineTo(e.x+c+10,e.y+5);
-                        a.lineTo(e.x-10,e.y+5);
-                        a.fill();
-                        a.fillStyle = "rgba(" + this.fontColor + ", " + this.textAlpha + ")";
-                        a.fillText(b, e.x, e.y-1),
-                        a.closePath();
-
+                }
+            this.paintText = function(g) {
+                var f = this.text;
+                if (null != f && "" != f) {
+                    g.beginPath(),
+                        g.font = this.font;
+                    var j = g.measureText(f || "").width
+                        , i = g.measureText("田").width;
+                    var h = this.getTextPostion(this.textPosition, j, i);
+                    g.fillStyle = "rgba(108,208,226,1)";
+                    g.beginPath();
+                    g.moveTo(h.x - 20, h.y - i - 3);
+                    g.lineTo(h.x + j + 20, h.y - i - 3);
+                    g.lineTo(h.x + j + 10, h.y + 5);
+                    g.lineTo(h.x - 10, h.y + 5);
+                    g.fill();
+                    g.fillStyle = "rgba(" + this.fontColor + ", " + this.textAlpha + ")";
+                    g.fillText(f, h.x, h.y - 1),
+                        g.closePath();
+                    this.textPositionMsg = {
+                        x: h.x - 20,
+                        y: h.y - i - 3,
+                        width: j + 40,
+                        height: i + 8
                     }
-                },
-                this.getTextPostion = function (a, b, c) {
-                    var d = null;
-                    return null == a || "Bottom_Center" == a ? d = {
-                            x: this.x + this.width / 2 - b / 2,
-                            y: this.y + this.height + c
-                        } : "Bottom_Top" == a? d={
-                                x: this.x + this.width / 2 - b / 2,
-                                y: this.y + this.height + c
-                            }:"Top_Center" == a ? d = {
-                                x: this.x + this.width / 2 - b / 2,
-                                y: this.y - c / 2
-                            }:"Top_Bottom" == a ? d = {
-                                  x: this.x + this.width / 2 - b / 2,
-                                  y: this.y + c/2
-                               } : "Top_Right" == a ? d = {
-                                    x: this.x + this.width - b,
-                                    y: this.y - c / 2
-                                } : "Top_Left" == a ? d = {
-                                        x: this.x,
-                                        y: this.y - c / 2
-                                    } : "Bottom_Right" == a ? d = {
-                                            x: this.x + this.width - b,
-                                            y: this.y + this.height + c
-                                        } : "Bottom_Left" == a ? d = {
-                                                x: this.x,
-                                                y: this.y + this.height + c
-                                            } : "Middle_Center" == a ? d = {
-                                                    x: this.x + this.width / 2 - b / 2,
-                                                    y: this.y + this.height / 2 + c / 2
-                                                } : "Middle_Right" == a ? d = {
-                                                        x: this.x + this.width - b,
-                                                        y: this.y + this.height / 2 + c / 2
-                                                    } : "Middle_Left" == a && (d = {
-                                                        x: this.x,
-                                                        y: this.y + this.height / 2 + c / 2
-                                                    }),
-                    null != this.textOffsetX && (d.x += this.textOffsetX),
-                    null != this.textOffsetY && (d.y += this.textOffsetY),
-                        d
-                },
-                this.paintMouseover = function() {
-
-                },
-                this.paintSelected = function(a) {
-                        a.shadowBlur = this.shadowBlur,
-                        a.shadowColor = this.shadowColor,
-                        a.shadowOffsetX = this.shadowOffsetX,
-                        a.shadowOffsetY = this.shadowOffsetY
-                },
-                this.removeHandler = function(a) {
-                        var b = this;
-                        this.outLinks && (this.outLinks.forEach(function(c) {
-                            c.nodeA === b && a.remove(c)
+                }
+            }
+                ,
+                this.getTextPostion = function(f, e, h) {
+                    var g = null;
+                    return null == f || "Bottom_Center" == f ? g = {
+                        x: this.x + this.width / 2 - e / 2,
+                        y: this.y + this.height + h
+                    } : "Bottom_Top" == f ? g = {
+                        x: this.x + this.width / 2 - e / 2,
+                        y: this.y + this.height + h
+                    } : "Top_Center" == f ? g = {
+                        x: this.x + this.width / 2 - e / 2,
+                        y: this.y - h / 2
+                    } : "Top_Bottom" == f ? g = {
+                        x: this.x + this.width / 2 - e / 2,
+                        y: this.y + h / 2
+                    } : "Top_Right" == f ? g = {
+                        x: this.x + this.width - e,
+                        y: this.y - h / 2
+                    } : "Top_Left" == f ? g = {
+                        x: this.x,
+                        y: this.y - h / 2
+                    } : "Bottom_Right" == f ? g = {
+                        x: this.x + this.width - e,
+                        y: this.y + this.height + h
+                    } : "Bottom_Left" == f ? g = {
+                        x: this.x,
+                        y: this.y + this.height + h
+                    } : "Middle_Center" == f ? g = {
+                        x: this.x + this.width / 2 - e / 2,
+                        y: this.y + this.height / 2 + h / 2
+                    } : "Middle_Right" == f ? g = {
+                        x: this.x + this.width - e,
+                        y: this.y + this.height / 2 + h / 2
+                    } : "Middle_Left" == f && (g = {
+                            x: this.x,
+                            y: this.y + this.height / 2 + h / 2
                         }),
-                            this.outLinks = null),
-                        this.inLinks && (this.inLinks.forEach(function(c) {
-                            c.nodeZ === b && a.remove(c)
-                        }),
-                            this.inLinks = null)
-                    }
+                    null != this.textOffsetX && (g.x += this.textOffsetX),
+                    null != this.textOffsetY && (g.y += this.textOffsetY),
+                        g
+                }
+                ,
+                this.paintMouseover = function() {}
+                ,
+                this.paintSelected = function(b) {
+                    b.shadowBlur = this.shadowBlur,
+                        b.shadowColor = this.shadowColor,
+                        b.shadowOffsetX = this.shadowOffsetX,
+                        b.shadowOffsetY = this.shadowOffsetY
+                }
+                ,
+                this.removeHandler = function(f) {
+                    var e = this;
+                    this.outLinks && (this.outLinks.forEach(function(b) {
+                        b.nodeA === e && f.remove(b)
+                    }),
+                        this.outLinks = null),
+                    this.inLinks && (this.inLinks.forEach(function(b) {
+                        b.nodeZ === e && f.remove(b)
+                    }),
+                        this.inLinks = null)
+                }
         }
-        b.prototype = new a.InteractiveElement,
-            a.Container = b
+        c.prototype = new d.InteractiveElement,
+            d.Container = c
     }(JTopo),
     //containerNode的具体实现
     function(a) {
         function b(c) {
-                this.initialize = function(c) {
+            this.initialize = function(c) {
                 b.prototype.initialize.apply(this, null),
                     //定制化by luozheao
                     this.elementType = "containerNode",
@@ -3507,7 +3632,7 @@
                     for (var e = 0; e < this.childs.length; e++) {
                         var f = this.childs[e];
 
-                            f.setLocation(f.x + c, f.y + d) //相对位置
+                        f.setLocation(f.x + c, f.y + d) //相对位置
 
 
                     }
@@ -3595,11 +3720,11 @@
                 this.paintMouseover = function() {
 
                 },
-                    this.paintMouseout = function() {
+                this.paintMouseout = function() {
 
-                    },
+                },
                 this.paintSelected = function(a) {
-                        a.shadowBlur = this.shadowBlur,
+                    a.shadowBlur = this.shadowBlur,
                         a.shadowColor = this.shadowColor,
                         a.shadowOffsetX = this.shadowOffsetX,
                         a.shadowOffsetY = this.shadowOffsetY
@@ -3642,8 +3767,8 @@
             var l = 0, m = [], n = [];
             c.forEach(function(a) {
                 null == d.nodeDiameter ? (a.diameter && (h = a.diameter),
-                        h = a.radius ? 2 * a.radius : Math.sqrt(2 * a.width * a.height),
-                        n.push(h)) : n.push(h),
+                    h = a.radius ? 2 * a.radius : Math.sqrt(2 * a.width * a.height),
+                    n.push(h)) : n.push(h),
                     l += h
             }),
                 c.forEach(function(a, b) {
@@ -3737,7 +3862,7 @@
         function g(b) {
             var c = [], d = b.filter(function(b) {
                 return b instanceof a.Link ? !0 : (c.push(b),
-                        !1)
+                    !1)
             });
             return b = c.filter(function(a) {
                 for (var b = 0; b < d.length; b++)
@@ -3793,8 +3918,8 @@
                             , o = (m + 1) * (c + 10)
                             , p = h * d;
                         "down" == b || ("up" == b ? p = -p : "left" == b ? (o = -h * d,
-                                    p = (m + 1) * (c + 10)) : "right" == b && (o = h * d,
-                                    p = (m + 1) * (c + 10))),
+                            p = (m + 1) * (c + 10)) : "right" == b && (o = h * d,
+                                p = (m + 1) * (c + 10))),
                             n.setLocation(o, p)
                     }
                     for (var q = h - 1; q >= 0; q--)
@@ -4006,7 +4131,6 @@
             AutoBoundLayout: f,
             CircleLayout: l,
             TreeLayout: k,
-
             getNodesCenter: b,
             circleLayoutNodes: c
         }
@@ -4099,7 +4223,7 @@
                 b
         }
         a.BarChartNode = c,
-        a.PieChartNode = b
+            a.PieChartNode = b
     }(JTopo),
     //Animate和Effect的具体实现
     function(a) {
@@ -4108,8 +4232,8 @@
             return {
                 stop: function() {
                     return d ? (window.clearInterval(d),
-                        e && e.publish("stop"),
-                            this) : this
+                    e && e.publish("stop"),
+                        this) : this
                 },
                 start: function() {
                     var a = this;
@@ -4128,10 +4252,10 @@
         function c(a, c) {
             c = c || {};
             var d = c.gravity || .1, e = c.dx || 0, f = c.dy || 5, g = c.stop, h = c.interval || 30, i = new b(function() {
-                    g && g() ? (f = .5,
-                            this.stop()) : (f += d,
-                            a.setLocation(a.x + e, a.y + f))
-                },h);
+                g && g() ? (f = .5,
+                    this.stop()) : (f += d,
+                    a.setLocation(a.x + e, a.y + f))
+            },h);
             return i
         }
         function d(a, c, d, e, f) {
@@ -4151,24 +4275,24 @@
                 }
             }
             var l = new b(function() {
-                    var b = !0;
+                var b = !0;
+                for (var d in c)
+                    h[d].isDone(d) || (a[d] += h[d].step,
+                        b = !1);
+                if (b) {
+                    if (!e)
+                        return this.stop();
                     for (var d in c)
-                        h[d].isDone(d) || (a[d] += h[d].step,
-                            b = !1);
-                    if (b) {
-                        if (!e)
-                            return this.stop();
-                        for (var d in c)
-                            if (f) {
-                                    var g = h[d].targetValue;
-                                    h[d].targetValue = h[d].oldValue,
-                                    h[d].oldValue = g,
-                                    h[d].step = -h[d].step
-                            } else
-                                a[d] = h[d].oldValue
-                    }
-                    return this
-                },g);
+                        if (f) {
+                            var g = h[d].targetValue;
+                            h[d].targetValue = h[d].oldValue,
+                                h[d].oldValue = g,
+                                h[d].step = -h[d].step
+                        } else
+                            a[d] = h[d].oldValue
+                }
+                return this
+            },g);
             return l
         }
         function e(a) {
@@ -4233,7 +4357,7 @@
             function c() {
                 return e = setInterval(function() {
                     return o ? void f.stop() : (a.rotate += g || .2,
-                            void (a.rotate > 2 * Math.PI && (a.rotate = 0)))
+                        void (a.rotate > 2 * Math.PI && (a.rotate = 0)))
                 }, 100),
                     f
             }
@@ -4263,8 +4387,8 @@
                     , i = b.dy || 2;
                 return g = setInterval(function() {
                     return o ? void h.stop() : (i += f,
-                            void (a.y + a.height < e.stage.canvas.height ? a.setLocation(a.x + d, a.y + i) : (i = 0,
-                                    c())))
+                        void (a.y + a.height < e.stage.canvas.height ? a.setLocation(a.x + d, a.y + i) : (i = 0,
+                            c())))
                 }, 20),
                     h
             }
@@ -4291,8 +4415,8 @@
                             a.clip(),
                             a.beginPath(),
                             null != this.image ? a.drawImage(this.image, -this.width / 2, -this.height / 2) : (a.fillStyle = "rgba(" + this.style.fillStyle + "," + this.alpha + ")",
-                                    a.rect(-this.width / 2, -this.height / 2, this.width / 2, this.height / 2),
-                                    a.fill()),
+                                a.rect(-this.width / 2, -this.height / 2, this.width / 2, this.height / 2),
+                                a.fill()),
                             a.closePath(),
                             a.restore()
                     }
@@ -4352,10 +4476,10 @@
                 return c(a),
                     h = setInterval(function() {
                         return o ? void i.stop() : (a.vy += f,
-                                a.x += a.vx,
-                                a.y += a.vy,
-                                void ((a.x < 0 || a.x > g.stage.canvas.width || a.y > g.stage.canvas.height) && (i.onStop && i.onStop(a),
-                                    c(a))))
+                            a.x += a.vx,
+                            a.y += a.vy,
+                            void ((a.x < 0 || a.x > g.stage.canvas.width || a.y > g.stage.canvas.height) && (i.onStop && i.onStop(a),
+                                c(a))))
                     }, 50),
                     i
             }
@@ -4559,7 +4683,7 @@
         }
         var e = "click,mousedown,mouseup,mouseover,mouseout,mousedrag,keydown,keyup".split(",");
         a.Stage.prototype.find = d,
-        a.Scene.prototype.find = d
+            a.Scene.prototype.find = d
     }(JTopo),
     //未开发完的功能，待研究
     function(a) {
@@ -4628,7 +4752,7 @@
             this.paint && this.paint(b.x, b.y),
                 this
         },
-            c.prototype.move = function(a) { 
+            c.prototype.move = function(a) {
                 var b = this.p
                     , c = this.w;
                 return b.x = b.x + a * c.x,
