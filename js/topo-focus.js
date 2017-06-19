@@ -21,24 +21,24 @@ dataManager.getTopoData=function (callback) {
                    "id": "100",
                    "json":"{x:100,y:100,width:52,height:52,elementType:'node',text:'cluster',imgName:'ActiveMQ'}"
                },
-               {
-                   "id": "101",
-                   "json":"{x:250,y:250,width:52,height:52,elementType:'node',imgName:'ActiveMQ'}"
-               },
-               {
-              "id": '102',
-              "json":'{"imgName":"testIcon","alertLevel":2,"name":"业务系统","msgArr":[["CPU","0.122"],["MEM","0.9"],["Incoming","6.72GB|2GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
-             }
+               // {
+               //     "id": "101",
+               //     "json":"{x:250,y:250,width:52,height:52,elementType:'node',imgName:'ActiveMQ'}"
+               // },
+             //   {
+             //  "id": '102',
+             //  "json":'{"imgName":"testIcon","alertLevel":2,"name":"业务系统","msgArr":[["CPU","0.122"],["MEM","0.9"],["Incoming","6.72GB|2GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
+             // }
            ],
 
            "links": [
-               {
-
-                   "from_id": "100",
-                   "to_id": "101",
-                   "id": "1000",
-                   "json":"{elementType:'link',text:'我是线条名字',fontColor:'237,165,72'}"
-               }
+               // {
+               //
+               //     "from_id": "100",
+               //     "to_id": "101",
+               //     "id": "1000",
+               //     "json":"{elementType:'link',text:'我是线条名字',fontColor:'237,165,72'}"
+               // }
            ]
        }
        //json属性需要处理成对象

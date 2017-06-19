@@ -601,10 +601,8 @@
                 node.smallImageOriginColor=originColor;
                 node.smallImageChangeColor =changeColor;
                 node.smallAlarmImageTag=isChangeColor?"true":null;
-
                 node.setImage('changeSmallImageColor');
                 node.samllflashT&&clearInterval(node.samllflashT);
-
                 if(isChangeColor&&isFlash){
                     //闪动
                     var i=1;
@@ -2106,7 +2104,7 @@
                  this.smallAlarmImageChangeObj=null;
                 this.smallImageOriginColor=[255,0,0];
                 this.smallImageChangeColor=null;
-
+                this.paintCallback=null;
 
 
 
@@ -2115,7 +2113,6 @@
             },
                 this.initialize(c),
                 this.paint = function(a) {
-
                     if (this.image) {
                         var b = a.globalAlpha;
                         a.globalAlpha = this.alpha,
@@ -2125,8 +2122,8 @@
                                 null != this.image.alarm && null != this.alarm ? a.drawImage(this.image.alarm, -this.width / 2, -this.height / 2, this.width, this.height) : a.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height)
                             ),
                             a.globalAlpha = b;
-                        this.paintAlarmImage(a);
-                    } else{
+                    }
+                    else{
                         a.beginPath(),
                             a.fillStyle ="rgba(" + this.fillColor + "," + this.alpha + ")",
                             null == this.borderRadius || 0 == this.borderRadius ? a.rect(-this.width / 2, -this.height / 2, this.width, this.height) : a.JTopoRoundRect(-this.width / 2, -this.height / 2, this.width, this.height, this.borderRadius),
@@ -2145,11 +2142,12 @@
                     }
                     a.closePath();
 
-                    this.paintText(a),
+                        this.paintText(a),
                         this.paintBorder(a),
                         this.paintCtrl(a),
-                        this.paintAlarmText(a)
-
+                        this.paintAlarmText(a),
+                        this.paintAlarmImage(a),
+                        this.paintCallback&&this.paintCallback(a)
                 },
                 this.paintAlarmText = function(a) {
                     if (null != this.alarm && "" != this.alarm&&this.showAlarmText) {
@@ -2193,10 +2191,11 @@
                     //this.smallAlarmImageChangeObj 为告警变色图片对象
                     if (null != this.smallAlarmImageObj && "" != this.smallAlarmImageObj) {
                         var b = a.globalAlpha;
+
                         a.globalAlpha = this.alpha,
                          this.smallAlarmImageChangeObj&&this.smallAlarmImageTag
                             ?
-                            a.drawImage(this.smallAlarmImageChangeObj, -this.width / 2, -this.height / 2, this.smallAlarmImage_w, this.smallAlarmImage_h)
+                            a.drawImage(this.smallAlarmImageChangeObj, -10-this.width / 2, -this.height / 2, this.smallAlarmImage_w, this.smallAlarmImage_h)
                             :
                             a.drawImage(this.smallAlarmImageObj , -10-this.width / 2, -this.height / 2, this.smallAlarmImage_w, this.smallAlarmImage_h),
                         a.globalAlpha = b
@@ -2357,14 +2356,15 @@
                     }
                     else if(b=='changeSmallImageColor'){
 
-                        d.smallAlarmImageObj&&(d.smallAlarmImageChangeObj=a.util.getImageAlarm(d.smallAlarmImageObj,null,d.smallImageOriginColor,d.smallImageChangeColor));
-                    }else if("string" == typeof b && c=='setSmallImage'){
+                        d.smallAlarmImageObj&&(d.smallAlarmImageChangeObj=a.util.getImageAlarm(d.smallAlarmImageObj,null,d.smallImageChangeColor,d.smallImageOriginColor));
+                    }
+                    else if("string" == typeof b && c=='setSmallImage'){
                         var e=null;
                         e = new Image,
                             e.src = b,
                             e.onload = function() {
 
-                                var f= a.util.getImageAlarm(e,null,d.smallImageOriginColor,d.smallImageChangeColor);
+                                var f= a.util.getImageAlarm(e,null,d.smallImageChangeColor,d.smallImageOriginColor);
                                 d.smallAlarmImageChangeObj=f;
                                 d.smallAlarmImageObj = e;
                             }
@@ -2377,7 +2377,7 @@
                                 e.onload = function() {
                                     j[b] = e,
                                     1 == c && d.setSize(e.width, e.height);
-                                    var f = a.util.getImageAlarm(e,null,d.fillAlarmNode,d.fillAlarmForChangeColor);
+                                    var f = a.util.getImageAlarm(e,null,d.fillAlarmNode,d.fillAlarmForChangeColor);//告警色,指定色
                                     f && (e.alarm = f),
                                         d.image = e
                                 }
