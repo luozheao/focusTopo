@@ -598,6 +598,9 @@
             },
             //节点左上角图片闪动
             smallNodeFlash:function (node,isChangeColor,isFlash,originColor,changeColor) {
+               // node.setImage('./images/alertIcon2.png','setSmallImage');//setSmallImage 为设置小图标
+               // JTopo.util.smallNodeFlash(node,true,true,[202,202,202],[222,81,69]);//结点,是否变色,是否闪动,底色,变色
+
                 node.smallImageOriginColor=originColor;
                 node.smallImageChangeColor =changeColor;
                 node.smallAlarmImageTag=isChangeColor?"true":null;

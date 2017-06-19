@@ -3,42 +3,57 @@
  * topo-main.js中通过模块化封装的方式，提供接口和钩子，来实现拓扑图
  */
 
-
+define(['topo-main'],function (topoManager) {
+    var stateManager=topoManager.stateManager;
+    var dataManager=topoManager.dataManager;
+    var toolbarManager=topoManager.toolbarManager;
+    var canvasManager=topoManager.canvasManager;
+    var dragManager=topoManager.dragManager;
+   
 /***********数据管理者*************/
 //获取后台拓扑图数据
 dataManager.getTopoData=function (callback) {
       /**
-      * json中的imgName属性，用于存储节点图片名字
-       * elementType用于标志节点类型(node、container、containerNode)，必填
-       * json中的text用于存储节点名字
-       * 自定义结点的elementType必须设置为containerNode,且nodeFn需要设置为创建自定义结点的方法名
-       * 如果自定义结点是拖拽创建，则必须设置id等于_id
-       * nodes和links中所有的元素对象，数据格式必须一致，如containerNode和node的格式必须一样，可以拿后台数据转换一下
+       * 1\json中的imgName属性，用于存储节点图片名字
+       * 2\elementType用于标志节点类型(node、container、containerNode)，必填
+       * 3\json中的text用于存储节点名字
+       * 4\自定义结点的elementType必须设置为containerNode,且nodeFn需要设置为创建自定义结点的方法名
+       * 5\如果自定义结点是拖拽创建，则必须设置id等于_id
+       * 6\必填项:id type json(elementType,如果是自定义结点,必填nodeFn) ,其中elementType和type值保持一致
       * */
        var data= {
            "nodes": [
                {
                    "id": "100",
+                   "type":'node',
                    "json":"{x:100,y:100,width:52,height:52,elementType:'node',text:'cluster',imgName:'ActiveMQ'}"
                },
-               // {
-               //     "id": "101",
-               //     "json":"{x:250,y:250,width:52,height:52,elementType:'node',imgName:'ActiveMQ'}"
-               // },
-             //   {
-             //  "id": '102',
-             //  "json":'{"imgName":"testIcon","alertLevel":2,"name":"业务系统","msgArr":[["CPU","0.122"],["MEM","0.9"],["Incoming","6.72GB|2GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
-             // }
+               {
+                   "id": "101",
+                   "type":"node",
+                   "json":"{x:250,y:250,width:52,height:52,elementType:'node',imgName:'ActiveMQ'}"
+               },
+               {
+              "id": '102',
+              "type":'containerNode',
+              "json":'{"imgName":"testIcon","alertLevel":2,"name":"业务系统","msgArr":[["CPU","0.122"],["MEM","0.9"],["Incoming","6.72GB|2GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
+              },
+               {
+                   "id":'103',
+                   "type":'containerNode',
+                   "json":'{"nodeFn":"haha","elementType":"containerNode"}'
+               }
            ],
 
            "links": [
-               // {
-               //
-               //     "from_id": "100",
-               //     "to_id": "101",
-               //     "id": "1000",
-               //     "json":"{elementType:'link',text:'我是线条名字',fontColor:'237,165,72'}"
-               // }
+               {
+
+                   "from_id": "100",
+                   "to_id": "101",
+                   "id": "1000",
+                   "type":"link",
+                   "json":"{elementType:'link',text:'我是线条名字',fontColor:'237,165,72'}"
+               }
            ]
        }
        //json属性需要处理成对象
@@ -304,18 +319,6 @@ canvasManager.userDefinedNodes=[
             scene.add(containerLeftTop);
             scene.add(containerRightBottom);
             scene.add(container);
-
-
-            //设置后台数据
-            for (var i in nodeObj) {
-                container[i] = nodeObj[i];
-            }
-            //设置前端元素数据
-            for(var j in  nodeObj.json){
-                if(stateManager.formatNodes.indexOf(j)<0){
-                    container[j]= nodeObj.json[j];
-                }
-            }
             //添加事件
 
             return container ;
@@ -329,8 +332,41 @@ canvasManager.userDefinedNodes=[
             'mouseout':null,
 
         }
+    },
+    {
+        "fnName":'haha',
+        fn:function (nodeObj) {
+            var node=new JTopo.Node('luojie');
+            node.setSize(100,100);
+            node.setLocation(200,200);
+            node.fillColor='43,43,43';
+
+            stateManager.scene.add(node);
+            node.paintCallback=function (ctx) {
+                ctx.strokeColor='#e8e8e8';
+                ctx.beginPath();
+                ctx.moveTo(0,0);
+                ctx.lineTo(250,0);
+                ctx.stroke();
+                ctx.closePath();
+            }
+
+            //添加事件
+
+            return node;
+        },
+        event:{
+            'mouseup':function (e) {
+                console.log(e.target);
+            },
+            'dbclick':null,
+            'mousemove':null,
+            'mouseover':null,
+            'mouseout':null,
+        }
     }
 ];
+canvasManager.renderTopoCallback=function () {}
 
 /****拖拽管理者**************/
 //鼠标按下时的处理
@@ -405,3 +441,4 @@ var setDragIcon=function () {
 /************执行*************/
 setDragIcon();
 topoManager.init();
+});
