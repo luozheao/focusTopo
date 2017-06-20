@@ -34,32 +34,32 @@ define([],function () {
         isLocalhost:window.location.href.indexOf('localhost:')>=0,//判断是否属于本地环境
         isFromParentTree:false,//点击系统视图节点，触发子拓扑图打开，并切换到系统视图或逻辑拓扑
         isFullScreen:false,//当前是否全屏的状态
-        formatNodes:[],//复现与保存时，读取后台nodes数组中node对象的属性
-        formatContainerNodes:[],//复现与保存时，读取后台nodes数组中containerNode对象的属性
-        formatContainers:[],//复现与保存时，读取后台nodes数组中container对象的属性
-        formatLinks:[],//复现与保存时，读取后台links数组中对象的属性
+        formatNodes:['id','type','json'],//复现与保存时，读取后台nodes数组中node对象的属性
+        formatContainerNodes:['id','type','json'],//复现与保存时，读取后台nodes数组中containerNode对象的属性
+        formatContainers:['id','type','json'],//复现与保存时，读取后台nodes数组中container对象的属性
+        formatLinks:['id','type','json'],//复现与保存时，读取后台links数组中对象的属性
         //获取复现与保存时，所需读取后台links、nodes数组中对象的属性
         setFormatNodesAndLinks:function (linksArr,nodesArr) {
             for(var k=0;k<nodesArr.length;k++){
                 var obj=nodesArr[k];
 
-                  sugar(null,null,obj.type);
+                sugar(null,null,obj.type);
 
                 if(obj.type=="node" && stateManager.formatNodes.length==0){
                     for(var m in obj){
-                        stateManager.formatNodes.push(m);
+                        stateManager.formatNodes.indexOf(m)<0&&stateManager.formatNodes.push(m);
                     }
                     sugar(stateManager.formatNodes,obj.json,obj.type);
                 }
                 else if(obj.type=="containerNode" && stateManager.formatContainerNodes.length==0){
                     for(var m in obj){
-                        stateManager.formatContainerNodes.push(m);
+                        stateManager.formatContainerNodes.indexOf(m)<0&&stateManager.formatContainerNodes.push(m);
                     }
                     sugar(stateManager.formatContainerNodes,obj.json,obj.type);
                 }
                 else if(obj.type=="container" && stateManager.formatContainers.length==0){
                     for(var m in obj){
-                        stateManager.formatContainers.push(m);
+                        stateManager.formatContainers.indexOf(m)<0&&stateManager.formatContainers.push(m);
                     }
                     sugar(stateManager.formatContainers,obj.json,obj.type);
                 }
@@ -69,7 +69,7 @@ define([],function () {
                 if(stateManager.formatLinks.length>0){break;}
                 var obj=linksArr[i];
                 for(var j in obj){
-                    stateManager.formatLinks.push(j);
+                    stateManager.formatLinks.indexOf(m)<0&&stateManager.formatLinks.push(j);
                 }
                 sugar(stateManager.formatLinks,obj.json,obj.type);
             }
@@ -90,9 +90,9 @@ define([],function () {
                 }
 
                 var str=arr.join(',');
-               checkArr1.forEach(function (p1, p2, p3) {
+                checkArr1.forEach(function (p1, p2, p3) {
                     if(str.indexOf(p1)<0){
-                            console.log(eleType+"的数据格式缺少:"+p1+",请添加上去!!!\n"+str2);
+                        console.log(eleType+"的数据格式缺少:"+p1+",请添加上去!!!\n"+str2);
                     }
                 });
                 checkArr2.forEach(function (p1, p2, p3) {
@@ -386,8 +386,8 @@ define([],function () {
         /**********************************************************控制层*****/
         dragInit: function () {
             var $dragContainer = $('#container');
-            var fnCreateNodeOrContainerNodeByDrag = function ($thisClone, mDown, thisWidth, thisHeight, pageX, pageY) {
-                dragManager.dragMouseUp($thisClone, mDown, thisWidth, thisHeight, pageX, pageY);
+            var fnCreateNodeOrContainerNodeByDrag = function ($thisClone, mDown, thisWidth, thisHeight,e) {
+                dragManager.dragMouseUp($thisClone, mDown, thisWidth, thisHeight,e);
                 toolbarManager.history.save();
             };
             $('#equipmentArea .dragTag').each(function () {
@@ -396,6 +396,7 @@ define([],function () {
                     randomPosition: false, //初始位置是否随机
                     dragContainer: $dragContainer, //可拖拽区域容器
                     dragMouseDown:dragManager.dragMouseDown,
+                    dragMouseMove:dragManager.dragMouseMove,
                     stateManager: stateManager,
                     fnCreateNodeByDrag: fnCreateNodeOrContainerNodeByDrag,  //拖拽后生成节点
                 });
@@ -625,8 +626,8 @@ define([],function () {
             var self = canvasManager;
             var stage = stateManager.stage;
 
-                stage.remove(stateManager.scene);
-                var scene = stateManager.scene = new JTopo.Scene(stage);
+            stage.remove(stateManager.scene);
+            var scene = stateManager.scene = new JTopo.Scene(stage);
 
 
 
@@ -727,6 +728,7 @@ define([],function () {
                 if(child.parentType != 'containerNode'&&['node','container','containerNode'].indexOf(child.type)>=0)
                 {
                     var nodeObj={};
+
                     var saveAttrArr=typeToSaveAttr[child.type];
                     //后台所需数据
                     for(var m =0;m<saveAttrArr.length;m++){
@@ -807,56 +809,41 @@ define([],function () {
 
         /******************节点处理，start***************************/
         //创建拖拽后的节点，初始化节点
-        createNodeByDrag: function ($thisClone, mDown, thisWidth, thisHeight, pageX, pageY)
+        createNodeByDrag: function ($thisClone, mDown, thisWidth, thisHeight, e)
         {
+
             var scene = stateManager.scene;
             var self = canvasManager;
-            var subWidth = pageX - stateManager.equipmentAreaWidth;
-            var subHeight = pageY - 80;
-            var offsetX=$thisClone.offsetX||0;
-            var offsetY=$thisClone.offsetY||0;
-            var nodeX =offsetX+subWidth - scene.translateX;//松开鼠标时,元素在画布上的x坐标
-            var nodeY =offsetY+pageY - scene.translateY - 80;//松开鼠标时,元素在画布上的y 坐标
+            var subWidth = e.pageX -thisWidth/2- stateManager.equipmentAreaWidth-$('#equipmentArea').offset().left;
+            var subHeight = e.pageY-thisHeight/2 - $('#canvas').offset().top;
+            var nodeX =subWidth - scene.translateX;//松开鼠标时,元素在画布上的x坐标
+            var nodeY =subHeight - scene.translateY;//松开鼠标时,元素在画布上的y 坐标
 
-            var nodeName = 'node_name';
-            var nodeWidth = thisWidth;
-            var nodeHight = thisHeight;
-            var imgName = '';
-            var flowIconTag=$thisClone.attr('flowIconTag');//表示属于流程图标
-            var isOtherRectIcon=['android','apple','IE'].indexOf($thisClone.attr('imgname'))>=0;//安卓苹果IE图标
 
-            if ($thisClone) {
-                nodeName = $thisClone.attr('nodeName');
-                imgName = $thisClone.attr('imgName');
-                if(flowIconTag){
-                    nodeWidth=2.923*parseFloat(nodeHight);
-                }else if(isOtherRectIcon){
-                    nodeWidth=(222/102)*parseFloat(nodeHight);
-                }
-                $thisClone.remove();
-                $thisClone=null;
-            }
-
+            var jsonObj= eval('('+$thisClone.attr('json')+')') ;
             if (subWidth > 0 && subHeight > 0 && mDown) {
-                var node = new JTopo.Node(nodeName);
+                var node = new JTopo.Node();
                 node.setLocation(nodeX, nodeY);
                 node.font = "14px Consolas";
+                node.text=$thisClone.attr('nodeName');
                 node.fillColor = '255,255,255';
-                node.fontColor = flowIconTag?'255,255,255':'85,85,85';
-                if(nodeName=='开始'||nodeName=='结束'){
-                    node.fontColor = '85,85,85';
-                }
+                node.fontColor = '85,85,85';
                 node.textPosition = 'Bottom_Center';
-                node.textOffsetY = flowIconTag?-34:5;
-
-                var url='./images/'+imgName+'_g.png';
-                node.setImage(url);
-                node.imgName = imgName;
+                node.textOffsetY =5;
+                node.json=jsonObj;
+                jsonObj.imgName&&node.setImage('./images/'+jsonObj.imgName+'_g.png');
                 node.id=node._id;
-                node.setSize(nodeWidth, nodeHight);
+                node.setSize(thisWidth, thisHeight);
                 self._setNodeEvent(node);
                 scene.add(node);
 
+                for(var i in jsonObj){
+                    node[i]=jsonObj[i];
+                }
+            }
+            if ($thisClone) {
+                $thisClone.remove();
+                $thisClone=null;
             }
         },
         //创建节点
@@ -879,8 +866,8 @@ define([],function () {
             self._setNodeEvent(node);
             scene.add(node);
 
-            node.setImage('./images/alertIcon2.png','setSmallImage');//setSmallImage 为设置小图标
-            JTopo.util.smallNodeFlash(node,true,true,[202,202,202],[222,81,69]);//结点,是否变色,是否闪动,底色,变色
+            // node.setImage('./images/alertIcon2.png','setSmallImage');//setSmallImage 为设置小图标
+            // JTopo.util.smallNodeFlash(node,true,true,[202,202,202],[222,81,69]);//结点,是否变色,是否闪动,底色,变色
 
             return node;
         },

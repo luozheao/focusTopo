@@ -405,10 +405,12 @@ var getDragData=function () {
     var data = [
         {
             imgName: 'android',
+            type:'node',
             name: '安卓'
         },
         {
             imgName: 'apple',
+            type:'node',
             name: '苹果'
         }
     ]
@@ -423,11 +425,9 @@ var showDragIcon=function (data) {
     var html="";
     for(var i=0;i<data.length;i++){
           var obj =data[i];
-          var str='';
-          for(var j in obj){
-              str+= j+"="+obj[j]+"  "
-          }
-          html +='<div class="dragTag '+obj.imgName+'" title="'+obj.name+'"   '+str+' ><div class="dragNodeName">'+obj.name+'</div></div>';
+          var jsonStr=JSON.stringify(obj);
+
+          html +='<div class="dragTag '+obj.imgName+'" title="'+obj.name+'"  json='+jsonStr+' ><div class="dragNodeName">'+obj.name+'</div></div>';
     }
    return html;
 }
