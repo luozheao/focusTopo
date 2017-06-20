@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d03212b2-f414-4dd6-b7b1-40f1146a01f9" name="Default" comment="去掉idea文件夹">
+    <list default="true" id="d03212b2-f414-4dd6-b7b1-40f1146a01f9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -800,11 +800,18 @@
       <option name="project" value="LOCAL" />
       <updated>1497928994689</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="去掉idea文件夹2">
+      <created>1497929034963</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1497929034963</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="255153000" />
+    <option name="totallyTimeSpent" value="255176000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-10" y="0" width="1934" height="1030" extended-state="0" />
@@ -886,7 +893,8 @@
     <MESSAGE value="删除数据，为新的拓扑图准备" />
     <MESSAGE value="上传新的拓扑图" />
     <MESSAGE value="去掉idea文件夹" />
-    <option name="LAST_COMMIT_MESSAGE" value="去掉idea文件夹" />
+    <MESSAGE value="去掉idea文件夹2" />
+    <option name="LAST_COMMIT_MESSAGE" value="去掉idea文件夹2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
