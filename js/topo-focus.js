@@ -371,24 +371,7 @@ canvasManager.userDefinedNodes=[
 ];
 canvasManager.renderTopoCallback=function () {}
 
-/****拖拽管理者**************/
-//鼠标按下时的处理
-dragManager.dragMouseDown=function($thisClone,positionX,positionY){
-    $thisClone.css({
-        "zIndex": "1",
-        'left': positionX+5,
-        'top': positionY+5,
-        'position':'absolute',
-        'padding-left':'0',
-        'margin':0
-    });
-}
-//鼠标松开时的处理
-dragManager.dragMouseUp=function ($thisClone, mDown, thisWidth, thisHeight, pageX, pageY) {
-    if ($thisClone) {
-        canvasManager.createNodeByDrag($thisClone, mDown, thisWidth, thisHeight, pageX, pageY);
-    }
-}
+
 
 /*********其他开发者自定义拓展**********************************************************/
 //右键删除
@@ -409,12 +392,16 @@ var getDragData=function () {
         {
             imgName: 'android',
             type:'node',
-            name: '安卓'
+            name: '安卓',
+            width:102,
+            height:50
         },
         {
             imgName: 'apple',
             type:'node',
-            name: '苹果'
+            name: '苹果',
+            width:102,
+            height:50
         }
     ]
     return data;
