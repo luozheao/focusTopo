@@ -4,6 +4,9 @@
  */
 
 define(['topo-main'],function (topoManager) {
+    function  init() {
+
+
     var stateManager=topoManager.stateManager;
     var dataManager=topoManager.dataManager;
     var toolbarManager=topoManager.toolbarManager;
@@ -441,4 +444,6 @@ var setDragIcon=function () {
 /************执行*************/
 setDragIcon();
 topoManager.init();
+    }
+    return init;
 });

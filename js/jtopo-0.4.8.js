@@ -598,8 +598,8 @@
             },
             //节点左上角图片闪动
             smallNodeFlash:function (node,isChangeColor,isFlash,originColor,changeColor) {
-               // node.setImage('./images/alertIcon2.png','setSmallImage');//setSmallImage 为设置小图标
-               // JTopo.util.smallNodeFlash(node,true,true,[202,202,202],[222,81,69]);//结点,是否变色,是否闪动,底色,变色
+                // node.setImage('./images/alertIcon2.png','setSmallImage');//setSmallImage 为设置小图标
+                // JTopo.util.smallNodeFlash(node,true,true,[202,202,202],[222,81,69]);//结点,是否变色,是否闪动,底色,变色
 
                 node.smallImageOriginColor=originColor;
                 node.smallImageChangeColor =changeColor;
@@ -624,7 +624,49 @@
                 var xs=nodeA.x- nodeZ.x,
                     xy=nodeA.y- nodeZ.y;
                 return Math.atan(xy/xs)+(xs>0?Math.PI:0);
-            }
+            },
+            //找到当前节点的所有上级节点和线条的id
+            findAllPrevNodesAndLinks:function (id,linksArr,saveObj) {
+                var _saveObj=saveObj;
+                if(!saveObj){
+                    _saveObj={
+                        prevNodesId:[],
+                        prevLinksId:[]
+                    }
+                }
+
+                for(var j=0;j<linksArr.length;j++){
+                    var linkObj=linksArr[j];
+                    if(linkObj.nodeZ.id==id){
+                        _saveObj.prevNodesId.push(linkObj.nodeA.id);
+
+                        _saveObj.prevLinksId.push(linkObj.id);
+
+                        JTopo.util.findAllPrevNodesAndLinks(linkObj.nodeA.id,linksArr,_saveObj);
+                    }
+                }
+                return _saveObj;
+            },
+            //找到当前节点的所有下级节点和线条的id
+            findAllNextNodesAndLinks:function (id,linksArr,saveObj) {
+                var _saveObj=saveObj;
+                if(!saveObj){
+                    _saveObj={
+                        nextNodesId:[],
+                        nextLinksId:[]
+                    }
+                }
+
+                for(var j=0;j<linksArr.length;j++){
+                    var linkObj=linksArr[j];
+                    if(linkObj.nodeA.id==id){
+                        _saveObj.nextNodesId.push(linkObj.nodeZ.id);
+                        _saveObj.nextLinksId.push(linkObj.id);
+                        JTopo.util.findAllNextNodesAndLinks(linkObj.nodeZ.id,linksArr,_saveObj);
+                    }
+                }
+                return _saveObj;
+            },
         },
             JTopo.flag = {
                 clearAllAnimateT: false,
@@ -2103,8 +2145,8 @@
                 this.smallAlarmImage_w=20;
                 this.smallAlarmImage_h=20;
                 this.smallAlarmImageTag=false;
-                 this.smallAlarmImageObj=null;
-                 this.smallAlarmImageChangeObj=null;
+                this.smallAlarmImageObj=null;
+                this.smallAlarmImageChangeObj=null;
                 this.smallImageOriginColor=[255,0,0];
                 this.smallImageChangeColor=null;
                 this.paintCallback=null;
@@ -2145,12 +2187,12 @@
                     }
                     a.closePath();
 
-                        this.paintText(a),
+                    this.paintText(a),
                         this.paintBorder(a),
                         this.paintCtrl(a),
                         this.paintAlarmText(a),
                         this.paintAlarmImage(a),
-                        this.paintCallback&&this.paintCallback(a)
+                    this.paintCallback&&this.paintCallback(a)
                 },
                 this.paintAlarmText = function(a) {
                     if (null != this.alarm && "" != this.alarm&&this.showAlarmText) {
@@ -2187,21 +2229,21 @@
                 },
                 //luozheao20170616
                 this.paintAlarmImage=function (a) {
-                     //this.smallAlarmImageTag  是否开启告警图片变色
-                     //this.smallAlarmImage  告警图片名称
-                     //smallAlarmImage_w,smallAlarmImage_h   你猜这是什么
+                    //this.smallAlarmImageTag  是否开启告警图片变色
+                    //this.smallAlarmImage  告警图片名称
+                    //smallAlarmImage_w,smallAlarmImage_h   你猜这是什么
                     //this.smallAlarmImageObj 为告警图片对象
                     //this.smallAlarmImageChangeObj 为告警变色图片对象
                     if (null != this.smallAlarmImageObj && "" != this.smallAlarmImageObj) {
                         var b = a.globalAlpha;
 
                         a.globalAlpha = this.alpha,
-                         this.smallAlarmImageChangeObj&&this.smallAlarmImageTag
-                            ?
-                            a.drawImage(this.smallAlarmImageChangeObj, -10-this.width / 2, -this.height / 2, this.smallAlarmImage_w, this.smallAlarmImage_h)
-                            :
-                            a.drawImage(this.smallAlarmImageObj , -10-this.width / 2, -this.height / 2, this.smallAlarmImage_w, this.smallAlarmImage_h),
-                        a.globalAlpha = b
+                            this.smallAlarmImageChangeObj&&this.smallAlarmImageTag
+                                ?
+                                a.drawImage(this.smallAlarmImageChangeObj, -10-this.width / 2, -this.height / 2, this.smallAlarmImage_w, this.smallAlarmImage_h)
+                                :
+                                a.drawImage(this.smallAlarmImageObj , -10-this.width / 2, -this.height / 2, this.smallAlarmImage_w, this.smallAlarmImage_h),
+                            a.globalAlpha = b
                     }
                 },
                 this.paintText = function(a) {
@@ -2949,12 +2991,34 @@
                     } else {
                         if (JTopo.flag.linkConfigure.textIsTilt) {
                             //todo:倾斜算法还有点问题
-                            a.translate(e - g / 2, f - h / 2);
+                            a.translate(e-g/2  , f-h/2 );
                             var rotate=JTopo.util.getRotateAng(this.nodeA,this.nodeZ);
                             a.rotate(rotate);
-                            a.translate(-e + g / 2, -f + h / 2);
+                            a.translate(-(e - g / 2), -(f-h/2));
+                            var kh=h/2;
+                            var xkh=g/2;
+                            var r=Math.abs(180*rotate/Math.PI);
+                            if(r>20){
+                                kh=rotate>0?5:-5;
+                            }
+                            if(r>40){
+                                kh=rotate>0?15:-15;
+                            }
+                            if(r>60){
+                                kh=rotate>0?20:-20;
+                            }
+                            if(r>80){
+                                kh=rotate>0?25:-25;
+                                //  xkh=rotate>0&&g;
+                            }
+
+                            a.fillText(this.text, e - xkh, f-kh);
+
+                        }else {
+                            a.fillText(this.text, e - g / 2, f-kh);
                         }
-                        a.fillText(this.text, e - g / 2, f - h / 2);
+
+
 
                     }
                     a.stroke(),

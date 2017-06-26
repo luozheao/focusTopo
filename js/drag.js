@@ -85,7 +85,7 @@ $.fn.extend({
 
         $('body').mouseup(function(e){
             if($thisClone){
-                fnCreateNodeByDrag($thisClone,mDown,thisWidth,thisHeight,e);
+                fnCreateNodeByDrag($thisClone,mDown,e);
                 $thisClone=null;
             }
             mDown = false;
