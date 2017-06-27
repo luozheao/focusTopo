@@ -3,10 +3,8 @@
  * topo-main.js中通过模块化封装的方式，提供接口和钩子，来实现拓扑图
  */
 
-define(['topo-main'],function (topoManager) {
+define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
     function  init() {
-
-
     var stateManager=topoManager.stateManager;
     var dataManager=topoManager.dataManager;
     var toolbarManager=topoManager.toolbarManager;
@@ -36,16 +34,16 @@ dataManager.getTopoData=function (callback) {
                    "type":"node",
                    "json":"{x:250,y:250,width:52,height:52,elementType:'node',imgName:'ActiveMQ'}"
                },
-               {
-              "id": '102',
-              "type":'containerNode',
-              "json":'{"imgName":"testIcon","alertLevel":2,"name":"业务系统","msgArr":[["CPU","0.122"],["MEM","0.9"],["Incoming","6.72GB|2GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
-              },
-               {
-                   "id":'103',
-                   "type":'containerNode',
-                   "json":'{"nodeFn":"haha","elementType":"containerNode"}'
-               }
+              //  {
+              // "id": '102',
+              // "type":'containerNode',
+              // "json":'{"imgName":"testIcon","alertLevel":2,"name":"业务系统","msgArr":[["CPU","0.122"],["MEM","0.9"],["Incoming","6.72GB|2GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
+              // },
+              //  {
+              //      "id":'103',
+              //      "type":'containerNode',
+              //      "json":'{"nodeFn":"haha","elementType":"containerNode"}'
+              //  }
            ],
 
            "links": [
@@ -64,6 +62,7 @@ dataManager.getTopoData=function (callback) {
 }
 //存储拓扑图数据
 dataManager.saveTopoData=function (data) {
+
       console.log(data);
 }
 /************工具栏管理者***************/
@@ -74,6 +73,9 @@ toolbarManager.searchArr=['id'];
 canvasManager.nodeEvent={
         mouseup:function (e) {
              if(e.which==3){
+
+                 stateManager.currentNode
+
                  //右键
                   $('#contextmenuNode').css({
                       "left":e.pageX+40,
@@ -373,7 +375,7 @@ canvasManager.renderTopoCallback=function () {}
 
 
 
-/*********其他开发者自定义拓展**********************************************************/
+/*********其他开发者自定义拓展***************************************************************************************/
 //右键删除
 $('.contextmenu li').click(function () {
      var $this=$(this);
@@ -428,9 +430,13 @@ var setDragIcon=function () {
      $('.iconContainer .basicIconTag').html(html);
 
 }
+
+
 /************执行*************/
 setDragIcon();
 topoManager.init();
+
+
     }
     return init;
 });

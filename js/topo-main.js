@@ -16,11 +16,12 @@ define([],function () {
         stage: {},
         scene: {},
         canvas: {},
-        equipmentAreaWidth:240,
+        equipmentAreaWidth:250,
         setLink: { //线条类型
             isSetting: false,
             linkType: ''
         },
+
         curExpandNode:null,//目录树样式设置
         currentChooseElement:null,
         currentNode: null,//当前节点
@@ -841,7 +842,11 @@ define([],function () {
                 node.textPosition = 'Bottom_Center';
                 node.textOffsetY =5;
                 node.json=jsonObj;
-                jsonObj.imgName&&node.setImage(JTopo.flag.imageUrl+jsonObj.imgName+'_g.png');
+                if(JTopo.flag.topoImgMap){
+                    node.setImage('ActiveMQ','imageDataFlow');
+                }else{
+                    jsonObj.imgName&&node.setImage(JTopo.flag.imageUrl+jsonObj.imgName+'_g.png');
+                }
                 node.id=node._id;
                 self._setNodeEvent(node);
                 scene.add(node);
@@ -870,7 +875,13 @@ define([],function () {
                     node[j]= obj.json[j];
                 }
             }
-            node.imgName&&node.setImage(JTopo.flag.imageUrl+node.imgName+'_g.png');
+
+            if(JTopo.flag.topoImgMap){
+                node.setImage('ActiveMQ','imageDataFlow');
+            }else{
+                node.imgName&&node.setImage(JTopo.flag.imageUrl+node.imgName+'_g.png');
+            }
+
             self._setNodeEvent(node);
             scene.add(node);
 
