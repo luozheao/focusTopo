@@ -1145,6 +1145,7 @@ define([],function () {
                 link.linkConnectType ='toBorder';
                 link.bundleGap=20;
                 link.id=link._id;
+                link.type='link';
                 if(linkObj){
                     for(var i in linkObj){
                         link[i]=linkObj[i]

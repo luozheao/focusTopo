@@ -668,6 +668,18 @@ define([],function () {
                     }
                     return _saveObj;
                 },
+                //根据id找到元素
+                findEleById:function(id){
+                    return JTopo.flag.curScene.childs.filter(function(child){
+                        return (child.id==id)
+                    })[0];
+                },
+                //根据类型找到元素
+                findEleByType:function(type){
+                    return JTopo.flag.curScene.childs.filter(function(child){
+                        return (child.type==type)
+                    });
+                },
             },
                 JTopo.flag = {
                     clearAllAnimateT: false,
@@ -1313,6 +1325,7 @@ define([],function () {
                         for (var c = 0; c < b.length; c++)
                             b[c](a)
                     },
+
                     this.findElements = function(a) {
                         for (var b = [], c = 0; c < this.childs.length; c++)
                             1 == a(this.childs[c]) && b.push(this.childs[c]);
@@ -1323,6 +1336,7 @@ define([],function () {
                             return b instanceof a
                         })
                     },
+
                     this.addOperation = function(a) {
                         return this.operations.push(a),
                             this
@@ -1365,7 +1379,6 @@ define([],function () {
                             this.zIndexArray = [],
                             this.zIndexMap = {}
                     },
-
                     this.addToSelected = function(a) {
                         this.selectedElements.push(a)
                     },
@@ -1386,7 +1399,6 @@ define([],function () {
                             a === c && (this.selectedElements = this.selectedElements.del(b))
                         }
                     },
-
                     this.toSceneEvent = function(b) {
                         var c = a.util.clone(b);
                         if (c.x /= this.scaleX,
