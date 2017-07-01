@@ -10,7 +10,6 @@
  * 6、私有方法用下划线‘_’开头
  * */
 define([],function () {
-
     //状态管理者
     var stateManager = {
         stage: {},
@@ -45,6 +44,9 @@ define([],function () {
                 var obj=nodesArr[k];
 
                 sugar(null,null,obj.type);
+                if(!obj.type){
+                    debugger;
+                }
 
                 if(obj.type=="node" && stateManager.formatNodes.length==3){
                     for(var m in obj){
@@ -380,6 +382,7 @@ define([],function () {
 //拖拽管理者
     var dragManager = {
         dragMouseDown:function($thisClone,positionX,positionY,e){
+            var aa=$thisClone.attr('imgName');
             $thisClone.css({
                 "zIndex": "99",
                 'left': positionX,
@@ -388,6 +391,7 @@ define([],function () {
                 'padding-left':'0',
             });
         },
+        dragMouseMove:null,
         dragMouseUp:function ($thisClone, mDown,e) {
             if(!$thisClone){
                 return false;
@@ -489,7 +493,7 @@ define([],function () {
 
             function fnSetCanvas() {
                 var oContainer_w = oContainer.offsetWidth;
-                var oContainer_h =650;
+                var oContainer_h =550;
                 var oEquipmentArea_w =stateManager.equipmentAreaWidth;
                 oCanvas.setAttribute('width', oContainer_w - oEquipmentArea_w);
                 oCanvas.setAttribute('height', oContainer_h);
@@ -654,8 +658,6 @@ define([],function () {
             stage.remove(stateManager.scene);
             var scene = stateManager.scene = new JTopo.Scene(stage);
 
-
-
             var idToNode =canvasManager.idToNode;
             //绑定画布事件
             self.initCanvasEvent();
@@ -666,6 +668,8 @@ define([],function () {
 
             var nodesArr=data.nodes;
             var linksArr=data.links;
+            var sceneTransX=0;
+            var sceneTransY=0;
             stateManager.setFormatNodesAndLinks(linksArr,nodesArr); //获取复现和保存的时的数据格式
 
 
@@ -677,6 +681,12 @@ define([],function () {
                 }
                 if (obj.json.elementType=='node') {
                     idToNode[obj.id] =self._createNode(obj);
+                }
+
+                if(i==0&&obj.json.sceneTrans){
+
+                    sceneTransX=obj.json.sceneTrans[0];
+                    sceneTransY=obj.json.sceneTrans[1];
                 }
             }
 
@@ -710,6 +720,9 @@ define([],function () {
             }
 
 
+            stateManager.scene.translateX=sceneTransX;
+            stateManager.scene.translateY=sceneTransY;
+
             canvasManager.elementShowEffect.start();
 
             canvasManager.idToNode=idToNode;
@@ -737,12 +750,12 @@ define([],function () {
                     "containerNode":saveContainerNodeAttr,
                     "container":saveContainerAttr,
                 }
-                if(child.parentType != 'containerNode'&&['node','container','containerNode'].indexOf(child.type)>=0)
+                if(child.parentType != 'containerNode'&&['node','container','containerNode'].indexOf(child.elementType)>=0)
                 {
                     var nodeObj={};
 
-                    var saveAttrArr=typeToSaveAttr[child.type];
-                    // debugger;
+                    var saveAttrArr=typeToSaveAttr[child.elementType];
+
                     //后台所需数据
                     for(var m =0;m<saveAttrArr.length;m++){
                         var attr=saveAttrArr[m];
@@ -778,7 +791,7 @@ define([],function () {
                             }
                         }
                     }
-
+                    nodeObj.json.sceneTrans=[stateManager.scene.translateX,stateManager.scene.translateY];
                     nodeObj.json=JSON.stringify(nodeObj.json);
 
                     nodes.push(nodeObj);
@@ -832,6 +845,7 @@ define([],function () {
             var subHeight= e.pageY-jsonObj.height/2 - $('#canvas').offset().top;
             var nodeX =subWidth - scene.translateX;//松开鼠标时,元素在画布上的x坐标
             var nodeY =subHeight - scene.translateY;//松开鼠标时,元素在画布上的y 坐标
+
             if (subWidth > 0 && subHeight > 0 && mDown) {
                 var node = new JTopo.Node();
                 node.setLocation(nodeX, nodeY);
@@ -843,9 +857,9 @@ define([],function () {
                 node.textOffsetY =5;
                 node.json=jsonObj;
                 if(JTopo.flag.topoImgMap){
-                    node.setImage('ActiveMQ','imageDataFlow');
+                    node.setImage(jsonObj.imgName,'imageDataFlow');
                 }else{
-                    jsonObj.imgName&&node.setImage(JTopo.flag.imageUrl+jsonObj.imgName+'_g.png');
+                    jsonObj.imgName&&node.setImage(JTopo.flag.imageUrl+jsonObj.imgName+'.png');
                 }
                 node.id=node._id;
                 self._setNodeEvent(node);
@@ -877,9 +891,9 @@ define([],function () {
             }
 
             if(JTopo.flag.topoImgMap){
-                node.setImage('ActiveMQ','imageDataFlow');
+                node.setImage(node.imgName,'imageDataFlow');
             }else{
-                node.imgName&&node.setImage(JTopo.flag.imageUrl+node.imgName+'_g.png');
+                node.imgName&&node.setImage(JTopo.flag.imageUrl+node.imgName+'.png');
             }
 
             self._setNodeEvent(node);
@@ -1011,6 +1025,7 @@ define([],function () {
                 container.borderDashed=false;//边框成虚线，一定要设置borderRadius大于0
                 container.borderRadius = 5; // 圆角
                 container.id=container._id;
+                container.type='container';
                 for(var k in jsonObj){
                     container[k]=jsonObj[k];
                 }
@@ -1030,7 +1045,7 @@ define([],function () {
             var scene = stateManager.scene;
             var self = canvasManager;
             var container = new JTopo.Container('');
-
+            container.type='container';
             //设置后台数据
             for (var i in obj) {
                 container[i] = obj[i];
@@ -1054,6 +1069,7 @@ define([],function () {
                     }
                 }
             }
+
 
             self._setGroupEvent(container);
             scene.add(container);

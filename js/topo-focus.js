@@ -31,18 +31,26 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
              * 5\如果自定义结点是拖拽创建，则必须设置id等于_id
              * 6\必填项:id type json(elementType,如果是自定义结点,必填nodeFn) ,其中elementType和type值保持一致
              * */
+
+
+
             var data = {
                 "nodes": [
                     {
                         "id": "100",
                         "type": 'node',
-                        "json": "{x:100,y:100,width:52,height:52,elementType:'node',text:'cluster',imgName:'ActiveMQ'}"
+                        "json": "{x:100,y:100,width:133,height:104,elementType:'node',text:'',imgName:'scriptH_bg_g'}"
                     },
                     {
                         "id": "101",
                         "type": "node",
                         "json": "{x:250,y:250,width:52,height:52,elementType:'node',imgName:'ActiveMQ'}"
                     },
+                    {
+                        'id':'104',
+                        'type':'container',
+                        'json':"{elementType:'container',childsArr:['100','101'],text:'luozheao'}"
+                    }
                     //  {
                     // "id": '102',
                     // "type":'containerNode',
@@ -66,14 +74,21 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                     }
                 ]
             }
+
+
             //json属性需要处理成对象
             callback(data)
         }
+
 //存储拓扑图数据
         dataManager.saveTopoData = function (data) {
 
+
+
             console.log(data);
         }
+
+
         /************工具栏管理者***************/
 
         /*************画布管理者*********/
@@ -378,9 +393,8 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
             }
         ];
         canvasManager.renderTopoCallback = function () {
+
         }
-
-
         /*********其他开发者自定义拓展***************************************************************************************/
 //右键删除
         $('.contextmenu li').click(function () {
@@ -438,7 +452,10 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
         }
         /************执行*************/
         setDragIcon();
+
+
         topoManager.init();
+
     }
     return init;
 });

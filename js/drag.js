@@ -90,8 +90,18 @@ $.fn.extend({
             }
             mDown = false;
         }).mousemove(function(e){
-            moveX =  e.pageX-sonWidth;//元素拖拽的x坐标
-            moveY =  e.pageY-sonHeight;//元素拖拽的y坐标
+            var k_x=0;
+            var k_y=0;
+
+            if(fnDragMouseMove) {
+                var posObj = fnDragMouseMove(e);
+                k_x = posObj.x;
+                k_y = posObj.y;
+            }
+
+            moveX =  e.pageX-sonWidth+k_x;//元素拖拽的x坐标
+            moveY =  e.pageY-sonHeight+k_y;//元素拖拽的y坐标
+
 
             if(movePosition.toLowerCase() == "x"){
                 thisXMove();

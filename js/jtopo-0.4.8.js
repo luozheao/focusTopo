@@ -49,6 +49,7 @@ define([],function () {
                         b += "}"
                 }
         }
+
         CanvasRenderingContext2D.prototype.JTopoRoundRect = function(a, b, c, d, e,f) {
             //f表示边框为虚线
             if(f){
@@ -93,14 +94,22 @@ define([],function () {
                 this.stroke()
             },
             CanvasRenderingContext2D.prototype.JtopoDrawPointPath = function (a, b, c, d, e, f) {
+
                 var animespeed = (new Date()) / 10;
                 var xs = c - a,
                     xy = d - b,
+                    xl,
+                    yl,
                     l = Math.floor(Math.sqrt(xs * xs + xy * xy)),
                     colorlength = 50,
                     j = l;
-                xl = xs / l,
-                    yl = xy / l;
+                if(l===0){
+                    xl=0;
+                    yl=0;
+                }else{
+                    xl = xs / l,
+                        yl = xy / l;
+                }
                 var colorpoint = animespeed % (l + colorlength) - colorlength;
                 for (var i = 0; i < j; i++) {
                     if (((i) > colorpoint) && ((i) < (colorpoint + colorlength))) {
@@ -574,8 +583,14 @@ define([],function () {
                 },
                 setCurHandUrl: function(url) {
                     JTopo.flag.imageUrl = url;
-                    JTopo.MouseCursor.open_hand = "url(" + url + "openhand.cur) 8 8, default";
-                    JTopo.MouseCursor.closed_hand = "url(" + url + "closedhand.cur) 8 8, default"
+                    if(JTopo.flag.topoImgMap){
+                        JTopo.MouseCursor.open_hand = "default";
+                        JTopo.MouseCursor.closed_hand = "default";
+                    }else{
+                        JTopo.MouseCursor.open_hand = "url(" + url + "openhand.cur) 8 8, default";
+                        JTopo.MouseCursor.closed_hand = "url(" + url + "closedhand.cur) 8 8, default"
+                    }
+
                 },
                 //结点本身图片闪动
                 nodeFlash:function (node,isChangeColor,isFlash,originColor,changeColor) {
@@ -677,7 +692,7 @@ define([],function () {
                 //根据类型找到元素
                 findEleByType:function(type){
                     return JTopo.flag.curScene.childs.filter(function(child){
-                        return (child.type==type)
+                        return (child.elementType==type)
                     });
                 },
             },
@@ -696,11 +711,15 @@ define([],function () {
                 window.$foreach = $foreach
         }(JTopo),
         //舞台stage方法的具体实现
-        function(a) {
+        function( a) {
             function b(a) {
                 return {
                     hgap: 16,
                     visible: !1,
+                    eyesImageObj:{
+                        w:0,
+                        h:0
+                    },
                     exportCanvas: document.createElement("canvas"),
                     getImage: function(b, c) {
                         var d = a.getBound()
@@ -735,7 +754,7 @@ define([],function () {
                     },
                     canvas: document.createElement("canvas"),
                     update: function() {
-                        this.eagleImageDatas = this.getData(a)
+                        this.eagleImageDatas = this.getData(a);
                     },
                     setSize: function(a, b) {
                         this.width = this.canvas.width = a,
@@ -752,23 +771,34 @@ define([],function () {
                                 translateY: a.translateY + e - e * a.scaleY
                             }
                         }
-                        null != j && null != k ? this.setSize(b, c) : this.setSize(200, 160);
+
+                        var canvasObj=document.getElementById('canvas');
+                        var container_w=200;
+                        var container_h=container_w *canvasObj.height/canvasObj.width;
+                        //设置地图大小
+                       // null != j && null != k ? this.setSize(b, c) : this.setSize(container_w, container_h);
+                       null ? this.setSize(b, c) : this.setSize(container_w, container_h);
                         var e = this.canvas.getContext("2d");
+                        //绘制地图
+
                         if (a.childs.length > 0) {
-                            e.save(),
-                                e.clearRect(0, 0, this.canvas.width, this.canvas.height),
+                                e.save(),
+                                e.clearRect(0, 0, this.canvas.width, this.canvas.height);
                                 a.childs.forEach(function(a) {
-                                    1 == a.visible && (a.save(),
+                                    1 == a.visible && (
+                                        a.save(),
                                         a.centerAndZoom(null, null, e),
                                         a.repaint(e),
                                         a.restore())
                                 });
+
                             var f = d(a.childs[0])
                                 , g = f.translateX * (this.canvas.width / a.canvas.width) * a.childs[0].scaleX
                                 , h = f.translateY * (this.canvas.height / a.canvas.height) * a.childs[0].scaleY
                                 , i = a.getBound()
                                 , j = a.canvas.width / a.childs[0].scaleX / i.width
                                 , k = a.canvas.height / a.childs[0].scaleY / i.height;
+
                             j > 1 && (j = 1),
                             k > 1 && (j = 1),
                                 g *= j,
@@ -778,33 +808,48 @@ define([],function () {
                                 e.save(),
                                 e.lineWidth = 1,
                                 e.strokeStyle = "rgba(255,0,0,1)",
-                                e.strokeRect(-g, -h, e.canvas.width * j, e.canvas.height * k),
+                               e.strokeRect(-g, -h, e.canvas.width * j, e.canvas.height * k),
                                 e.restore();
+                            //上面绘制小地图红色边框
                             var l = null;
                             try {
-                                l = e.getImageData(0, 0, e.canvas.width, e.canvas.height)
+                                l = e.getImageData(0, 0, e.canvas.width, e.canvas.height);
+
                             } catch (m) {}
-                            return l
+
+                            this.eyesImageObj={
+                                w:e.canvas.width,
+                                h:e.canvas.height
+                            }
+                            return l;
                         }
                         return null
                     },
                     paint: function() {
                         if (null != this.eagleImageDatas) {
-                            var b = a.graphics;
-                            b.save(),
-                                b.fillStyle = "rgba(211,211,211,0.3)",
-                                b.fillRect(a.canvas.width - this.canvas.width - 2 * this.hgap, a.canvas.height - this.canvas.height - 1, a.canvas.width - this.canvas.width, this.canvas.height + 1),
-                                b.fill(),
+                               var b = a.graphics;
+                               var eyesImageObj=this.eyesImageObj;
+                               var w=4;
                                 b.save(),
+                                b.fillStyle = "rgba(211,211,211,0.3)",
+                                b.fillRect(a.canvas.width - this.canvas.width-w,
+                                    a.canvas.height - this.canvas.height -w,
+                                    eyesImageObj.w+w,
+                                    eyesImageObj.h+w),
                                 b.lineWidth = 1,
-                                b.strokeStyle = "rgba(0,0,0,1)",
-                                b.rect(a.canvas.width - this.canvas.width - 2 * this.hgap, a.canvas.height - this.canvas.height - 1, a.canvas.width - this.canvas.width, this.canvas.height + 1),
-                                b.stroke(),
-                                b.restore(),
-                                b.putImageData(this.eagleImageDatas, a.canvas.width - this.canvas.width - this.hgap, a.canvas.height - this.canvas.height),
+                                b.strokeStyle = "rgba(43,43,43,0.8)",
+                                b.strokeRect(a.canvas.width - this.canvas.width-w,
+                                    a.canvas.height - this.canvas.height - w,
+                                    eyesImageObj.w+w-1,
+                                    eyesImageObj.h+w),
+                                b.putImageData(this.eagleImageDatas,
+                                    a.canvas.width - this.canvas.width-w,
+                                    a.canvas.height - this.canvas.height-1
+                                ),
                                 b.restore()
+                           //上述,strokeStyle为小地图边框
                         } else
-                            this.eagleImageDatas = this.getData(a)
+                            this.eagleImageDatas = this.getData(a);
                     },
                     eventHandler: function(a, b, c) {
                         var d = b.x
@@ -1361,13 +1406,21 @@ define([],function () {
                             this.zIndexArray.sort(function(a, b) {
                                 return a - b
                             })),
-                            this.zIndexMap["" + a.zIndex].push(a)
+                            this.zIndexMap["" + a.zIndex].push(a);
+                        var thisObj=this;
+                        setTimeout(function () {
+                            thisObj.stage.eagleEye.update();
+                        },100);
                     },
                     this.remove = function(b) {
                         this.childs = a.util.removeFromArray(this.childs, b);
                         var c = this.zIndexMap[b.zIndex];
                         c && (this.zIndexMap[b.zIndex] = a.util.removeFromArray(c, b)),
-                            b.removeHandler(this)
+                            b.removeHandler(this);
+                        var thisObj=this;
+                        setTimeout(function () {
+                            thisObj.stage.eagleEye.update();
+                        },100);
                     },
                     this.clear = function() {
                         var a = this;
@@ -1377,7 +1430,11 @@ define([],function () {
                             this.childs = [],
                             this.operations = [],
                             this.zIndexArray = [],
-                            this.zIndexMap = {}
+                            this.zIndexMap = {};
+                        var thisObj=this;
+                        setTimeout(function () {
+                            thisObj.stage.eagleEye.update();
+                        },100);
                     },
                     this.addToSelected = function(a) {
                         this.selectedElements.push(a)
@@ -1660,15 +1717,37 @@ define([],function () {
                             this.translateY = -d
                     },
                     this.centerAndZoom = function(a, b, c) {
-                        if (this.translateToCenter(c),
+                       var canvasWidth=0;
+                       var canvasHeight=0;
+
+
+                        if (
+                            this.translateToCenter(c),
                             null == a || null == b) {
                             var d = this.getElementsBound()
                                 , e = d.right - d.left
                                 , f = d.bottom - d.top
                                 , g = this.stage.canvas.width / e
                                 , h = this.stage.canvas.height / f;
-                            c && (g = c.canvas.width / e,
-                                h = c.canvas.height / f);
+
+                            if(c) {
+                                var canvasObj = document.getElementById('canvas');
+                                canvasWidth = canvasObj.width;
+                                canvasHeight = canvasObj.height;
+                                if(e<canvasWidth){
+                                    e=canvasWidth;
+                                }
+                                if(f<canvasWidth){
+                                    f=canvasHeight;
+                                }
+
+                                g = c.canvas.width / e;
+                                h = c.canvas.height / f;
+                            }
+
+
+
+
                             var i = Math.min(g, h);
                             if (i > 1)
                                 return;
@@ -1735,7 +1814,7 @@ define([],function () {
         //displayElement的具体实现,包含所有元素默认展示属性，挂载在jTopo上
         function(a) {
             function b() {
-                this.initialize = function() {
+                    this.initialize = function() {
                     b.prototype.initialize.apply(this, arguments),
                         this.elementType = "displayElement",
                         this.x = 0,
@@ -1758,7 +1837,7 @@ define([],function () {
                         this.transformAble = !1,
                         this.zIndex = 0;
                     var a = "x,y,width,height,visible,alpha,rotate,scaleX,scaleY,strokeColor,fillColor,shadow,shadowColor,shadowOffsetX,shadowOffsetY,transformAble,zIndex".split(",");
-                    this.serializedProperties = this.serializedProperties.concat(a)
+                    this.serializedProperties = this.serializedProperties.concat(a);
                 },
                     this.initialize(),
                     this.paint = function(a) {
@@ -1882,10 +1961,10 @@ define([],function () {
                 },
                     this.initialize(),
                     this.paintSelected = function(a) {
-                        0 != this.showSelected && (a.save(),
+                            0 != this.showSelected && (a.save(),
                             a.beginPath(),
-                            a.strokeStyle = "rgba(168,202,255, 0.9)",
-                            a.fillStyle = "rgba(168,202,236,0.7)",
+                            a.strokeStyle = "rgba(168,202,255, 0.5)",
+                            a.fillStyle = "rgba(168,202,236,0.4)",
                             a.rect(-this.width / 2 - 3, -this.height / 2 - 3, this.width + 6, this.height + 6),
                             a.fill(),
                             a.stroke(),
@@ -2559,7 +2638,7 @@ define([],function () {
                             this.paintAlarmText(a)
                     },
                     this.paintSelected = function(a) {
-                        a.save(),
+                            a.save(),
                             a.beginPath(),
                             a.strokeStyle = "rgba(168,202,255, 0.9)",
                             a.fillStyle = "rgba(168,202,236,0.7)",
@@ -2901,6 +2980,7 @@ define([],function () {
                                 }
                                 break;
                             case 'flow':
+
                                 if (this.nodeA === this.nodeZ) return void this.paintLoop(a);
                                 a.beginPath(), a.moveTo(b[0].x, b[0].y);
                                 for (var c = 1; c < b.length; c++) {
@@ -3286,6 +3366,7 @@ define([],function () {
                 thislink.animateNode=imgnode;
                 var timeT=0;
                 thislink.animateT=null;
+                thislink.animateCallback=null;
                 var currentPathIndex=0;
                 var _rate=rate||200;
                 var _speed=speed||10;
@@ -3385,6 +3466,7 @@ define([],function () {
                                 ++currentPathIndex;
                                 if (currentPathIndex == thislink.path.length - 1) {
                                     currentPathIndex = 0;
+
                                 }
                                 imgnode.cx = thislink.path[currentPathIndex].x;
                                 imgnode.cy = thislink.path[currentPathIndex].y;
@@ -3424,6 +3506,8 @@ define([],function () {
                         this.elementType = "container",
                         this.zIndex = d.zIndex_Container,
                         this.width = 100,
+
+
                         this.height = 100,
                         this.childs = [],
                         this.alpha = 0,
@@ -3446,7 +3530,7 @@ define([],function () {
                         this.textAlpha = 1,
                         this.textPosition = "Top_Bottom",
                         this.textOffsetX = 0,
-                        this.textOffsetY = -34  ,
+                        this.textOffsetY = 11 ,
                         this.textPositionMsg = {
                             x: null,
                             y: null,
@@ -3500,8 +3584,9 @@ define([],function () {
                             null == this.borderRadius || 0 == this.borderRadius ? b.rect(this.x, this.y, this.width, this.height) : b.JTopoRoundRect(this.x, this.y, this.width, this.height, this.borderRadius),
                             b.fill(),
                             b.closePath(),
-                            this.paintText(b),
-                            this.paintBorder(b))
+                            this.paintBorder(b)),
+                            this.paintText(b)
+                        //先绘制边框,再绘制文字
                     }
                     ,
                     this.paintBorder = function(a) {
@@ -3515,13 +3600,20 @@ define([],function () {
                                 top:null,
                                 bottom:null
                             };
-                            thisObj.childs.forEach(function(p,index){
+                            thisObj.childs.forEach(function(p){
                                 var textWidth = a.measureText(p.text||'').width;
 
                                 var pObj = p.getTextPostion(p.textPosition, textWidth,textHeight);//获取文字的相对位置
                                 //获取文字左下角的位置，注意不是左上角
                                 pObj.x+=p.x+p.width/2;
                                 pObj.y+=p.y+p.height/2;
+
+                                //获取文字+节点整体的边界
+                                if(p.width>textWidth){
+                                    pObj.x=p.x;
+                                    textWidth=p.width;
+                                }
+
                                 if(compareObj.left===null||compareObj.left>pObj.x){compareObj.left=pObj.x};
                                 if(compareObj.right===null||compareObj.right<pObj.x+textWidth){compareObj.right=pObj.x+textWidth};
                                 if(compareObj.top===null||compareObj.top>pObj.y-textHeight){compareObj.top=pObj.y-textHeight};
@@ -3551,10 +3643,9 @@ define([],function () {
 
                                 var len=thisObj.borderPadding;
                                 thisObj.x-=len*2;
-                                thisObj.y-=len*3;
+                                thisObj.y-=len*4;
                                 thisObj.width+=len*4;
                                 thisObj.height+=len*5;
-
                                 //跟title比较宽度
                                 var titleWidth = a.measureText(thisObj.text||'').width+60;
                                 var subWidth=titleWidth-thisObj.width;
@@ -3578,7 +3669,7 @@ define([],function () {
                                 a.closePath()
                         }
                     }
-                this.paintText = function(g) {
+                   this.paintText = function(g) {
                     var f = this.text;
                     if (null != f && "" != f) {
                         g.beginPath(),
@@ -3587,6 +3678,7 @@ define([],function () {
                             , i = g.measureText("田").width;
                         var h = this.getTextPostion(this.textPosition, j, i);
                         g.fillStyle = "rgba(108,208,226,1)";
+
                         g.beginPath();
                         g.moveTo(h.x - 20, h.y - i - 3);
                         g.lineTo(h.x + j + 20, h.y - i - 3);
