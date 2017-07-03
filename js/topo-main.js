@@ -227,6 +227,7 @@ define([],function () {
                     stateManager.scene.translateX=0;
                     stateManager.scene.translateY=0;
                     stateManager.scene.centerAndZoom();
+                    stateManager.stage.eagleEye.update();
                 }
                 else if ($zoom.hasClass('toolbar-overview')) {
                     var screenWidth= window.screen.width;

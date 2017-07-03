@@ -716,10 +716,6 @@ define([],function () {
                 return {
                     hgap: 16,
                     visible: !1,
-                    eyesImageObj:{
-                        w:0,
-                        h:0
-                    },
                     exportCanvas: document.createElement("canvas"),
                     getImage: function(b, c) {
                         var d = a.getBound()
@@ -772,14 +768,13 @@ define([],function () {
                             }
                         }
                         var canvasObj=document.getElementById('canvas');
-                        var container_w=200;
+                        var container_w=250;
                         var container_h=container_w *canvasObj.height/canvasObj.width;
+
                         //设置地图大小
-                       // null != j && null != k ? this.setSize(b, c) : this.setSize(container_w, container_h);
-                       null ? this.setSize(b, c) : this.setSize(container_w, container_h);
+                     null != j && null != k ? this.setSize(b, c) : this.setSize(container_w, container_h);
                         var e = this.canvas.getContext("2d");
                         //绘制地图
-
                         if (a.childs.length > 0) {
                                 e.save(),
                                 e.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -787,10 +782,11 @@ define([],function () {
                                     1 == a.visible && (
                                         a.save(),
                                         a.centerAndZoom(null, null, e),
-                                        a.repaint(e),
+                                        a.repaint(e,'eagleEye'),
                                         a.restore())
                                 });
 
+//a为stage  ,a.childs[0]为大画布
                             var f = d(a.childs[0])
                                 , g = f.translateX * (this.canvas.width / a.canvas.width) * a.childs[0].scaleX
                                 , h = f.translateY * (this.canvas.height / a.canvas.height) * a.childs[0].scaleY
@@ -805,42 +801,32 @@ define([],function () {
                             i.left < 0 && (g -= Math.abs(i.left) * (this.width / i.width)),
                             i.top < 0 && (h -= Math.abs(i.top) * (this.height / i.height)),
                                 e.save(),
-                                e.lineWidth = 1,
-                                e.strokeStyle = "rgba(255,0,0,1)",
-                               e.strokeRect(-g, -h, e.canvas.width * j, e.canvas.height * k),
+                                e.fillStyle="rgba(168,168,168,0.3)",
+                              //  e.fillRect(-g, -h, e.canvas.width * j, e.canvas.height * k),
+                                e.fillRect(-g+9, -h+5, this.canvas.width-18, this.canvas.height-10 ),
                                 e.restore();
                             //上面绘制小地图红色边框
                             var l = null;
                             try {
                                 l = e.getImageData(0, 0, e.canvas.width, e.canvas.height);
-
                             } catch (m) {}
 
-                            this.eyesImageObj={
-                                w:e.canvas.width,
-                                h:e.canvas.height
-                            }
                             return l;
                         }
                         return null
                     },
+
                     paint: function() {
                         if (null != this.eagleImageDatas) {
                                var b = a.graphics;
-                               var eyesImageObj=this.eyesImageObj;
                                var w=4;
                                 b.save(),
-                                b.fillStyle = "rgba(211,211,211,0)",
-                                b.fillRect(a.canvas.width - this.canvas.width-w,
-                                    a.canvas.height - this.canvas.height -w,
-                                    eyesImageObj.w+w,
-                                    eyesImageObj.h+w),
                                 b.lineWidth = 1,
                                 b.strokeStyle = "rgba(43,43,43,0.8)",
                                 b.strokeRect(a.canvas.width - this.canvas.width-w,
                                     a.canvas.height - this.canvas.height - w,
-                                    eyesImageObj.w+w-1,
-                                    eyesImageObj.h+w),
+                                    this.canvas.width+w-1,
+                                    this.canvas.height+w),
                                 b.putImageData(this.eagleImageDatas,
                                     a.canvas.width - this.canvas.width-w,
                                     a.canvas.height - this.canvas.height-1
@@ -1274,7 +1260,7 @@ define([],function () {
                     this.hide = function() {
                         this.visible = !1
                     },
-                    this.paint = function(a) {
+                    this.paint = function(a,mapTag) {
                         if (0 != this.visible && null != this.stage) {
                             if (a.save(),
                                     this.paintBackgroud(a),
@@ -1283,7 +1269,10 @@ define([],function () {
                                     a.scale(this.scaleX, this.scaleY),
                                 1 == this.translate) {
                                 var b = this.getOffsetTranslate(a);
-                                a.translate(b.translateX, b.translateY)
+                                if(mapTag!='eagleEye'){
+                                    a.translate(b.translateX, b.translateY)
+                                }
+
                             }
                             this.paintChilds(a),
                                 a.restore(),
@@ -1292,8 +1281,8 @@ define([],function () {
                                 a.restore()
                         }
                     },
-                    this.repaint = function(a) {
-                        0 != this.visible && this.paint(a)
+                    this.repaint = function(a,mapTag) {
+                        0 != this.visible && this.paint(a,mapTag)
                     },
                     this.paintBackgroud = function(a) {
                         null != this.background ? a.drawImage(this.background, 0, 0, a.canvas.width, a.canvas.height) : (a.beginPath(),
@@ -1697,7 +1686,6 @@ define([],function () {
                         }
                     },
                     this.getElementsBound = function() {
-
                         return a.util.getElementsBound(this.childs)
                     },
                     this.translateToCenter = function(a) {
@@ -1725,9 +1713,7 @@ define([],function () {
                                 , f = d.bottom - d.top
                                 , g = this.stage.canvas.width / e
                                 , h = this.stage.canvas.height / f;
-
                             if(c) {
-
                                 var canvasObj = document.getElementById('canvas');
                                 var canvasWidth = canvasObj.width;
                                 var canvasHeight = canvasObj.height;
@@ -1737,7 +1723,6 @@ define([],function () {
                                 if(f<canvasWidth){
                                     f=canvasHeight;
                                 }
-
                                 g = c.canvas.width / e;
                                 h = c.canvas.height / f;
                             }
@@ -1745,7 +1730,7 @@ define([],function () {
                             if (i > 1)
                                 return;
                             this.zoom(g,h)
-                            //this.zoom(i, i)
+                           //   this.zoom(i, i)
                         }
                         this.zoom(a, b)
                     },
