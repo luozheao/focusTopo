@@ -771,7 +771,6 @@ define([],function () {
                                 translateY: a.translateY + e - e * a.scaleY
                             }
                         }
-
                         var canvasObj=document.getElementById('canvas');
                         var container_w=200;
                         var container_h=container_w *canvasObj.height/canvasObj.width;
@@ -831,7 +830,7 @@ define([],function () {
                                var eyesImageObj=this.eyesImageObj;
                                var w=4;
                                 b.save(),
-                                b.fillStyle = "rgba(211,211,211,0.3)",
+                                b.fillStyle = "rgba(211,211,211,0)",
                                 b.fillRect(a.canvas.width - this.canvas.width-w,
                                     a.canvas.height - this.canvas.height -w,
                                     eyesImageObj.w+w,
@@ -1717,9 +1716,6 @@ define([],function () {
                             this.translateY = -d
                     },
                     this.centerAndZoom = function(a, b, c) {
-                       var canvasWidth=0;
-                       var canvasHeight=0;
-
 
                         if (
                             this.translateToCenter(c),
@@ -1731,9 +1727,10 @@ define([],function () {
                                 , h = this.stage.canvas.height / f;
 
                             if(c) {
+
                                 var canvasObj = document.getElementById('canvas');
-                                canvasWidth = canvasObj.width;
-                                canvasHeight = canvasObj.height;
+                                var canvasWidth = canvasObj.width;
+                                var canvasHeight = canvasObj.height;
                                 if(e<canvasWidth){
                                     e=canvasWidth;
                                 }
@@ -1744,14 +1741,11 @@ define([],function () {
                                 g = c.canvas.width / e;
                                 h = c.canvas.height / f;
                             }
-
-
-
-
                             var i = Math.min(g, h);
                             if (i > 1)
                                 return;
-                            this.zoom(i, i)
+                            this.zoom(g,h)
+                            //this.zoom(i, i)
                         }
                         this.zoom(a, b)
                     },
