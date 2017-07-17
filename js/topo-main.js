@@ -44,9 +44,7 @@ define([],function () {
                 var obj=nodesArr[k];
 
                 sugar(null,null,obj.type);
-                if(!obj.type){
-                    debugger;
-                }
+
 
                 if(obj.type=="node" && stateManager.formatNodes.length==3){
                     for(var m in obj){
@@ -116,7 +114,7 @@ define([],function () {
         },
         //判断对象中的属性是否应该保存
         attrIsNeedSave:function (attr,value,elementType) {
-            var attrArr=['propertiesStack','serializedProperties','animateNode','childs','image','inLinks','messageBus','outLinks','json','nodeA','nodeZ','selectedLocation'];
+            var attrArr=['propertiesStack','serializedProperties','animateNode','childs','image','inLinks','messageBus','outLinks','json','nodeA','nodeZ','selectedLocation','parentContainer'];
             if(elementType=='containerNode'){
                 attrArr.push('childs');
             }
@@ -382,6 +380,7 @@ define([],function () {
     }
 //拖拽管理者
     var dragManager = {
+        beforeDragMouseUp:null,
         dragMouseDown:function($thisClone,positionX,positionY,e){
             var aa=$thisClone.attr('imgName');
             $thisClone.css({
@@ -397,6 +396,18 @@ define([],function () {
             if(!$thisClone){
                 return false;
             }
+            if(dragManager.beforeDragMouseUp){
+                var b= dragManager.beforeDragMouseUp($thisClone,e);
+                if(!b){
+                    if ($thisClone) {
+                        $thisClone.remove();
+                        $thisClone=null;
+                    }
+                    return false;
+                }
+            }
+
+
             var jsonStr=$thisClone.attr('json');
             if(jsonStr.indexOf('containerNode')>=0){
                 //自定义节点
@@ -457,6 +468,9 @@ define([],function () {
             mousemove:null,
             dbclick:null
         },
+        sceneEvent:{
+            mouseup:null
+        },
         userDefinedNodes:[],//自定义结点样例
         elementShowEffect:{
             alphaEffect:false,//开启元素渐渐浮现效果
@@ -494,7 +508,12 @@ define([],function () {
 
             function fnSetCanvas() {
                 var oContainer_w = oContainer.offsetWidth;
-                var oContainer_h =550;
+                var oContainer_h =650;
+                var elementsBoundObj=stateManager.scene.getElementsBound();
+                var elementsBoundHeight=elementsBoundObj.bottom+stateManager.scene.translateY;
+                if(elementsBoundHeight>oContainer_h) {
+                    oContainer_h = elementsBoundHeight + 30;
+                }
                 var oEquipmentArea_w =stateManager.equipmentAreaWidth;
                 oCanvas.setAttribute('width', oContainer_w - oEquipmentArea_w);
                 oCanvas.setAttribute('height', oContainer_h);
@@ -545,6 +564,7 @@ define([],function () {
             tempNodeZ.setSize(1, 1);
             var link;
 
+            var sceneEventObj= canvasManager.sceneEvent;
             scene.addEventListener('click', function (e) {
                 if (e.button == 0) {
                     $(".contextmenu").hide();
@@ -558,9 +578,9 @@ define([],function () {
                 }
                 //开启连线模式
                 if (setLink.isSetting) {
-
                     if (e.target != null &&  isInstanceofElement)
                     {
+
 
                         if (beginNode == null) {
                             //第一次点击，生成连线
@@ -573,6 +593,7 @@ define([],function () {
                         else if (beginNode !== e.target) {
                             //第二次点击，完成连线
                             var endNode = e.target;
+
                             //如果是容器节点和其内部的节点连线,或者其内部节点之间连线，则不应该连线
                             if([beginNode.parentType,endNode.parentType].indexOf('containerNode')<0){
                                 var l = self._createLink(beginNode, endNode);//正式连线
@@ -593,6 +614,7 @@ define([],function () {
                         link&&scene.remove(link);
                     }
                 }
+                sceneEventObj.mouseup&&sceneEventObj.mouseup(e);
             });
             scene.addEventListener('mousedown', function (e) {
                 if ((e.target == null || e.target === beginNode || e.target === link) && e.button !== 2) {
@@ -602,17 +624,17 @@ define([],function () {
                         child.selected = false;
                     });
                 }
+
             });
             scene.addEventListener('mousedrag', function (e) {
-                $(".titleDiv").hide();
                 scene.findElements(function (child) {
                     if(child.elementType=='containerNode'){
                         child.paint(JTopo.flag.graphics);
                     }
-                })
+                });
             });
             scene.addEventListener('mousemove', function (e) {
-                tempNodeZ.setLocation(e.x, e.y);
+                tempNodeZ.setLocation(e.x-3, e.y+3);
             });
             scene.addEventListener('keyup', function (e) {
                 //快捷键
@@ -706,6 +728,7 @@ define([],function () {
             for (var i = 0; i < nodesArr.length; i++)  {
                 var obj = nodesArr[i];
                 if (obj.json.elementType=='container') {
+
                     idToNode[obj.id] = self._createContainer(obj, idToNode);
                 }
             }
@@ -727,12 +750,30 @@ define([],function () {
             canvasManager.elementShowEffect.start();
 
             canvasManager.idToNode=idToNode;
-
-
             canvasManager.renderTopoCallback&&canvasManager.isRunRenderCallback&&canvasManager.renderTopoCallback();
 
 
 
+            //告警文字
+            var alarmTextNode = new JTopo.LinkNode();
+            alarmTextNode.fontColor = '43,43,43';
+            alarmTextNode.font = "12px Consolas";
+            alarmTextNode.text ='存在10个告警>>';
+            alarmTextNode.textPosition = "Bottom_Center";
+            alarmTextNode.showSelected = false;
+            alarmTextNode.setSize(0, 0);
+            alarmTextNode.setLocation(30 + 25, 30 + 125);
+            alarmTextNode.parentType = 'containerNode';
+            alarmTextNode.nodeFn='alarm';
+            alarmTextNode.isStopLinkNodeClick=true;
+            alarmTextNode.addEventListener('click',function () {
+                alert(1);
+            });
+            stateManager.scene.add(alarmTextNode);
+
+
+
+            canvasManager.setCanvasStyle();
         },
         //保存
         saveTopo:function (callback) {
@@ -894,7 +935,7 @@ define([],function () {
             if(JTopo.flag.topoImgMap){
                 node.setImage(node.imgName,'imageDataFlow');
             }else{
-                node.imgName&&node.setImage(JTopo.flag.imageUrl+node.imgName+'.png');
+                 node.imgName&&node.setImage(JTopo.flag.imageUrl+node.imgName+'.png');
             }
 
             self._setNodeEvent(node);
@@ -908,11 +949,17 @@ define([],function () {
         //设置节点的事件
         _setNodeEvent: function (node) {
             var nodeEventObj= canvasManager.nodeEvent;
+            var clickTimeHandle=null;
             node.addEventListener('mouseup', function (e) {
-                toolbarManager.history.save();
-                stateManager.currentChooseElement=this;
-                stateManager.currentNode = this;
-                nodeEventObj.mouseup&&nodeEventObj.mouseup(e);
+                    clearTimeout(clickTimeHandle);
+                    var thisObj=this;
+                    clickTimeHandle = setTimeout(function () {
+                        $('.contextmenu').hide();
+                        toolbarManager.history.save();
+                        stateManager.currentChooseElement = thisObj;
+                        stateManager.currentNode = thisObj;
+                        nodeEventObj.mouseup && nodeEventObj.mouseup(e);
+                    });
             });
             node.addEventListener('mousemove', function (e) {
                 nodeEventObj.mousemove&&nodeEventObj.mousemove(e);
@@ -922,7 +969,7 @@ define([],function () {
                 nodeEventObj.mouseout&&nodeEventObj.mouseout(e);
             });
             node.addEventListener('dbclick', function (e) {
-
+                clearTimeout(clickTimeHandle);
                 stateManager.currentChooseElement=this;
                 stateManager.currentNode = this;
                 nodeEventObj.dbclick&&nodeEventObj.dbclick(e);
@@ -988,10 +1035,11 @@ define([],function () {
                     definedNode.addEventListener(eventName, function (e) {
                         //通用事件
                         if(eventName=='mouseup'){
-
+                            $('.contextmenu').hide();
                             toolbarManager.history.save();
                             stateManager.currentChooseElement=this;
                         }else if(eventName=='dbclick'){
+                            $('.contextmenu').hide();
                             stateManager.currentChooseElement=this;
                         }
                         //自定义事件
@@ -1080,6 +1128,7 @@ define([],function () {
         _setGroupEvent: function (container) {
             var containerEventObj= canvasManager.containerEvent;
             container.addEventListener('mouseup', function (e) {
+                $('.contextmenu').hide();
                 toolbarManager.history.save();
                 stateManager.currentContainer = this;
                 stateManager.currentChooseElement=this;
@@ -1181,6 +1230,7 @@ define([],function () {
         _setLinkEvent: function (link) {
             var linkEventObj=canvasManager.linkEvent;
             link.addEventListener('mouseup', function (e) {
+                $('.contextmenu').hide();
                 stateManager.currentLink = this;
                 stateManager.currentChooseElement=this;
                 toolbarManager.history.save();

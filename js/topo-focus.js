@@ -39,7 +39,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                     {
                         "id": "100",
                         "type": 'node',
-                        "json": "{x:100,y:100,width:133,height:104,elementType:'node',text:'',imgName:'scriptH_bg_g'}"
+                        "json": "{x:100,y:100,width:101,height:82,elementType:'node',text:'',imgName:'scriptNodeBg',shadow:true,shadowBlur:5,shadowOffsetX:1,shadowOffsetY:2,showSelected:false}"
                     },
                     {
                         "id": "101",
@@ -50,17 +50,17 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                         'id':'104',
                         'type':'container',
                         'json':"{elementType:'container',childsArr:['100','101'],text:'luozheao'}"
-                    }
-                    //  {
-                    // "id": '102',
-                    // "type":'containerNode',
-                    // "json":'{"imgName":"testIcon","alertLevel":2,"name":"业务系统","msgArr":[["CPU","0.122"],["MEM","0.9"],["Incoming","6.72GB|2GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
-                    // },
-                    //  {
-                    //      "id":'103',
-                    //      "type":'containerNode',
-                    //      "json":'{"nodeFn":"haha","elementType":"containerNode"}'
-                    //  }
+                    },
+                     {
+                    "id": '102',
+                    "type":'containerNode',
+                    "json":'{"imgName":"testIcon","alertLevel":2,"name":"业务系统","msgArr":[["CPU","0.122"],["MEM","0.9"],["Incoming","6.72GB|2GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
+                    },
+                     {
+                         "id":'103',
+                         "type":'containerNode',
+                         "json":'{"nodeFn":"haha","elementType":"containerNode"}'
+                     }
                 ],
 
                 "links": [
@@ -84,11 +84,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
         dataManager.saveTopoData = function (data) {
 
 
-
-            console.log(data);
         }
-
-
         /************工具栏管理者***************/
 
         /*************画布管理者*********/
@@ -106,6 +102,8 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                     }).show();
                 }
                 console.log(e.target);
+
+                e.target.setImage('./images/'+'scriptH_bga.png');
             },
             mousemove: null,
             mouseout: null,
@@ -130,7 +128,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
 //容器事件
         canvasManager.containerEvent = {
             mouseup: function (e) {
-
+                console.log(e.target);
                 if (e.which == 3) {
                     //右键
                     $('#contextmenuContainer').css({
@@ -143,6 +141,10 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
             mouseout: null,
             mousemove: null,
             dbclick: null
+        }
+//画布事件
+        canvasManager.sceneEvent={
+            mouseup:null
         }
 //自定义节点拓展，样例
         canvasManager.userDefinedNodes = [
@@ -400,6 +402,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
         $('.contextmenu li').click(function () {
             var $this = $(this);
             if ($this.hasClass('del')) {
+
                 stateManager.scene.remove(stateManager.currentChooseElement);
             }
             else if ($this.hasClass('rename')) {

@@ -558,6 +558,7 @@ td {
     height: 100%;
     float:left;
     border-right:6px solid #fff;
+    transform:translateZ(0px);
 }
 
 .dragTag {

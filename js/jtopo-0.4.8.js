@@ -1,7 +1,7 @@
 define([],function () {
     var JTopo={};
 //全局
-    !function(window) {
+        !function(window) {
         function Element() {
             this.initialize = function() {
                 this.elementType = "element",
@@ -420,7 +420,6 @@ define([],function () {
                 return m;
 
             }
-
             function getImageAlarm(a, b,f,m) {
 
                 null == b && (b = 255);
@@ -503,9 +502,6 @@ define([],function () {
                     d = JTopo.util.intersection(a, c)))),
                     d
             }
-            requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame || function(a) {
-                    setTimeout(a, 1e3 / 24)
-                },
                 Array.prototype.del = function(a) {
                     if ("number" != typeof a) {
                         for (var b = 0; b < this.length; b++)
@@ -1397,7 +1393,7 @@ define([],function () {
                             this.zIndexMap["" + a.zIndex].push(a);
                         var thisObj=this;
                         setTimeout(function () {
-                            thisObj.stage.eagleEye.update();
+                            thisObj.stage&&thisObj.stage.eagleEye.update();
                         },100);
                     },
                     this.remove = function(b) {
@@ -1407,7 +1403,7 @@ define([],function () {
                             b.removeHandler(this);
                         var thisObj=this;
                         setTimeout(function () {
-                            thisObj.stage.eagleEye.update();
+                            thisObj.stage&&thisObj.stage.eagleEye.update();
                         },100);
                     },
                     this.clear = function() {
@@ -1421,7 +1417,7 @@ define([],function () {
                             this.zIndexMap = {};
                         var thisObj=this;
                         setTimeout(function () {
-                            thisObj.stage.eagleEye.update();
+                            thisObj.stage&&thisObj.stage.eagleEye.update();
                         },100);
                     },
                     this.addToSelected = function(a) {
@@ -2216,15 +2212,14 @@ define([],function () {
                     this.colorStop=null;
                     this.smallAlarmImage_w=20;
                     this.smallAlarmImage_h=20;
+                    this.smallAlarmImage_x=null;
+                    this.smallAlarmImage_y=null;
                     this.smallAlarmImageTag=false;
                     this.smallAlarmImageObj=null;
                     this.smallAlarmImageChangeObj=null;
                     this.smallImageOriginColor=[255,0,0];
                     this.smallImageChangeColor=null;
                     this.paintCallback=null;
-
-
-
                     var d = "text,font,fontColor,textPosition,textOffsetX,textOffsetY,borderRadius".split(",");
                     this.serializedProperties = this.serializedProperties.concat(d)
                 },
@@ -2312,9 +2307,9 @@ define([],function () {
                             a.globalAlpha = this.alpha,
                                 this.smallAlarmImageChangeObj&&this.smallAlarmImageTag
                                     ?
-                                    a.drawImage(this.smallAlarmImageChangeObj, -10-this.width / 2, -this.height / 2, this.smallAlarmImage_w, this.smallAlarmImage_h)
+                                    a.drawImage(this.smallAlarmImageChangeObj, this.smallAlarmImage_x!==null?this.smallAlarmImage_x:-10-this.width / 2, this.smallAlarmImage_y!==null?this.smallAlarmImage_y:-this.height / 2, this.smallAlarmImage_w, this.smallAlarmImage_h)
                                     :
-                                    a.drawImage(this.smallAlarmImageObj , -10-this.width / 2, -this.height / 2, this.smallAlarmImage_w, this.smallAlarmImage_h),
+                                    a.drawImage(this.smallAlarmImageObj , this.smallAlarmImage_x!==null?this.smallAlarmImage_x:-10-this.width / 2, this.smallAlarmImage_y!==null?this.smallAlarmImage_y:-this.height / 2, this.smallAlarmImage_w, this.smallAlarmImage_h),
                                 a.globalAlpha = b
                         }
                     },
@@ -2520,6 +2515,7 @@ define([],function () {
                         }
                     },
                     this.removeHandler = function(a) {
+
                         var b = this;
                         this.outLinks && (this.outLinks.forEach(function(c) {
                             c.nodeA === b && a.remove(c)
@@ -2528,7 +2524,19 @@ define([],function () {
                         this.inLinks && (this.inLinks.forEach(function(c) {
                             c.nodeZ === b && a.remove(c)
                         }),
-                            this.inLinks = null)
+                            this.inLinks = null);
+
+                        //对父级容器处理
+                        var pc=this.parentContainer;
+                        if(pc&&pc.length>0){
+                             for(var i=0;i<pc.length;i++){
+                                 var pcObj=pc[i];
+                                 pcObj.remove(b);
+                                 if(pcObj.childs.length==0){
+                                     JTopo.flag.curScene.remove(pcObj);
+                                 }
+                             }
+                        }
                     }
             }
             function c() {
@@ -2540,8 +2548,7 @@ define([],function () {
                     this.elementType = "TextNode",
                     //textnode放到容器中，容器再外加一个容器，移动容器，textnode不能触发位移
                     this.paint = function(a) {
-
-                        a.beginPath(),
+                            a.beginPath(),
                             a.font = this.font,
                             this.width = a.measureText(this.text).width,
                             this.height = a.measureText("田").width,
@@ -2562,39 +2569,73 @@ define([],function () {
                     this.target = c,
                     this.elementType = "LinkNode",
                     this.isVisited = !1,
+                    this.isStopLinkNodeClick = false,
                     this.visitedColor = null,
-                    this.paint = function(a) {
+                    this.paint = function (a) {
                         a.beginPath(),
                             a.font = this.font,
                             this.width = a.measureText(this.text).width,
                             this.height = a.measureText("田").width,
                             this.isVisited && null != this.visitedColor ? (a.strokeStyle = "rgba(" + this.visitedColor + ", " + this.alpha + ")",
                                 a.fillStyle = "rgba(" + this.visitedColor + ", " + this.alpha + ")") : (a.strokeStyle = "rgba(" + this.fontColor + ", " + this.alpha + ")",
-                                a.fillStyle = "rgba(" + this.fontColor + ", " + this.alpha + ")"),
-                            a.fillText(this.text, -this.width / 2, this.height / 2),
-                        this.isMouseOver && (a.moveTo(-this.width / 2, this.height),
+                                a.fillStyle = "rgba(" + this.fontColor + ", " + this.alpha + ")");
+                            draw_long_text(this.text,a,-this.width / 2,this.height / 2,this);
+                            // a.fillText(this.text, -this.width / 2, this.height / 2);
+                            this.isMouseOver && (a.moveTo(-this.width / 2, this.height),
                             a.lineTo(this.width / 2, this.height),
                             a.stroke()),
                             a.closePath(),
                             this.paintBorder(a),
                             this.paintCtrl(a),
-                            this.paintAlarmText(a)
+                            this.paintAlarmText(a);
+                            function draw_long_text(longtext,cxt,nBegin_width,nBegin_height,obj)
+                            {
+                            //文字内容,画布对象,坐标x,坐标y,结点对象
+                            var lineHeight= obj.textLineHeight;
+                            if(obj.nodeFn=='alarm'){
+                                //告警类型节点，改变字体颜色
+                                var arr=longtext.split(/\d+/);
+                                var strArr=longtext.match(/\d+/);
+                                var begin_width=nBegin_width;
+                                //第一段
+                                var len1= cxt.measureText(arr[0]).width;
+                                var startP1=begin_width;
+                                cxt.fillText(arr[0],startP1,nBegin_height);
+                                //第二段
+                                var len2= cxt.measureText(strArr[0]).width;
+                                var startP2=startP1+len1;
+                                if(parseInt(strArr[0])==0){
+                                    cxt.fillStyle='rgba(149,193,90,1)';
+                                }else{
+                                    cxt.fillStyle='rgba(249,2,2,1)';
+                                }
+                                cxt.fillText(strArr[0],startP2,nBegin_height);
+                                //第三段
+                                var len3= cxt.measureText(arr[2]).width;
+                                var startP3=startP2+len2;
+                                cxt.fillStyle='rgba(43,43,43,1)';
+                                cxt.fillText(arr[1],startP3,nBegin_height);
+
+                            }
+                        }
                     },
-                    this.mousemove(function() {
+                    this.mousemove(function () {
                         var a = document.getElementsByTagName("canvas");
                         if (a && a.length > 0)
                             for (var b = 0; b < a.length; b++)
                                 a[b].style.cursor = "pointer"
                     }),
-                    this.mouseout(function() {
+                    this.mouseout(function () {
                         var a = document.getElementsByTagName("canvas");
                         if (a && a.length > 0)
                             for (var b = 0; b < a.length; b++)
                                 a[b].style.cursor = "default"
                     }),
-                    this.click(function() {
-                        "_blank" == this.target ? window.open(this.href) : location = this.href,
-                            this.isVisited = !0
+                    this.click(function () {
+                        if (!this.isStopLinkNodeClick) {
+                            "_blank" == this.target ? window.open(this.href) : location = this.href,
+                                this.isVisited = !0
+                        }
                     })
             }
             function f(a) {
@@ -3480,7 +3521,7 @@ define([],function () {
         //container的具体实现
         function(d) {
             function c(a) {
-                this.initialize = function(b) {
+                    this.initialize = function(b) {
                     c.prototype.initialize.apply(this, null),
                         this.elementType = "container",
                         this.zIndex = d.zIndex_Container,
@@ -3518,21 +3559,21 @@ define([],function () {
                         };
                     this.layout = new d.layout.AutoBoundLayout,
                         this.borderPadding = 15
-                }
-                    ,
+                },
                     this.initialize(a),
                     this.add = function(b) {
                         this.childs.push(b),
-                            b.dragable = this.childDragble
-                    }
-                    ,
+                        b.dragable = this.childDragble;
+                        if(!b.parentContainer){b.parentContainer=[]};
+                        b.parentContainer.push(this);
+                    },
                     this.remove = function(f) {
                         for (var e = 0; e < this.childs.length; e++) {
                             if (this.childs[e] === f) {
                                 f.parentContainer = null,
                                     this.childs = this.childs.del(e),
                                     f.lastParentContainer = this;
-                                break
+                                break;
                             }
                         }
                     }
@@ -3556,7 +3597,7 @@ define([],function () {
                         b && b(this, this.childs)
                     }
                     ,
-                    this.paint = function(b) {
+                    this.paint = function (b) {
                         this.visible && (this.layout && this.layout(this, this.childs),
                             b.beginPath(),
                             b.fillStyle = "rgba(" + this.fillColor + "," + this.alpha + ")",
@@ -3564,10 +3605,13 @@ define([],function () {
                             b.fill(),
                             b.closePath(),
                             this.paintBorder(b)),
-                            this.paintText(b)
-                        //先绘制边框,再绘制文字
-                    }
-                    ,
+                            this.paintText(b);    //先绘制边框,再绘制文字
+
+                            if(this.childs.length==0){
+                                //luozheao123
+                                JTopo.flag.scene.remove(this);
+                            }
+                    },
                     this.paintBorder = function(a) {
                         if (0 != this.borderWidth) {
                             //获取容器内部所有的子元素
@@ -3773,9 +3817,11 @@ define([],function () {
                         this.layout = new a.layout.AutoBoundLayout
                 },
                     this.initialize(c),
-                    this.add = function(a) {
-                        this.childs.push(a),
-                            a.dragable = this.childDragble
+                    this.add = function(b) {
+                            this.childs.push(b),
+                            b.dragable = this.childDragble;
+                        if(!b.parentContainer){b.parentContainer=[]};
+                        b.parentContainer.push(this);
                     },
                     this.remove = function(a) {
                         for (var b = 0; b < this.childs.length; b++)
@@ -3894,6 +3940,17 @@ define([],function () {
                             a.shadowColor = this.shadowColor,
                             a.shadowOffsetX = this.shadowOffsetX,
                             a.shadowOffsetY = this.shadowOffsetY
+                    },
+                    this.removeHandler = function(f) {
+                        var e = this;
+                        this.outLinks && (this.outLinks.forEach(function(b) {
+                            b.nodeA === e && f.remove(b)
+                        }),
+                            this.outLinks = null),
+                        this.inLinks && (this.inLinks.forEach(function(b) {
+                            b.nodeZ === e && f.remove(b)
+                        }),
+                            this.inLinks = null)
                     }
             }
             b.prototype = new a.InteractiveElement,
