@@ -488,6 +488,9 @@ td {
 .toolbar-flow{
     background-position: -67px -62px;
 }
+.toolbar-userDefine{
+    background-position: -67px -62px;
+}
 .toolbar-eyes{
     background-position: -31px -62px;
 }
@@ -594,7 +597,7 @@ td {
 
     text-align: center;
 }
-/********æµç¨‹å›¾æ ‡,start*****/
+/********ÃƒÂ¦Ã‚ÂµÃ‚ÂÃƒÂ§Ã‚Â¨Ã¢â‚¬Â¹ÃƒÂ¥Ã¢â‚¬ÂºÃ‚Â¾ÃƒÂ¦Ã‚Â Ã¢â‚¬Â¡,start*****/
 .dragTag.start {
     background: url("../images/start.png") no-repeat;
 }
@@ -610,7 +613,7 @@ td {
 .dragTag.flow_yellow {
     background: url("../images/flow_yellow.png") no-repeat;
 }
-/********æµç¨‹å›¾æ ‡,end*****/
+/********ÃƒÂ¦Ã‚ÂµÃ‚ÂÃƒÂ§Ã‚Â¨Ã¢â‚¬Â¹ÃƒÂ¥Ã¢â‚¬ÂºÃ‚Â¾ÃƒÂ¦Ã‚Â Ã¢â‚¬Â¡,end*****/
 .dragTag.ActiveMQ {
     background: url("../images/ActiveMQ.png") no-repeat;
 }
@@ -715,14 +718,18 @@ td {
 
 
 /********************canvas*********************/
-#canvas {
+#canvasWrap{
+    margin-top: 75px;
     float: right;
+    overflow-y:auto;
+}
+#canvas {
+    /*float: right;*/
     background: url(../images/topobg.png) repeat;
     /*border-top: 1px solid #E7E7E7;*/
-    margin-top:75px;
+    /*margin-top:75px;*/
     /*transition: all 1s;*/
 }
-
 .contextmenu {
     border: 1px solid #ddd;
     border-bottom: 0;
@@ -877,7 +884,7 @@ td {
     overflow: auto;
 }
 #equipmentArea #iconArea .basicIconTag {
-    min-height: 680px;
+    min-height: 280px;
     overflow: auto;
 }
 

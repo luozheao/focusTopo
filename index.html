@@ -18,7 +18,7 @@
             </li>
 
         </ul>
-    </div>
+    </div> 
     <div id="appMain">
         <div class="custom-wraper">
             <div class="jtp-main">
@@ -71,7 +71,7 @@
                                             <div class=" q-icon toolbar-pan"></div>
                                         </div>
                                     </div>
-                                    <div class="btn  btn-sm groupWrap hide" title="组">
+                                    <div class="btn  btn-sm groupWrap hide" title="ctrl+enter">
                                         <div class="group">组</div>
                                     </div>
                                     <div class="btn-group zoomArea">
@@ -113,7 +113,9 @@
                                         <div class="btn  btn-sm     " lineType="flow" title="流动">
                                             <div class="q-icon toolbar-flow"></div>
                                         </div>
-
+                                        <div class="btn  btn-sm     " lineType="userDefine" title="自定义">
+                                            <div class="q-icon toolbar-userDefine"></div>
+                                        </div>
                                     </div>
                                     <div class="btn  btn-sm  eyesWrap  " title="鹰眼">
                                         <div class="q-icon toolbar-eyes"></div>
@@ -145,6 +147,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="canvasWrap">
                         <canvas id="canvas">您的浏览器不支持显示，请换非IE8及以下的浏览器！</canvas>
                         </div>
                 </div>
@@ -158,6 +161,7 @@
                 <ul id="contextmenuContainer" class="contextmenu none"  >
                     <li class='rename'><a>重命名</a></li>
                     <li class='del'><a>删除容器</a></li>
+                    <li class='addColor'><a>设置底色</a></li>
                 </ul>
                 <div id="nodeTitle" class="titleDiv none">
                     什么模式下显示title，需要确定下

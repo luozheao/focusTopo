@@ -50,7 +50,7 @@ define([],function () {
                 }
         }
 
-        CanvasRenderingContext2D.prototype.JTopoRoundRect = function(a, b, c, d, e,f) {
+            CanvasRenderingContext2D.prototype.JTopoRoundRect = function(a, b, c, d, e,f) {
             //f表示边框为虚线
             if(f){
                 "undefined" == typeof e && (e = 5),
@@ -2227,39 +2227,44 @@ define([],function () {
                     this.paint = function(a) {
                         if (this.image) {
                             var b = a.globalAlpha;
-                            a.globalAlpha = this.alpha,
-                                this.keepChangeColor?(
+                            a.globalAlpha = this.alpha;
+                            if (typeof  this.image != 'string') {
+                                if (this.keepChangeColor) {
                                     a.drawImage(this.image.alarm, -this.width / 2, -this.height / 2, this.width, this.height)
-                                ):(
-                                    null != this.image.alarm && null != this.alarm ? a.drawImage(this.image.alarm, -this.width / 2, -this.height / 2, this.width, this.height) : a.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height)
-                                ),
-                                a.globalAlpha = b;
+                                } else {
+                                    if (null != this.image.alarm && null != this.alarm) {
+                                        a.drawImage(this.image.alarm, -this.width / 2, -this.height / 2, this.width, this.height)
+                                    } else {
+                                        a.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height)
+                                    }
+                                }
+                            }
+                            a.globalAlpha = b;
                         }
-                        else{
+                        else {
                             a.beginPath(),
-                                a.fillStyle ="rgba(" + this.fillColor + "," + this.alpha + ")",
+                                a.fillStyle = "rgba(" + this.fillColor + "," + this.alpha + ")",
                                 null == this.borderRadius || 0 == this.borderRadius ? a.rect(-this.width / 2, -this.height / 2, this.width, this.height) : a.JTopoRoundRect(-this.width / 2, -this.height / 2, this.width, this.height, this.borderRadius),
                                 a.fill();
                         }
-                        if(this.linearGradient) {
+                        if (this.linearGradient) {
                             var kVal = this.kVal;
-                            var grd = a.createLinearGradient(this.linearGradient[0], this.linearGradient[1], this.linearGradient[2]*kVal, this.linearGradient[3])
+                            var grd = a.createLinearGradient(this.linearGradient[0], this.linearGradient[1], this.linearGradient[2] * kVal, this.linearGradient[3])
                             for (var grdCount = 0; grdCount < this.colorStop.length / 2; grdCount++) {
                                 grd.addColorStop(this.colorStop[grdCount * 2], this.colorStop[grdCount * 2 + 1]);
                             }
                             a.fillStyle = grd;
-                            null == this.borderRadius || 0 == this.borderRadius ? a.rect(-this.width / 2, -this.height / 2, this.width*kVal, this.height) : a.JTopoRoundRect(-this.width / 2, -this.height / 2, this.width*kVal, this.height,kVal<0.03?0:this.borderRadius);
+                            null == this.borderRadius || 0 == this.borderRadius ? a.rect(-this.width / 2, -this.height / 2, this.width * kVal, this.height) : a.JTopoRoundRect(-this.width / 2, -this.height / 2, this.width * kVal, this.height, kVal < 0.03 ? 0 : this.borderRadius);
                             a.fill();
 
                         }
                         a.closePath();
-
                         this.paintText(a),
                             this.paintBorder(a),
                             this.paintCtrl(a),
                             this.paintAlarmText(a),
                             this.paintAlarmImage(a),
-                        this.paintCallback&&this.paintCallback(a)
+                        this.paintCallback && this.paintCallback(a)
                     },
                     this.paintAlarmText = function(a) {
                         if (null != this.alarm && "" != this.alarm&&this.showAlarmText) {
@@ -2543,7 +2548,7 @@ define([],function () {
                 c.prototype.initialize.apply(this, arguments)
             }
             function d(a) {
-                this.initialize(),
+                    this.initialize(),
                     this.text = a,
                     this.elementType = "TextNode",
                     //textnode放到容器中，容器再外加一个容器，移动容器，textnode不能触发位移
@@ -2822,14 +2827,13 @@ define([],function () {
                 return c(a, b).length
             }
             function f(b, c, g) {
-                function h(b, c) {
-                    var d = a.util.lineF(b.cx, b.cy, c.cx, c.cy)
+                    function h(b, c) {
+                        var d = a.util.lineF(b.cx, b.cy, c.cx, c.cy)
                         , e = b.getBound()
                         , f = a.util.intersectionLineBound(d, e);
-                    return f
-                }
-
-                this.initialize = function (b, c, d) {
+                        return f
+                    }
+                    this.initialize = function (b, c, d) {
                     if (f.prototype.initialize.apply(this, arguments),
                             this.elementType = "link",
                             this.zIndex = a.zIndex_Link,
@@ -2861,6 +2865,10 @@ define([],function () {
                         this.linkType = null;//线条类型
                         this.animateNode = null;//线条上的动画节点
                         this.linkConnectType = 'toBorder';//连接类型，null为连接到中心点，toBorder为连接到边缘
+                        this.mergeOutLink = false;//合并出线条,多条线条从节点出去,合并成一根线条
+                        this.flexionalRadius = null;//二次折线的弧度半径
+                        this.openStartRadius = true;
+                        this.openEndRadius = true;
                         var e = "text,font,fontColor,lineWidth,lineJoin".split(",");
                         this.serializedProperties = this.serializedProperties.concat(e)
                     }
@@ -2883,11 +2891,12 @@ define([],function () {
                             a.nodeIndex = b
                         })
                     },
-
-                    this.getStartPosition = function () {
+                    this.getStartPosition = function (linksSum,subY,angle) {
                         var a = {};
+                        var pi=Math.PI;
                         switch (this.linkConnectType) {
                             case 'toBorder':
+                                //链接边框
                                 a = h(this.nodeA, this.nodeZ),
                                 null == a && (a = {
                                     x: this.nodeA.cx,
@@ -2899,12 +2908,20 @@ define([],function () {
                                     x: this.nodeA.cx,
                                     y: this.nodeA.cy
                                 };
+                        };
+
+                        //根据倾斜角,设置a.x和a.y
+                        if(angle<pi*30/180){
+                            a.y+=(this.nodeIndex-(linksSum-1)/2)*subY;
+                        }else{
+                            a.x+=(this.nodeIndex-(linksSum-1)/2)*this.bundleGap;
                         }
-                        ;
+                        //到达一定角度
                         return a
                     },
-                    this.getEndPosition = function () {
+                    this.getEndPosition = function (linksSum,subY,angle) {
                         var a;
+                        var pi=Math.PI;
                         switch (this.linkConnectType) {
                             case 'toBorder':
                                 a = h(this.nodeZ, this.nodeA),
@@ -2920,32 +2937,40 @@ define([],function () {
                                     y: this.nodeZ.cy
                                 });
                         }
+                        if(angle<pi*30/180){
+                            a.y+=(this.nodeIndex-(linksSum-1)/2)*subY;
+                        }else{
+                            a.x+=(this.nodeIndex-(linksSum-1)/2)*this.bundleGap;
+                        }
+
+
                         return a
                     },
-
                     this.getPath = function () {
+                        var d = e(this.nodeA, this.nodeZ);//d是连线数量
+                        var angle=Math.atan2(Math.abs(this.nodeZ.cy - this.nodeA.cy), Math.abs(this.nodeZ.cx - this.nodeA.cx));
+                        var subY=this.bundleGap/Math.cos(angle);
                         var a = []
-                            //tag4
-                            , b = this.getStartPosition()
-                            , c = this.getEndPosition();
+                            , b = this.getStartPosition(d,subY,angle)
+                            , c = this.getEndPosition(d,subY,angle);
                         if (this.nodeA === this.nodeZ)
                             return [b, c];
-                        var d = e(this.nodeA, this.nodeZ);
+
                         if (1 == d)
                             return [b, c];
-                        var f = Math.atan2(c.y - b.y, c.x - b.x)
+                           var f = Math.atan2(c.y - b.y, c.x - b.x)
                             , g = {
                             x: b.x + this.bundleOffset * Math.cos(f),
                             y: b.y + this.bundleOffset * Math.sin(f)
-                        }
+                            }
                             , h = {
                             x: c.x + this.bundleOffset * Math.cos(f - Math.PI),
                             y: c.y + this.bundleOffset * Math.sin(f - Math.PI)
-                        }
+                            }
                             , i = f - Math.PI / 2
                             , j = f - Math.PI / 2
                             , k = d * this.bundleGap / 2 - this.bundleGap / 2
-                            , l = this.bundleGap * this.nodeIndex
+                            , l = this.bundleGap * this.nodeIndex  // nodeIndex线条序号
                             , m = {
                             x: g.x + l * Math.cos(i),
                             y: g.y + l * Math.sin(i)
@@ -2954,10 +2979,11 @@ define([],function () {
                             x: h.x + l * Math.cos(j),
                             y: h.y + l * Math.sin(j)
                         };
+
                         return m = {
                             x: m.x + k * Math.cos(i - Math.PI),
                             y: m.y + k * Math.sin(i - Math.PI)
-                        },
+                            },
                             n = {
                                 x: n.x + k * Math.cos(j - Math.PI),
                                 y: n.y + k * Math.sin(j - Math.PI)
@@ -2966,14 +2992,14 @@ define([],function () {
                                 x: b.x,
                                 y: b.y
                             }),
-                            a.push({
-                                x: m.x,
-                                y: m.y
-                            }),
-                            a.push({
-                                x: n.x,
-                                y: n.y
-                            }),
+                            // a.push({
+                            //     x: m.x,
+                            //     y: m.y
+                            // }),
+                            // a.push({
+                            //     x: n.x,
+                            //     y: n.y
+                            // }),
                             a.push({
                                 x: c.x,
                                 y: c.y
@@ -2982,6 +3008,56 @@ define([],function () {
                     },
                     this.paintPath = function (a, b) {
                         switch (this.linkType) {
+                            case 'flexional':
+                                if (this.nodeA === this.nodeZ) return void this.paintLoop(a);
+                                a.beginPath(), a.moveTo(b[0].x, b[0].y);
+                                if(this.flexionalRadius!=null){
+                                      var b0=b[0];
+                                      var b1=b[1];
+                                      var b2=b[2];
+                                      var b3=b[3];
+
+                                    if(this.openStartRadius&&this.openEndRadius){
+                                        a.lineTo((b1.x+b0.x)/2, (b1.y+b0.y)/2);
+                                        a.arcTo(b1.x,b1.y,(b1.x+b2.x)/2, (b1.y+b2.y)/2,this.flexionalRadius);
+                                        a.lineTo((b1.x+b2.x)/2, (b1.y+b2.y)/2);
+                                        a.arcTo(b2.x,b2.y,(b3.x+b2.x)/2, (b3.y+b2.y)/2,this.flexionalRadius);
+                                        a.lineTo(b3.x,b3.y);
+                                    }else if(this.openStartRadius&&!this.openEndRadius){
+                                        a.lineTo((b1.x+b0.x)/2, (b1.y+b0.y)/2);
+                                        a.arcTo(b1.x,b1.y,(b1.x+b2.x)/2, (b1.y+b2.y)/2,this.flexionalRadius);
+                                        a.lineTo((b1.x+b2.x)/2, (b1.y+b2.y)/2);
+                                        a.lineTo(b2.x,b2.y);
+                                        a.lineTo(b3.x,b3.y);
+                                    }else if(!this.openStartRadius&&this.openEndRadius){
+                                        a.lineTo(b1.x,b1.y);
+                                        a.lineTo((b1.x+b2.x)/2, (b1.y+b2.y)/2);
+                                        a.arcTo(b2.x,b2.y,(b3.x+b2.x)/2, (b3.y+b2.y)/2,this.flexionalRadius);
+                                        a.lineTo(b3.x,b3.y);
+                                    }else{
+                                        for (var c = 1; c < b.length; c++) {
+                                            null == this.dashedPattern ?
+                                                a.lineTo(b[c].x, b[c].y)
+                                                :
+                                                a.JTopoDashedLineTo(b[c - 1].x, b[c - 1].y, b[c].x, b[c].y, this.dashedPattern);
+                                        }
+                                    }
+                                }else {
+                                    for (var c = 1; c < b.length; c++) {
+                                        null == this.dashedPattern ?
+                                            a.lineTo(b[c].x, b[c].y)
+                                            :
+                                            a.JTopoDashedLineTo(b[c - 1].x, b[c - 1].y, b[c].x, b[c].y, this.dashedPattern);
+                                    }
+                                }
+                               if (a.stroke(),
+                                        a.closePath(),
+                                    null != this.arrowsRadius) {
+                                    var d = b[b.length - 2]
+                                        , e = b[b.length - 1];
+                                    this.paintArrow(a, d, e)
+                                };
+                                break;
                             case 'dArrow':
                                 if (this.nodeA === this.nodeZ) return void this.paintLoop(a);
                                 a.beginPath(), a.moveTo(b[0].x, b[0].y);
@@ -2999,6 +3075,7 @@ define([],function () {
                                     this.paintArrow(a, e, d);//双箭头精髓
                                 }
                                 break;
+
                             case 'flow':
 
                                 if (this.nodeA === this.nodeZ) return void this.paintLoop(a);
@@ -3029,8 +3106,7 @@ define([],function () {
                                     var d = b[b.length - 2]
                                         , e = b[b.length - 1];
                                     this.paintArrow(a, d, e)
-                                }
-                                ;
+                                };
                         }
                     },
                     this.paintLoop = function (a) {
@@ -3081,8 +3157,8 @@ define([],function () {
                             b && b.length > 0 && this.paintText(a, b)
                         }
                     };
-                var i = -(Math.PI / 2 + Math.PI / 4);
-                this.paintText = function (a, b) {
+                    var i = -(Math.PI / 2 + Math.PI / 4);
+                    this.paintText = function (a, b) {
                     var c = b[0]
                         , d = b[b.length - 1];
                     if (!this.isShowLinkName) {
@@ -3202,8 +3278,10 @@ define([],function () {
                             x: this.nodeZ.cx,
                             y: this.nodeZ.cy
                         };
-                        return "horizontal" == this.direction ? this.nodeA.cy < a.y ? a.y -= this.nodeZ.height / 2 : a.y += this.nodeZ.height / 2 : a.x = this.nodeA.cx < a.x ? this.nodeZ.x : this.nodeZ.x + this.nodeZ.width,
-                            a
+                        return "horizontal" == this.direction ?
+                            this.nodeA.cy < a.y ? a.y -= this.nodeZ.height / 2 : a.y += this.nodeZ.height / 2
+                            :
+                            a.x = this.nodeA.cx < a.x ? this.nodeZ.x : this.nodeZ.x + this.nodeZ.width,a
                     },
                     this.getPath = function(a) {
                         var b = []
@@ -3271,7 +3349,11 @@ define([],function () {
                             x: this.nodeA.cx,
                             y: this.nodeA.cy
                         };
-                        return "horizontal" == this.direction ? a.x = this.nodeZ.cx < a.x ? this.nodeA.x : this.nodeA.x + this.nodeA.width : a.y = this.nodeZ.cy < a.y ? this.nodeA.y : this.nodeA.y + this.nodeA.height,
+                        return "horizontal" == this.direction ?
+                            a.x = this.nodeZ.cx < a.x ? this.nodeA.x : this.nodeA.x + this.nodeA.width
+                            :
+                            a.y = this.nodeZ.cy < a.y ? this.nodeA.y : this.nodeA.y + this.nodeA.height
+                            ,
                             a
                     },
                     this.getEndPosition = function() {
@@ -3287,19 +3369,21 @@ define([],function () {
                             , c = this.getEndPosition();
                         if (this.nodeA === this.nodeZ)
                             return [b, c];
-                        var d = []
-                            , f = e(this.nodeA, this.nodeZ)
-                            , g = (f - 1) * this.bundleGap
-                            , h = this.bundleGap * a - g / 2
-                            , i = this.offsetGap;
+                        var d = [];
+                        var f = e(this.nodeA, this.nodeZ);//连线个数
+                        var g = (f - 1) * this.bundleGap;//所占宽度
+                        var h = this.bundleGap * a - g / 2;//h具体分配坐标,a为线序号
+                        var outH=h;//出线的相对坐标
+                        this.mergeOutLink&&(outH=0);//如果合并,则出线的相对坐标为0
+                        var i = this.offsetGap;
                         return "horizontal" == this.direction ? (this.nodeA.cx > this.nodeZ.cx && (i = -i),
                             d.push({
                                 x: b.x,
-                                y: b.y + h
+                                y: b.y + outH
                             }),
                             d.push({
                                 x: b.x + i,
-                                y: b.y + h
+                                y: b.y + outH
                             }),
                             d.push({
                                 x: c.x - i,
@@ -3310,13 +3394,14 @@ define([],function () {
                                 y: c.y + h
                             }))
                             :
-                            (this.nodeA.cy > this.nodeZ.cy && (i = -i),
+                            (
+                                this.nodeA.cy > this.nodeZ.cy && (i = -i),
                                 d.push({
-                                    x: b.x + h,
+                                    x: b.x + outH,
                                     y: b.y
                                 }),
                                 d.push({
-                                    x: b.x + h,
+                                    x: b.x + outH,
                                     y: b.y + i
                                 }),
                                 d.push({
@@ -3514,20 +3599,19 @@ define([],function () {
                 h.prototype = new f,
                 i.prototype = new f,
                 a.Link = f,
-                a.FoldLink = g,
-                a.FlexionalLink = h,
-                a.CurveLink = i
+                a.FoldLink = g,//1次折线
+                a.FlexionalLink = h,//2次折线
+                a.CurveLink = i //曲线
         }(JTopo),
-        //container的具体实现
+        //container的具体实现 ,container不能使用layout布局,如果要用,需要自己实现
         function(d) {
             function c(a) {
                     this.initialize = function(b) {
-                    c.prototype.initialize.apply(this, null),
+                        c.prototype.initialize.apply(this, null),
                         this.elementType = "container",
                         this.zIndex = d.zIndex_Container,
                         this.width = 100,
-
-
+                        this.containerPadding=0,
                         this.height = 100,
                         this.childs = [],
                         this.alpha = 0,
@@ -3535,6 +3619,9 @@ define([],function () {
                         this.childDragble = !0,
                         this.visible = !0,
                         this.fillColor = "79,164,218",
+                        this.borderBgFillColor=null,
+                        this.borderBgAlpha=1,
+                        this.borderTextBg="rgba(108,208,226,1)",
                         this.borderWidth = 1,
                         this.shadowBlur = 5,
                         this.shadowColor = "rgba(43,43,43,0.5)",
@@ -3557,7 +3644,7 @@ define([],function () {
                             width: null,
                             height: null
                         };
-                    this.layout = new d.layout.AutoBoundLayout,
+                        this.layout = new d.layout.AutoBoundLayout,
                         this.borderPadding = 15
                 },
                     this.initialize(a),
@@ -3608,7 +3695,6 @@ define([],function () {
                             this.paintText(b);    //先绘制边框,再绘制文字
 
                             if(this.childs.length==0){
-                                //luozheao123
                                 JTopo.flag.scene.remove(this);
                             }
                     },
@@ -3616,83 +3702,98 @@ define([],function () {
                         if (0 != this.borderWidth) {
                             //获取容器内部所有的子元素
                             var textHeight = a.measureText("田").width;//所有一行文字的高度
-                            var thisObj=this;
-                            var compareObj={
-                                left:null,
-                                right:null,
-                                top:null,
-                                bottom:null
-                            };
-                            thisObj.childs.forEach(function(p){
-                                var textWidth = a.measureText(p.text||'').width;
+                            var thisObj = this;
+                                var compareObj = {
+                                    left: null,
+                                    right: null,
+                                    top: null,
+                                    bottom: null
+                                };
+                                thisObj.childs.forEach(function (p) {
+                                    var textWidth = a.measureText(p.text || '').width;
 
-                                var pObj = p.getTextPostion(p.textPosition, textWidth,textHeight);//获取文字的相对位置
-                                //获取文字左下角的位置，注意不是左上角
-                                pObj.x+=p.x+p.width/2;
-                                pObj.y+=p.y+p.height/2;
+                                    var pObj = p.getTextPostion(p.textPosition, textWidth, textHeight);//获取文字的相对位置
+                                    //获取文字左下角的位置，注意不是左上角
+                                    pObj.x += p.x + p.width / 2;
+                                    pObj.y += p.y + p.height / 2;
 
-                                //获取文字+节点整体的边界
-                                if(p.width>textWidth){
-                                    pObj.x=p.x;
-                                    textWidth=p.width;
+                                    //获取文字+节点整体的边界
+                                    if (p.width > textWidth) {
+                                        pObj.x = p.x;
+                                        textWidth = p.width;
+                                    }
+
+                                    if (compareObj.left === null || compareObj.left > pObj.x) {
+                                        compareObj.left = pObj.x
+                                    }
+                                    ;
+                                    if (compareObj.right === null || compareObj.right < pObj.x + textWidth) {
+                                        compareObj.right = pObj.x + textWidth
+                                    }
+                                    ;
+                                    if (compareObj.top === null || compareObj.top > pObj.y - textHeight) {
+                                        compareObj.top = pObj.y - textHeight
+                                    }
+                                    ;
+                                    if (compareObj.bottom === null || compareObj.bottom < pObj.y) {
+                                        compareObj.bottom = pObj.y
+                                    }
+                                    ;
+                                });
+                                sugar(thisObj, compareObj);
+                                function sugar(thisObj, compareObj) {
+                                    var leftW = thisObj.x - compareObj.left;
+                                    var rightW = thisObj.x + thisObj.width - compareObj.right;
+                                    var topH = thisObj.y - compareObj.top;
+                                    var bottomH = thisObj.y + textHeight - compareObj.bottom;
+                                    if (leftW > 0) {
+                                        thisObj.x = compareObj.left;
+                                        thisObj.width += leftW;
+                                    }
+                                    if (rightW < 0) {
+                                        thisObj.width = compareObj.right - thisObj.x;
+                                    }
+                                    if (topH > 0) {
+                                        thisObj.y = compareObj.top;
+                                        thisObj.height += topH;
+                                    }
+                                    if (bottomH < 0) {
+                                        thisObj.height = compareObj.bottom - thisObj.y;
+                                    }
+
+                                    var len = thisObj.borderPadding;
+                                    thisObj.x -= len * 2;
+                                    thisObj.y -= len * 4;
+                                    thisObj.width += len * 4;
+                                    thisObj.height += len * 5;
+                                    //跟title比较宽度
+                                    var titleWidth = a.measureText(thisObj.text || '').width + 60;
+                                    var subWidth = titleWidth - thisObj.width;
+                                    if (subWidth > 0) {
+                                        thisObj.x -= subWidth / 2 + len;
+                                        thisObj.width = titleWidth + 2 * len;
+                                    }
+
                                 }
-
-                                if(compareObj.left===null||compareObj.left>pObj.x){compareObj.left=pObj.x};
-                                if(compareObj.right===null||compareObj.right<pObj.x+textWidth){compareObj.right=pObj.x+textWidth};
-                                if(compareObj.top===null||compareObj.top>pObj.y-textHeight){compareObj.top=pObj.y-textHeight};
-                                if(compareObj.bottom===null||compareObj.bottom<pObj.y){compareObj.bottom=pObj.y};
-                            });
-
-                            sugar(thisObj,compareObj);
-                            function sugar(thisObj,compareObj) {
-                                var leftW=thisObj.x-compareObj.left;
-                                var rightW=thisObj.x+thisObj.width-compareObj.right;
-                                var topH=thisObj.y-compareObj.top;
-                                var bottomH=thisObj.y+textHeight-compareObj.bottom;
-                                if(leftW>0){
-                                    thisObj.x=compareObj.left;
-                                    thisObj.width+=leftW;
-                                }
-                                if(rightW<0){
-                                    thisObj.width=compareObj.right-thisObj.x;
-                                }
-                                if(topH>0){
-                                    thisObj.y=compareObj.top;
-                                    thisObj.height+=topH;
-                                }
-                                if(bottomH<0){
-                                    thisObj.height=compareObj.bottom-thisObj.y;
-                                }
-
-                                var len=thisObj.borderPadding;
-                                thisObj.x-=len*2;
-                                thisObj.y-=len*4;
-                                thisObj.width+=len*4;
-                                thisObj.height+=len*5;
-                                //跟title比较宽度
-                                var titleWidth = a.measureText(thisObj.text||'').width+60;
-                                var subWidth=titleWidth-thisObj.width;
-                                if(subWidth>0){
-                                    thisObj.x-=subWidth/2+len;
-                                    thisObj.width=titleWidth+2*len;
-                                }
-
-                            }
-
-                            a.beginPath(),
+                            var pp = this.containerPadding;
+                                a.beginPath(),
                                 a.lineWidth = this.borderWidth,
                                 a.strokeStyle = "rgba(" + this.borderColor + "," + this.borderAlpha + ")";
                             var b = this.borderWidth / 2;
                             null == this.borderRadius || 0 == this.borderRadius
                                 ?
-                                a.rect(this.x - b, this.y - b, this.width + this.borderWidth, this.height + this.borderWidth)
+                                a.rect(this.x - b - pp, this.y - b - pp, this.width + this.borderWidth + 2 * pp, this.height + this.borderWidth + 2 * pp)
                                 :
-                                a.JTopoRoundRect(this.x - b, this.y - b, this.width + this.borderWidth, this.height + this.borderWidth, this.borderRadius,this.borderDashed),
-                                a.stroke(),
-                                a.closePath()
+                                a.JTopoRoundRect(this.x - b - pp, this.y - b - pp, this.width + this.borderWidth + 2 * pp, this.height + this.borderWidth + 2 * pp, this.borderRadius, this.borderDashed),
+                                a.stroke();
+                            if (this.borderBgFillColor) {
+                                a.fillStyle = "rgba(" + this.borderBgFillColor + "," + this.borderBgAlpha + ")";
+                                a.fill();
+                            }
+                            a.closePath();
                         }
                     }
-                   this.paintText = function(g) {
+                    this.paintText = function(g) {
                     var f = this.text;
                     if (null != f && "" != f) {
                         g.beginPath(),
@@ -3700,7 +3801,8 @@ define([],function () {
                         var j = g.measureText(f || "").width
                             , i = g.measureText("田").width;
                         var h = this.getTextPostion(this.textPosition, j, i);
-                        g.fillStyle = "rgba(108,208,226,1)";
+                        h.y-=0.8;
+                        g.fillStyle = this.borderTextBg;
 
                         g.beginPath();
                         g.moveTo(h.x - 20, h.y - i - 3);
@@ -3710,7 +3812,7 @@ define([],function () {
                         g.fill();
                         g.fillStyle = "rgba(" + this.fontColor + ", " + this.textAlpha + ")";
                         g.fillText(f, h.x, h.y - 1),
-                            g.closePath();
+                        g.closePath();
                         this.textPositionMsg = {
                             x: h.x - 20,
                             y: h.y - i - 3,
@@ -4036,8 +4138,12 @@ define([],function () {
                 return function(c) {
                     var d = c.childs;
                     if (!(d.length <= 0))
-                        for (var e = c.getBound(), f = d[0], g = (e.width - f.width) / b, h = (e.height - f.height) / a, i = (d.length,
-                            0), j = 0; a > j; j++)
+                        for (var e = c.getBound(),
+                                 f = d[0],
+                                 g = (e.width - f.width) / b,
+                                 h = (e.height - f.height) / a,
+                                 i = (d.length, 0),
+                                 j = 0; a > j; j++){
                             for (var k = 0; b > k; k++) {
                                 var l = d[i++]
                                     , m = e.left + g / 2 + k * g
@@ -4046,6 +4152,7 @@ define([],function () {
                                     i >= d.length)
                                     return
                             }
+                        }
                 }
             }
             function e(a, b) {
@@ -4058,7 +4165,7 @@ define([],function () {
                                 var i = d[h];
                                 f + i.width >= e.right && (f = e.left,
                                     g += b + i.height),
-                                    i.setLocation(f, g),
+                                    i.setLocation(f+a/2, g+b/2),
                                     f += a + i.width
                             }
                     }

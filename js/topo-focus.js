@@ -29,53 +29,51 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
              * 3\json中的text用于存储节点名字
              * 4\自定义结点的elementType必须设置为containerNode,且nodeFn需要设置为创建自定义结点的方法名
              * 5\如果自定义结点是拖拽创建，则必须设置id等于_id
-             * 6\必填项:id type json(elementType,如果是自定义结点,必填nodeFn) ,其中elementType和type值保持一致
+             * 6\必填项:id type json(elementType,如果是自定义结点,必填nodeFn)
+             * 7\type为node时,如果elementType为node,则为普通节点,如果elementType为containerNode,则为自定义节点
+             * 8\type为containerNode,elementType也为containerNode,则为自定义容器节点
              * */
-
-
 
             var data = {
                 "nodes": [
                     {
                         "id": "100",
                         "type": 'node',
-                        "json": "{x:100,y:100,width:101,height:82,elementType:'node',text:'',imgName:'scriptNodeBg',shadow:true,shadowBlur:5,shadowOffsetX:1,shadowOffsetY:2,showSelected:false}"
+                        "json": "{x:100,y:100,width:101,height:82,text:'luozheao$luojie',textAlign:'center',elementType:'node',imgName:'scriptNodeBg',shadow:true,shadowBlur:5,shadowOffsetX:1,shadowOffsetY:2,showSelected:false}"
                     },
                     {
                         "id": "101",
                         "type": "node",
-                        "json": "{x:250,y:250,width:52,height:52,elementType:'node',imgName:'ActiveMQ'}"
+                        "json": "{x:250,y:250,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'ActiveMQ'}"
                     },
                     {
                         'id':'104',
                         'type':'container',
-                        'json':"{elementType:'container',childsArr:['100','101'],text:'luozheao'}"
+                        'json':"{elementType:'container',borderBgFillColor:'10,10,100',borderBgAlpha:'0.5',childsArr:['100','101'],text:'luozheao'}"
                     },
-                     {
-                    "id": '102',
-                    "type":'containerNode',
-                    "json":'{"imgName":"testIcon","alertLevel":2,"name":"业务系统","msgArr":[["CPU","0.122"],["MEM","0.9"],["Incoming","6.72GB|2GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
-                    },
-                     {
-                         "id":'103',
-                         "type":'containerNode',
-                         "json":'{"nodeFn":"haha","elementType":"containerNode"}'
-                     }
+                    //  {
+                    // "id": '102',
+                    // "type":'containerNode',
+                    // "json":'{"imgName":"testIcon","alertLevel":2,"name":"业务系统","msgArr":[["CPU","0.122"],["MEM","0.9"],["Incoming","6.72GB|2GB"],["Outgoing","66.79GB"],["QU-619"]],"elementType":"containerNode","x":300,"y":100,"width":218,"height":95,"strokeColor":"22,124,255","borderColor":"223,226,228","fillColor":"255,255,255","shadow":false,"shadowBlur":10,"shadowColor":"rgba(79,165,219,0.8)","shadowOffsetX":0,"shadowOffsetY":0,"transformAble":false,"zIndex":2,"dragable":true,"selected":false,"showSelected":false,"isMouseOver":false,"childDragble":false,"borderWidth":1,"borderRadius":5,"font":"16px 微软雅黑","fontColor":"232,31,0","text":"","textPosition":"Bottom_Center","textOffsetX":0,"textOffsetY":0,"nodeFn":"createSystemNode"}'
+                    // },
+                    //  {
+                    //      "id":'103',
+                    //      "type":'node',
+                    //      "json":'{"nodeFn":"haha","elementType":"containerNode"}'
+                    //  }
                 ],
 
                 "links": [
-                    {
-
-                        "from_id": "100",
-                        "to_id": "101",
-                        "id": "1000",
-                        "type": "link",
-                        "json": "{elementType:'link',text:'我是线条名字',fontColor:'237,165,72'}"
-                    }
+                    // {
+                    //
+                    //     "from_id": "100",
+                    //     "to_id": "101",
+                    //     "id": "1000",
+                    //     "type": "link",
+                    //     "json": "{elementType:'link',text:'我是线条名字',fontColor:'237,165,72'}"
+                    // }
                 ]
             }
-
-
             //json属性需要处理成对象
             callback(data)
         }
@@ -103,7 +101,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                 }
                 console.log(e.target);
 
-                e.target.setImage('./images/'+'scriptH_bga.png');
+                // e.target.setImage('./images/'+'scriptH_bga.png');
             },
             mousemove: null,
             mouseout: null,
@@ -121,9 +119,10 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                 }
                 console.log(e.target);
             },
-            mouseover: null,
+            mouseover:null,
             mouseout: null,
-            mousemove: null
+            mousemove: null,
+            dbclick:null
         };
 //容器事件
         canvasManager.containerEvent = {
@@ -335,11 +334,14 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                         container.add(progressNode);
                     }
 
+
+
+
                     container.add(textNode);
                     container.add(node);
                     container.add(circleNode);
-                    container.add(containerLeftTop);
                     container.add(containerRightBottom);
+                    container.add(containerLeftTop);
 
                     scene.add(textNode);
                     scene.add(node);
@@ -353,7 +355,9 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
 
                 },
                 event: {
-                    'mouseup': null,
+                    'mouseup': function (e) {
+                         console.log(e.target);
+                    },
                     'dbclick': null,
                     'mousemove': null,
                     'mouseover': null,
@@ -366,7 +370,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                 fn: function (nodeObj) {
                     var node = new JTopo.Node('luojie');
                     node.setSize(100, 100);
-                    node.setLocation(200, 200);
+                    node.setLocation(0, 0);
                     node.fillColor = '43,43,43';
 
                     stateManager.scene.add(node);
@@ -406,6 +410,9 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                 stateManager.scene.remove(stateManager.currentChooseElement);
             }
             else if ($this.hasClass('rename')) {
+
+            }
+            else if($this.hasClass('addColor')){
 
             }
             $('.contextmenu').hide();
@@ -456,9 +463,12 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
         /************执行*************/
         setDragIcon();
 
-
         topoManager.init();
 
     }
     return init;
 });
+
+
+
+

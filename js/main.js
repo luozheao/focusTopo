@@ -37,7 +37,8 @@ require.config({
         }
     }
 });
-require(['bootstrap','topo-focus'],function (_______,init) {
+require(['bootstrap','topo-focus'
+    ],function (_______,init) {
     init();
 });
 

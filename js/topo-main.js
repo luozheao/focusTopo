@@ -143,7 +143,18 @@ define([],function () {
             this.setStateUnderLocalHost();
         }
     }
-//弹窗管理者
+    //权限管理者
+    var powerManager={
+        /************************状态********************/
+        isViewModel:false,
+        /************************显示层********************/
+        /************************数据层********************/
+        /************************控制层********************/
+        init:function () {
+
+        }
+    }
+   //弹窗管理者
     var popupManager={
         /**********辅助方法***********/
         //弹窗隐藏
@@ -154,7 +165,7 @@ define([],function () {
 
         }
     }
-//工具栏管理者
+    //工具栏管理者
     var toolbarManager = {
         searchArr:['id'],
         history: {
@@ -336,6 +347,45 @@ define([],function () {
 
             $('#toolbar .groupWrap').addClass('hide');
         },
+        //快捷键
+        setShortcutKey:function () {
+            var scene=stateManager.scene;
+            scene.addEventListener('keyup', function (e) {
+                //快捷键
+                if( powerManager.isViewModel){
+                    return ;
+                }
+                if(e.ctrlKey&&e.which==13){
+                    //设置成组
+                        $('.groupWrap').click();
+                }
+                else if(e.ctrlKey&&e.which==8){
+                    //删除
+                    scene.selectedElements.filter(function (e) {
+                        if(e.selected){
+                            e.childs && e.childs.length > 0 && e.childs.filter(function (child) {
+                                scene.remove(child);
+                            });
+                            scene.remove(e);
+                        }
+                    })
+                }
+                else if(e.which==27){
+                    $('.patternArea .toolbar-default').click();
+                }
+                if(stateManager.isFullScreen){
+                    if (187 == e.keyCode && e.shiftKey){
+                        stateManager.scene.zoomOut(0.9);
+                    }else if (189 == e.keyCode && e.shiftKey){
+                        stateManager.scene.zoomIn(0.9);
+                    }else if (32 == e.keyCode ){
+                        stateManager.scene.translateX=0;
+                        stateManager.scene.translateY=0;
+                        stateManager.scene.centerAndZoom();
+                    }
+                }
+            });
+        },
         /*********辅助方法*************/
         //鹰眼设定
         setEagleEye:function(b){
@@ -375,10 +425,9 @@ define([],function () {
             for (var i = 0; i < aEvents.length; i++) {
                 $(aEvents[i][1]).on(aEvents[i][0], aEvents[i][2]);
             }
-
         }
     }
-//拖拽管理者
+   //拖拽管理者
     var dragManager = {
         beforeDragMouseUp:null,
         dragMouseDown:function($thisClone,positionX,positionY,e){
@@ -447,7 +496,7 @@ define([],function () {
             this.dragInit();
         }
     }
-//画布管理者
+    //画布管理者
     var canvasManager = {
         nodeEvent:{
             mouseup:null,
@@ -459,7 +508,8 @@ define([],function () {
             mouseup:null,
             mouseover:null,
             mouseout:null,
-            mousemove:null
+            mousemove:null,
+            dbclick:null
         },
         containerEvent:{
             mouseup:null,
@@ -498,6 +548,7 @@ define([],function () {
         //设置画布大小
         setCanvasStyle: function () {
             var oCanvas = stateManager.canvas;
+            var oCanvasWrap = document.getElementById('canvasWrap');
             var oContainer = document.getElementById('container');
             fnSetCanvas();
             //随窗口变化
@@ -578,43 +629,42 @@ define([],function () {
                 }
                 //开启连线模式
                 if (setLink.isSetting) {
-                    if (e.target != null &&  isInstanceofElement)
-                    {
-
-
-                        if (beginNode == null) {
-                            //第一次点击，生成连线
-                            beginNode = e.target;
-                            link = self._createLink(tempNodeA, tempNodeZ);
-                            scene.add(link);
-                            tempNodeA.setLocation(e.x, e.y);
-                            tempNodeZ.setLocation(e.x, e.y);
-                        }
-                        else if (beginNode !== e.target) {
-                            //第二次点击，完成连线
-                            var endNode = e.target;
-
-                            //如果是容器节点和其内部的节点连线,或者其内部节点之间连线，则不应该连线
-                            if([beginNode.parentType,endNode.parentType].indexOf('containerNode')<0){
-                                var l = self._createLink(beginNode, endNode);//正式连线
-                                scene.add(l);
+                        if (e.target != null &&  isInstanceofElement)
+                        {
+                            if (beginNode == null) {
+                                //第一次点击，生成连线
+                                beginNode = e.target;
+                                link = self._createLink(tempNodeA, tempNodeZ);
+                                scene.add(link);
+                                tempNodeA.setLocation(e.x, e.y);
+                                tempNodeZ.setLocation(e.x, e.y);
                             }
-                            beginNode = null;
-                            scene.remove(link);
+                            else if (beginNode !== e.target) {
+                                //第二次点击，完成连线
+                                var endNode = e.target;
 
-                            toolbarManager.history.save();
+                                //如果是容器节点和其内部的节点连线,或者其内部节点之间连线，则不应该连线
+                                if ([beginNode.parentType, endNode.parentType].indexOf('containerNode') < 0) {
+                                    var l = self._createLink(beginNode, endNode);//正式连线
+                                    scene.add(l);
+
+                                }
+                                beginNode = null;
+                                scene.remove(link);
+
+                                toolbarManager.history.save();
+                            }
+                            else {
+                                beginNode = null;
+                            }
                         }
                         else {
-                            beginNode = null;
+
+                            link&&scene.remove(link);
                         }
-                    }
-
-                    else {
-
-                        link&&scene.remove(link);
-                    }
                 }
                 sceneEventObj.mouseup&&sceneEventObj.mouseup(e);
+
             });
             scene.addEventListener('mousedown', function (e) {
                 if ((e.target == null || e.target === beginNode || e.target === link) && e.button !== 2) {
@@ -636,48 +686,12 @@ define([],function () {
             scene.addEventListener('mousemove', function (e) {
                 tempNodeZ.setLocation(e.x-3, e.y+3);
             });
-            scene.addEventListener('keyup', function (e) {
-                //快捷键
-                // console.log(e.which);
-                switch (e.which) {
-                    //删除选中
-                    case 8:
-                        return;
-                        scene.selectedElements.filter(function (e) {
-                            if(e.selected){
-                                e.childs && e.childs.length > 0 && e.childs.filter(function (child) {
-                                    scene.remove(child);
-                                });
-                                scene.remove(e);
-                            }
-                        })
-                        break;
-                    //esc，恢复默认
-                    case 27:
-                        $('.patternArea .toolbar-default').click();
-                        break;
-                    default:
-                        ;
-                };
-                if(stateManager.isFullScreen){
-                    if (187 == e.keyCode && e.shiftKey){
-                        stateManager.scene.zoomOut(0.9);
-                    }else if (189 == e.keyCode && e.shiftKey){
-                        stateManager.scene.zoomIn(0.9);
-                    }else if (32 == e.keyCode ){
-                        stateManager.scene.translateX=0;
-                        stateManager.scene.translateY=0;
-                        stateManager.scene.centerAndZoom();
-                    }
-                }
-            });
-
+            toolbarManager.setShortcutKey();
         },
         //复现
         renderTopo:function (data) {
             var self = canvasManager;
             var stage = stateManager.stage;
-
             stage.remove(stateManager.scene);
             var scene = stateManager.scene = new JTopo.Scene(stage);
 
@@ -753,27 +767,6 @@ define([],function () {
             canvasManager.renderTopoCallback&&canvasManager.isRunRenderCallback&&canvasManager.renderTopoCallback();
 
 
-
-            //告警文字
-            var alarmTextNode = new JTopo.LinkNode();
-            alarmTextNode.fontColor = '43,43,43';
-            alarmTextNode.font = "12px Consolas";
-            alarmTextNode.text ='存在10个告警>>';
-            alarmTextNode.textPosition = "Bottom_Center";
-            alarmTextNode.showSelected = false;
-            alarmTextNode.setSize(0, 0);
-            alarmTextNode.setLocation(30 + 25, 30 + 125);
-            alarmTextNode.parentType = 'containerNode';
-            alarmTextNode.nodeFn='alarm';
-            alarmTextNode.isStopLinkNodeClick=true;
-            alarmTextNode.addEventListener('click',function () {
-                alert(1);
-            });
-            stateManager.scene.add(alarmTextNode);
-
-
-
-            canvasManager.setCanvasStyle();
         },
         //保存
         saveTopo:function (callback) {
@@ -1055,9 +1048,7 @@ define([],function () {
         setNodesToGroup: function (nodeArr,jsonObj) {
             var scene = stateManager.scene;
             var eleArr = nodeArr?nodeArr:scene.selectedElements.filter(function (obj) {
-                if (obj.elementType == 'node') {
-                    return obj;
-                }
+                    return (obj.elementType == 'node'||obj.type=='node');
             });
             if (eleArr.length > 0) {
                 var container = new JTopo.Container('');
@@ -1165,7 +1156,6 @@ define([],function () {
                 slinkType=linkObj.json.linkType;
             }
             var linkType = slinkType ? slinkType : (stateManager.setLink.linkType||'arrow');
-
             if (!sNode || !tNode) {
                 return;
             }
@@ -1187,6 +1177,7 @@ define([],function () {
                 //虚线
                 link = new JTopo.Link(sNode, tNode);
                 link.dashedPattern = 5;
+                link.arrowsRadius = 10; //箭头大小
             }
             else if (linkType == 'curve') {
                 //曲线
@@ -1196,12 +1187,20 @@ define([],function () {
                 //折线
                 link = new JTopo.FlexionalLink(sNode, tNode);
                 link.direction = 'horizontal'; //horizontal水平,vertical垂直
+                link.arrowsRadius = 10; //箭头大小
+                link.flexionalRadius=20;
+                link.offsetGap=150;
             }
             else if (linkType == 'flow') {
-
                 link = new JTopo.Link(sNode, tNode);
                 link.arrowsRadius = 10; //箭头大小
                 link.PointPathColor = "rgb(237,165,72)";//连线颜色
+            }
+            else if (linkType == 'userDefine') {
+                link = new JTopo.Link(sNode, tNode);
+                link.arrowsRadius = 10; //箭头大小
+                link.PointPathColor = "rgb(237,165,72)";//连线颜色
+
             }
             if (link) {
                 this._setLinkEvent(link);
@@ -1209,7 +1208,7 @@ define([],function () {
                 link.lineWidth =0.7 ;
                 link.strokeColor = '43,43,43';
                 link.linkConnectType ='toBorder';
-                link.bundleGap=20;
+                link.bundleGap=15;
                 link.id=link._id;
                 link.type='link';
                 if(linkObj){
@@ -1245,6 +1244,9 @@ define([],function () {
             link.addEventListener('mouseout', function (e) {
                 linkEventObj.mouseout&&linkEventObj.mouseout(e);
             });
+            link.addEventListener('dbclick', function (e) {
+                linkEventObj.dbclick&&linkEventObj.dbclick(e);
+            });
         },
         /******************线条处理，end***************************/
 
@@ -1258,11 +1260,9 @@ define([],function () {
             })
             canvasManager.setCanvasStyle();
             canvasManager.initCanvasEvent(); //canvas事件初始化
-
-
         }
     }
-//数据管理者
+    //数据管理者
     var dataManager={
         /*******数据层******/
         getTopoData:function () {},
@@ -1285,6 +1285,7 @@ define([],function () {
 
     var topoManager={
         stateManager:stateManager,
+        powerManager:powerManager,
         popupManager:popupManager,
         toolbarManager:toolbarManager,
         dragManager:dragManager,
@@ -1292,11 +1293,40 @@ define([],function () {
         dataManager:dataManager,
         init:function () {
             stateManager.init();
+            powerManager.init();
             canvasManager.init();
             dragManager.init();
             toolbarManager.init();
             dataManager.init();
         }
     }
+
+
     return topoManager;
 });
+
+
+// function setPopPos() {
+//     var subH=50;//纵坐标微调值
+//     var nodeId='103';//节点id
+//     var $canvas=$('#canvas');
+//     var left=$canvas.offset().left;
+//     var _top=$canvas.offset().top;
+//     var k=JTopo.flag.curScene.scaleX;//scene的缩放率
+//     var w=$canvas.width();
+//     var h=$canvas.height();
+//     var $con=$('#contextmenuNode');//弹窗jquery对象
+//     var targetNode=null;//目标节点
+//     JTopo.flag.curScene.childs.filter(function (child, p2, p3) {
+//         if(child.id==nodeId){
+//             targetNode=child
+//         }
+//     });
+//     //算法
+//     var conLeft=(1-k)*w*0.5+(targetNode.x+targetNode.width+JTopo.flag.curScene.translateX)*k+left;
+//     var conRight=(1-k)*h*0.5+(targetNode.y+JTopo.flag.curScene.translateY)*k+_top-subH;
+//     $con.css({
+//         left:conLeft,
+//         top:conRight
+//     })
+// }
