@@ -202,6 +202,7 @@ define([],function () {
                 }
             }
         },
+        historyOperCallback:null,
         /*******显示层*********/
 
         /*********控制层*************/
@@ -323,9 +324,11 @@ define([],function () {
             ['click', '.historyArea>.btn', function () {
                 if ($(this).hasClass('backOff')) {
                     toolbarManager.history.prev();
+                    toolbarManager.historyOperCallback&&toolbarManager.historyOperCallback();
                 }
                 else if ($(this).hasClass('forward')) {
                     toolbarManager.history.next();
+                    toolbarManager.historyOperCallback&&toolbarManager.historyOperCallback();
                 }
                 else if ($(this).hasClass('saveBtn')) {
                     stateManager.currentActiveIndex=null;
@@ -430,6 +433,7 @@ define([],function () {
    //拖拽管理者
     var dragManager = {
         beforeDragMouseUp:null,
+        afterDragMouseUp:null,
         dragMouseDown:function($thisClone,positionX,positionY,e){
             var aa=$thisClone.attr('imgName');
             $thisClone.css({
@@ -471,6 +475,7 @@ define([],function () {
                 $thisClone=null;
             }
             toolbarManager.history.save();
+            dragManager.afterDragMouseUp&&dragManager.afterDragMouseUp($thisClone,e);
         },
         /*******************************************************数据层******/
 
@@ -501,6 +506,7 @@ define([],function () {
         nodeEvent:{
             mouseup:null,
             mousemove:null,
+            mouseover:null,
             mouseout:null,
             dbclick:null
         },
@@ -519,7 +525,8 @@ define([],function () {
             dbclick:null
         },
         sceneEvent:{
-            mouseup:null
+            mouseup:null,
+            mousedrag:null
         },
         userDefinedNodes:[],//自定义结点样例
         elementShowEffect:{
@@ -566,7 +573,7 @@ define([],function () {
                     oContainer_h = elementsBoundHeight + 30;
                 }
                 var oEquipmentArea_w =stateManager.equipmentAreaWidth;
-                oCanvas.setAttribute('width', oContainer_w - oEquipmentArea_w);
+                oCanvas.setAttribute('width', oContainer_w - oEquipmentArea_w-10);
                 oCanvas.setAttribute('height', oContainer_h);
             }
 
@@ -682,6 +689,7 @@ define([],function () {
                         child.paint(JTopo.flag.graphics);
                     }
                 });
+                sceneEventObj.mousedrag&&sceneEventObj.mousedrag(e);
             });
             scene.addEventListener('mousemove', function (e) {
                 tempNodeZ.setLocation(e.x-3, e.y+3);
@@ -767,6 +775,18 @@ define([],function () {
             canvasManager.renderTopoCallback&&canvasManager.isRunRenderCallback&&canvasManager.renderTopoCallback();
 
 
+
+            var linkObj=JTopo.util.findEleById('1000');
+            var nodeObj=JTopo.util.findEleById('100');
+            var nodeObj2=JTopo.util.findEleById('101');
+            linkObj.drawanimepic('/base-topu/images/testspecialline.png',JTopo.flag.curScene,200,10,90,88,1,4,1000,0);
+           setTimeout(function () {
+
+              JTopo.util.clearInterval(linkObj.animateT);
+              JTopo.util.nodeFlash(nodeObj,false,false,[183,187,190],[43,43,43]);
+           },110000);
+            JTopo.util.nodeFlash(nodeObj,true,true,[183,187,190],[43,43,43]);
+            JTopo.util.nodeFlash(nodeObj2,true,true,[183,187,190],[43,43,43]);
         },
         //保存
         saveTopo:function (callback) {
@@ -875,7 +895,8 @@ define([],function () {
             var scene = stateManager.scene;
             var self = canvasManager;
             var jsonObj= eval('('+$thisClone.attr('json')+')') ;
-
+            jsonObj.width=jsonObj.width||100;
+            jsonObj.height=jsonObj.height||50;
             var subWidth = e.pageX -jsonObj.width/2- stateManager.equipmentAreaWidth-$('#equipmentArea').offset().left;
             var subHeight= e.pageY-jsonObj.height/2 - $('#canvas').offset().top;
             var nodeX =subWidth - scene.translateX;//松开鼠标时,元素在画布上的x坐标
@@ -899,13 +920,10 @@ define([],function () {
                 node.id=node._id;
                 self._setNodeEvent(node);
                 scene.add(node);
-
                 for(var i in jsonObj){
                     node[i]=jsonObj[i];
                 }
-
             }
-
             return node;
         },
         //创建节点
@@ -952,13 +970,21 @@ define([],function () {
                         stateManager.currentChooseElement = thisObj;
                         stateManager.currentNode = thisObj;
                         nodeEventObj.mouseup && nodeEventObj.mouseup(e);
-                    });
+                    },300);
             });
             node.addEventListener('mousemove', function (e) {
+                stateManager.currentChooseElement = this;
+                stateManager.currentNode = this;
                 nodeEventObj.mousemove&&nodeEventObj.mousemove(e);
+            });
+            node.addEventListener('mouseover', function (e) {
+                stateManager.currentChooseElement = this;
+                stateManager.currentNode = this;
+                nodeEventObj.mouseover&&nodeEventObj.mouseover(e);
             });
             node.addEventListener('mouseout', function (e) {
                 $(".titleDiv").hide();
+                e.target=stateManager.currentNode;
                 nodeEventObj.mouseout&&nodeEventObj.mouseout(e);
             });
             node.addEventListener('dbclick', function (e) {
@@ -1126,14 +1152,17 @@ define([],function () {
                 containerEventObj.mouseup&&containerEventObj.mouseup(e);
             });
             container.addEventListener('mouseover', function (e){
-
+                stateManager.currentContainer = this;
+                stateManager.currentChooseElement=this;
                 containerEventObj.mouseover&&containerEventObj.mouseover(e);
             });
             container.addEventListener('mouseout', function (e){
-
+                e.target=stateManager.currentContainer;
                 containerEventObj.mouseout&&containerEventObj.mouseout(e);
             });
             container.addEventListener('mousemove', function (e){
+                stateManager.currentContainer = this;
+                stateManager.currentChooseElement=this;
                 containerEventObj.mousemove&&containerEventObj.mousemove(e);
             });
             container.addEventListener('dbclick', function (e){
@@ -1200,7 +1229,6 @@ define([],function () {
                 link = new JTopo.Link(sNode, tNode);
                 link.arrowsRadius = 10; //箭头大小
                 link.PointPathColor = "rgb(237,165,72)";//连线颜色
-
             }
             if (link) {
                 this._setLinkEvent(link);
@@ -1236,15 +1264,22 @@ define([],function () {
                 linkEventObj.mouseup&&linkEventObj.mouseup(e);
             });
             link.addEventListener('mousemove', function (e) {
+                stateManager.currentLink = this;
+                stateManager.currentChooseElement=this;
                 linkEventObj.mousemove&&linkEventObj.mousemove(e);
             });
             link.addEventListener('mouseover', function (e) {
+                stateManager.currentLink = this;
+                stateManager.currentChooseElement=this;
                 linkEventObj.mouseover&&linkEventObj.mouseover(e);
             });
             link.addEventListener('mouseout', function (e) {
+                e.target=  stateManager.currentLink;
                 linkEventObj.mouseout&&linkEventObj.mouseout(e);
             });
             link.addEventListener('dbclick', function (e) {
+                stateManager.currentLink = this;
+                stateManager.currentChooseElement=this;
                 linkEventObj.dbclick&&linkEventObj.dbclick(e);
             });
         },
@@ -1297,7 +1332,6 @@ define([],function () {
             canvasManager.init();
             dragManager.init();
             toolbarManager.init();
-            dataManager.init();
         }
     }
 
@@ -1306,27 +1340,3 @@ define([],function () {
 });
 
 
-// function setPopPos() {
-//     var subH=50;//纵坐标微调值
-//     var nodeId='103';//节点id
-//     var $canvas=$('#canvas');
-//     var left=$canvas.offset().left;
-//     var _top=$canvas.offset().top;
-//     var k=JTopo.flag.curScene.scaleX;//scene的缩放率
-//     var w=$canvas.width();
-//     var h=$canvas.height();
-//     var $con=$('#contextmenuNode');//弹窗jquery对象
-//     var targetNode=null;//目标节点
-//     JTopo.flag.curScene.childs.filter(function (child, p2, p3) {
-//         if(child.id==nodeId){
-//             targetNode=child
-//         }
-//     });
-//     //算法
-//     var conLeft=(1-k)*w*0.5+(targetNode.x+targetNode.width+JTopo.flag.curScene.translateX)*k+left;
-//     var conRight=(1-k)*h*0.5+(targetNode.y+JTopo.flag.curScene.translateY)*k+_top-subH;
-//     $con.css({
-//         left:conLeft,
-//         top:conRight
-//     })
-// }

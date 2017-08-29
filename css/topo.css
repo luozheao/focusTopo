@@ -522,10 +522,10 @@ td {
     height: 16px;
 }
 
-.toolbar-search i{
-    color: #4fa4da;
-    font-size:14px;
+.toolbar-search {
+    background-position: -70px -32px;
 }
+
 
 .toolbar-print {
     background-position: -296px 0px;
@@ -722,6 +722,7 @@ td {
     margin-top: 75px;
     float: right;
     overflow-y:auto;
+    height:500px;
 }
 #canvas {
     /*float: right;*/
@@ -903,8 +904,8 @@ td {
     font-weight: 400;
 }
 .searchArea #search_input{
-    border-right: none;
     box-shadow: none;
+    /*border:none;*/
 }
 .searchArea .searchBtnDiv{
     border-left: none !important;

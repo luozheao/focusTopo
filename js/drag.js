@@ -3,6 +3,7 @@ $.fn.extend({
     //---元素拖动插件
     dragging:function(data){
         var $this = $(this);
+        if($this.attr('isDragTag')=='true'){return;}
         var $thisClone;
         var xPage;
         var yPage;
@@ -151,9 +152,9 @@ $.fn.extend({
             if(moveX < 0){
                 $thisClone.css({"left":"0"});
             }
-            if(moveX > (faWidth-thisWidth)){
-                $thisClone.css({"left":faWidth-thisWidth});
-            }
+            // if(moveX > (faWidth-thisWidth)){
+            //     $thisClone.css({"left":faWidth-thisWidth});
+            // }
 
             if(moveY < 0){
                 $thisClone.css({"top":"0"});

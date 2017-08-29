@@ -39,18 +39,28 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                     {
                         "id": "100",
                         "type": 'node',
-                        "json": "{x:100,y:100,width:101,height:82,text:'luozheao$luojie',textAlign:'center',elementType:'node',imgName:'scriptNodeBg',shadow:true,shadowBlur:5,shadowOffsetX:1,shadowOffsetY:2,showSelected:false}"
+                        "json": "{x:100,y:100,width:52,height:52,text:'luozheao$luojie',textOffsetX:0,textAlign:'left',elementType:'node',imgName:'apple',shadow:true,shadowBlur:5,shadowOffsetX:1,shadowOffsetY:2,showSelected:false}"
                     },
                     {
                         "id": "101",
                         "type": "node",
-                        "json": "{x:250,y:250,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'ActiveMQ'}"
+                        "json": "{x:400,y:100,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
                     },
                     {
-                        'id':'104',
-                        'type':'container',
-                        'json':"{elementType:'container',borderBgFillColor:'10,10,100',borderBgAlpha:'0.5',childsArr:['100','101'],text:'luozheao'}"
+                        "id": "102",
+                        "type": "node",
+                        "json": "{x:400,y:400,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
                     },
+                    // {
+                    //     "id": "103",
+                    //     "type": "node",
+                    //     "json": "{x:100,y:400,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
+                    // },
+                    // {
+                    //     'id':'104',
+                    //     'type':'container',
+                    //     'json':"{elementType:'container',borderBgFillColor:'10,10,100',borderBgAlpha:'0.5',childsArr:['100','101'],text:'luozheao'}"
+                    // },
                     //  {
                     // "id": '102',
                     // "type":'containerNode',
@@ -64,14 +74,38 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                 ],
 
                 "links": [
-                    // {
-                    //
-                    //     "from_id": "100",
-                    //     "to_id": "101",
-                    //     "id": "1000",
-                    //     "type": "link",
-                    //     "json": "{elementType:'link',text:'我是线条名字',fontColor:'237,165,72'}"
-                    // }
+                    {
+
+                        "from_id": "100",
+                        "to_id": "101",
+                        "id": "1000",
+                        "type": "link",
+                        "json": "{elementType:'link',linkType:'flow',text:'我是线条名字',fontColor:'237,165,72'}"
+                    },
+                    {
+
+                        "from_id": "101",
+                        "to_id": "102",
+                        "id": "1001",
+                        "type": "link",
+                        "json": "{elementType:'link',linkType:'flow',text:'我是线条名字',fontColor:'237,165,72'}"
+                    },
+                    {
+
+                        "from_id": "102",
+                        "to_id": "103",
+                        "id": "1002",
+                        "type": "link",
+                        "json": "{elementType:'link',linkType:'flow',text:'我是线条名字',fontColor:'237,165,72'}"
+                    },
+                    {
+
+                        "from_id": "103",
+                        "to_id": "100",
+                        "id": "1003",
+                        "type": "link",
+                        "json": "{elementType:'link',linkType:'flow',text:'我是线条名字',fontColor:'237,165,72'}"
+                    },
                 ]
             }
             //json属性需要处理成对象
@@ -104,7 +138,13 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                 // e.target.setImage('./images/'+'scriptH_bga.png');
             },
             mousemove: null,
-            mouseout: null,
+            mouseover:function(e){
+                $('#nodeTitle').show();
+                JTopo.util.setPopPos($('#nodeTitle'),e.target.id,0,0);
+            },
+            mouseout: function (e) {
+                console.log(e.target);
+            },
             dbclick: null
         };
 //线条事件
@@ -120,7 +160,9 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                 console.log(e.target);
             },
             mouseover:null,
-            mouseout: null,
+            mouseout: function (e) {
+                console.log(e.target);
+            },
             mousemove: null,
             dbclick:null
         };
@@ -143,7 +185,10 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
         }
 //画布事件
         canvasManager.sceneEvent={
-            mouseup:null
+            mouseup:function(e){
+                // console.log(e);
+
+            }
         }
 //自定义节点拓展，样例
         canvasManager.userDefinedNodes = [
@@ -464,8 +509,11 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
         setDragIcon();
 
         topoManager.init();
+        dataManager.setTopoData();
 
-    }
+
+
+    } 
     return init;
 });
 

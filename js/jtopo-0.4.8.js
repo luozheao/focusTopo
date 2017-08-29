@@ -594,16 +594,16 @@ define([],function () {
                     node.alarm=isChangeColor?"true":null;
                     node.fillAlarmNode=changeColor;
                     node.setImage('changeColor');
-                    node.flashT&&clearInterval(node.flashT);
+                    node.flashT&&JTopo.util.clearInterval(node.flashT);
                     if(isChangeColor&&isFlash){
                         //闪动
                         var i=1;
                         var tag=null;
-                        node.flashT=setInterval(function () {
+                        node.flashT=JTopo.util.setInterval(function () {
                             tag=  ++i%2;
                             node.alarm=tag?"true":null;
                             if(JTopo.flag.clearAllAnimateT){
-                                clearInterval(node.flashT);
+                                JTopo.util.clearInterval(node.flashT);
                             }
                         },1000)
                     }
@@ -617,16 +617,16 @@ define([],function () {
                     node.smallImageChangeColor =changeColor;
                     node.smallAlarmImageTag=isChangeColor?"true":null;
                     node.setImage('changeSmallImageColor');
-                    node.samllflashT&&clearInterval(node.samllflashT);
+                    node.samllflashT&&JTopo.util.clearInterval(node.samllflashT);
                     if(isChangeColor&&isFlash){
                         //闪动
                         var i=1;
                         var tag=null;
-                        node.samllflashT=setInterval(function () {
+                        node.samllflashT=JTopo.util.setInterval(function () {
                             tag=  ++i%2;
                             node.smallAlarmImageTag=tag?"true":null;
                             if(JTopo.flag.clearAllAnimateT){
-                                clearInterval(node.samllflashT);
+                                JTopo.util.clearInterval(node.samllflashT);
                             }
                         },1000)
                     }
@@ -681,8 +681,9 @@ define([],function () {
                 },
                 //根据id找到元素
                 findEleById:function(id){
+                    var idTypeName=id.indexOf('front')>=0?'_id':'id';
                     return JTopo.flag.curScene.childs.filter(function(child){
-                        return (child.id==id)
+                        return (child[idTypeName]==id)
                     })[0];
                 },
                 //根据类型找到元素
@@ -691,6 +692,58 @@ define([],function () {
                         return (child.elementType==type)
                     });
                 },
+                //设置弹窗的位置
+                setPopPos:function($pop,_nodeId,subW,subH) {
+
+                    var _subW=subW||0;//横坐标微调值
+                    var _subH=subH||0;//纵坐标微调值
+                    var nodeId=_nodeId;//节点id
+                    var $canvas=$('#canvas');
+                    var left=$canvas.offset().left;
+                    var _top=$canvas.offset().top;
+                    var k=JTopo.flag.curScene.scaleX;//scene的缩放率
+                    var w=$canvas.width();
+                    var h=$canvas.height();
+                    var $con=$pop;//弹窗jquery对象
+                    var targetNode=null;//目标节点
+                    var px=null;
+                    var py=null;
+
+                    JTopo.flag.curScene.childs.filter(function (child, p2, p3) {
+                        if(child.id==nodeId){
+                            targetNode=child;
+                            if(targetNode.elementType=='link'){
+                                px=(targetNode.nodeA.x+targetNode.nodeZ.x)*0.5;
+                                py=(targetNode.nodeA.y+targetNode.nodeZ.y)*0.5;
+                            }else{
+                                px=targetNode.x+targetNode.width;
+                                py=targetNode.y;
+                            }
+                        }
+                    });
+                    //算法
+                    var conLeft=(1-k)*w*0.5+(px+JTopo.flag.curScene.translateX)*k+left+_subW;
+                    var conTop=(1-k)*h*0.5+(py+JTopo.flag.curScene.translateY)*k+_top+_subH;
+                    $con.css({
+                        left:conLeft,
+                        top:conTop
+                    })
+                },
+                //改写window.setInterval成window.setTimeout
+                setInterval:function (fn,time) {
+                var T={};
+                sugar();
+                function  sugar() {
+                    T.timehandle = window.setTimeout(function () {
+                        fn();
+                        sugar();
+                    }, time);
+                }
+                return T;
+                },
+                clearInterval:function (obj) {
+                window.clearTimeout(obj.timehandle)
+            }
             },
                 JTopo.flag = {
                     clearAllAnimateT: false,
@@ -1326,7 +1379,7 @@ define([],function () {
                     },
                     this.getOffsetTranslate = function(a) {
                         var b = this.stage.canvas.width
-                            , c = this.stage.canvas.height;
+                            , c = this.stage.canvas.height; 
                         null != a && "move" != a && (b = a.canvas.width,c = a.canvas.height);
                         var d = b / this.scaleX / 2
                             , e = c / this.scaleY / 2
@@ -2190,8 +2243,8 @@ define([],function () {
                         this.text = c,
                         this.nodeFn=null,
                         this.textBreakNumber=5;
-                    this.textLineHeight=15;
-                    this.font = "12px Consolas",
+                        this.textLineHeight=15;
+                        this.font = "12px Consolas",
                         this.fontColor = "85,85,85",
                         this.borderWidth = 0,
                         this.borderColor = "255,255,255",
@@ -2372,10 +2425,16 @@ define([],function () {
                                     context.textAlign = obj.textAlign;
                                     switch(obj.textAlign){
                                         case "center":
-                                            begin_width=0;
+                                            begin_width=obj.textOffsetX;
                                             break;
                                         case "left":
-                                            begin_width=nBegin_width+7;
+                                            begin_width=obj.textOffsetX;
+                                            var cn=(longtext.split('$')).length;//行数
+                                            var csh=cn*lineHeight-textHeight; //总高度
+                                            begin_height=nBegin_height-csh/2;
+                                            break;
+                                        case "right":
+                                            begin_width=obj.textOffsetX;
                                             var cn=(longtext.split('$')).length;//行数
                                             var csh=cn*lineHeight-textHeight; //总高度
                                             begin_height=nBegin_height-csh/2;
@@ -2849,7 +2908,7 @@ define([],function () {
                         null != this.nodeZ && this.nodeZ.inLinks.push(this),
                             this.caculateIndex(),
                             this.font = "12px Consolas",
-                            this.fontColor = "255,255,255",
+                            this.fontColor = "43,43,43",
                             this.isShowLinkName = true,
                             this.lineWidth = 2,
                             this.lineJoin = "miter",
@@ -2862,8 +2921,10 @@ define([],function () {
                             this.arrowsOffset = 0,
                             this.dashedPattern = null,
                             this.path = [];
+                            this.animateNodePath=null;
                         this.linkType = null;//线条类型
                         this.animateNode = null;//线条上的动画节点
+
                         this.linkConnectType = 'toBorder';//连接类型，null为连接到中心点，toBorder为连接到边缘
                         this.mergeOutLink = false;//合并出线条,多条线条从节点出去,合并成一根线条
                         this.flexionalRadius = null;//二次折线的弧度半径
@@ -3447,8 +3508,10 @@ define([],function () {
                     }
             }
             function jk(imgurl,scene,rate,speed,width,height,row,col,time,offsetRow){
+                //rate计时器周期,speed距离
                 var w=width||16;
                 var h=height||16;
+                var thislink=this;
 
                 var imgnode = new JTopo.AnimateNode(imgurl, row, col, time, offsetRow);// 1行4列，1000毫秒播放一轮，行偏移量
                 imgnode.setSize(w,h)
@@ -3467,10 +3530,18 @@ define([],function () {
                 });
                 imgnode.play();
                 imgnode.visible=true;
-                var thislink=this;
+
+                if(thislink.animateNode){
+                    JTopo.util.clearInterval(thislink.animateT);
+                    JTopo.flag.curScene.remove(thislink.animateNode);
+                    delete thislink.animateNode;
+                }
+
                 thislink.animateNode=imgnode;
+
                 var timeT=0;
                 thislink.animateT=null;
+                thislink.endAnimate = false;
                 thislink.animateCallback=null;
                 var currentPathIndex=0;
                 var _rate=rate||200;
@@ -3516,8 +3587,16 @@ define([],function () {
                 function imgnodeanime(){
                     if(!thislink.isremove){
                         if(thislink.nodeA.outLinks){
+                            if(thislink.animateNodePath&&thislink.animateNodePath.length>0){
+                                thislink.path=thislink.animateNodePath;
+                            }
                             var nodeA=thislink.path[currentPathIndex];
                             var nodeZ=thislink.path[currentPathIndex+1];
+                            if(nodeZ.jump){
+                                ++currentPathIndex;
+                                imgnodeanime();
+                                return;
+                            }
                             var L;
                             var subX;
                             var subY;
@@ -3571,23 +3650,24 @@ define([],function () {
                                 ++currentPathIndex;
                                 if (currentPathIndex == thislink.path.length - 1) {
                                     currentPathIndex = 0;
-
+                                    thislink.endAnimate = false;
+                                    thislink.endCallback&&thislink.endCallback();
                                 }
                                 imgnode.cx = thislink.path[currentPathIndex].x;
                                 imgnode.cy = thislink.path[currentPathIndex].y;
                             }
                         }
                     }else{
-                        clearInterval(thislink.animateT);
+                        JTopo.util.clearInterval(thislink.animateT);
                         scene.remove(imgnode)
                     }
                 }
 
-                thislink.animateT=setInterval(function(){
-                    imgnodeanime();
-                    if(JTopo.flag.clearAllAnimateT){
-                        clearInterval(thislink.animateT);
-                    }
+                thislink.animateT=JTopo.util.setInterval(function () {
+                        imgnodeanime();
+                        if(JTopo.flag.clearAllAnimateT){
+                            JTopo.util.clearInterval(thislink.animateT);
+                        }
                 },_rate);
 
                 scene.add(imgnode);
@@ -3620,7 +3700,7 @@ define([],function () {
                         this.visible = !0,
                         this.fillColor = "79,164,218",
                         this.borderBgFillColor=null,
-                        this.borderBgAlpha=1,
+                        this.borderBgAlpha=0.3,
                         this.borderTextBg="rgba(108,208,226,1)",
                         this.borderWidth = 1,
                         this.shadowBlur = 5,
@@ -4561,13 +4641,13 @@ define([],function () {
                 var d, e = null;
                 return {
                     stop: function() {
-                        return d ? (window.clearInterval(d),
+                        return d ? (JTopo.util.clearInterval(d),
                         e && e.publish("stop"),
                             this) : this
                     },
                     start: function() {
                         var a = this;
-                        return d = setInterval(function() {
+                        return d = JTopo.util.setInterval(function() {
                             b.call(a)
                         }, c),
                             this
@@ -4647,12 +4727,12 @@ define([],function () {
                         this.stop(),
                             a = null == a ? 1e3 / 24 : a;
                         var b = this;
-                        this.timer = setInterval(function() {
+                        this.timer = JTopo.util.setInterval(function() {
                             b.nextFrame()
                         }, a)
                     },
                     stop: function() {
-                        null != this.timer && window.clearInterval(this.timer)
+                        null != this.timer && JTopo.util.clearInterval(this.timer)
                     },
                     nextFrame: function() {
                         for (var a = 0; a < this.items.length; a++) {
@@ -4685,14 +4765,14 @@ define([],function () {
             }
             function f(a, b) {
                 function c() {
-                    return e = setInterval(function() {
+                    return e = JTopo.util.setInterval(function() {
                         return o ? void f.stop() : (a.rotate += g || .2,
                             void (a.rotate > 2 * Math.PI && (a.rotate = 0)))
                     }, 100),
                         f
                 }
                 function d() {
-                    return window.clearInterval(e),
+                    return JTopo.util.clearInterval(e),
                     f.onStop && f.onStop(a),
                         f
                 }
@@ -4708,14 +4788,14 @@ define([],function () {
             }
             function g(a, b) {
                 function c() {
-                    return window.clearInterval(g),
+                    return JTopo.util.clearInterval(g),
                     h.onStop && h.onStop(a),
                         h
                 }
                 function d() {
                     var d = b.dx || 0
                         , i = b.dy || 2;
-                    return g = setInterval(function() {
+                    return g = JTopo.util.setInterval(function() {
                         return o ? void h.stop() : (i += f,
                             void (a.y + a.height < e.stage.canvas.height ? a.setLocation(a.x + d, a.y + i) : (i = 0,
                                 c())))
@@ -4804,7 +4884,7 @@ define([],function () {
                 }
                 function d() {
                     return c(a),
-                        h = setInterval(function() {
+                        h = JTopo.util.setInterval(function() {
                             return o ? void i.stop() : (a.vy += f,
                                 a.x += a.vx,
                                 a.y += a.vy,
@@ -4814,7 +4894,7 @@ define([],function () {
                         i
                 }
                 function e() {
-                    window.clearInterval(h)
+                    JTopo.util.clearInterval(h)
                 }
                 var f = .8, g = b.context, h = null, i = {};
                 return i.onStop = function(a) {
@@ -4833,7 +4913,7 @@ define([],function () {
             }
             function l(b, c) {
                 function d() {
-                    return n = setInterval(function() {
+                    return n = JTopo.util.setInterval(function() {
                         if (o)
                             return void m.stop();
                         var a = f.y + h + Math.sin(k) * j;
@@ -4843,7 +4923,7 @@ define([],function () {
                         m
                 }
                 function e() {
-                    window.clearInterval(n)
+                    JTopo.util.clearInterval(n)
                 }
                 var f = c.p1, g = c.p2, h = (c.context,
                 f.x + (g.x - f.x) / 2), i = f.y + (g.y - f.y) / 2, j = a.util.getDistance(f, g) / 2, k = Math.atan2(i, h), l = c.speed || .2, m = {}, n = null;
@@ -4853,7 +4933,7 @@ define([],function () {
             }
             function m(a, b) {
                 function c() {
-                    return h = setInterval(function() {
+                    return h = JTopo.util.setInterval(function() {
                         if (o)
                             return void g.stop();
                         var b = e.x - a.x
@@ -4867,7 +4947,7 @@ define([],function () {
                         g
                 }
                 function d() {
-                    window.clearInterval(h)
+                    JTopo.util.clearInterval(h)
                 }
                 var e = b.position, f = (b.context,
                 b.easing || .2), g = {}, h = null;
@@ -4881,7 +4961,7 @@ define([],function () {
             }
             function n(a, b) {
                 function c() {
-                    return j = setInterval(function() {
+                    return j = JTopo.util.setInterval(function() {
                         a.scaleX += f,
                             a.scaleY += f,
                         a.scaleX >= e && d()
@@ -4892,7 +4972,7 @@ define([],function () {
                     i.onStop && i.onStop(a),
                         a.scaleX = g,
                         a.scaleY = h,
-                        window.clearInterval(j)
+                        JTopo.util.clearInterval(j)
                 }
                 var e = (b.position,
                     b.context,
