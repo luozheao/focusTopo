@@ -1,7 +1,7 @@
 define([],function () {
     var JTopo={};
 //全局
-        !function(window) {
+    !function(window) {
         function Element() {
             this.initialize = function() {
                 this.elementType = "element",
@@ -50,7 +50,7 @@ define([],function () {
                 }
         }
 
-            CanvasRenderingContext2D.prototype.JTopoRoundRect = function(a, b, c, d, e,f) {
+        CanvasRenderingContext2D.prototype.JTopoRoundRect = function(a, b, c, d, e,f) {
             //f表示边框为虚线
             if(f){
                 "undefined" == typeof e && (e = 5),
@@ -502,6 +502,15 @@ define([],function () {
                     d = JTopo.util.intersection(a, c)))),
                     d
             }
+            String.prototype.getChineseNum = function() {
+                var len = 0;
+                for (var i = 0; i < this.length; i++) {
+                    if (this.charCodeAt(i) > 127 || this.charCodeAt(i) == 94) {
+                        len += 1;
+                    }
+                }
+                return len;
+            },
                 Array.prototype.del = function(a) {
                     if ("number" != typeof a) {
                         for (var b = 0; b < this.length; b++)
@@ -594,16 +603,16 @@ define([],function () {
                     node.alarm=isChangeColor?"true":null;
                     node.fillAlarmNode=changeColor;
                     node.setImage('changeColor');
-                    node.flashT&&JTopo.util.clearInterval(node.flashT);
+                    node.flashT&&clearInterval(node.flashT);
                     if(isChangeColor&&isFlash){
                         //闪动
                         var i=1;
                         var tag=null;
-                        node.flashT=JTopo.util.setInterval(function () {
+                        node.flashT=setInterval(function () {
                             tag=  ++i%2;
                             node.alarm=tag?"true":null;
                             if(JTopo.flag.clearAllAnimateT){
-                                JTopo.util.clearInterval(node.flashT);
+                                clearInterval(node.flashT);
                             }
                         },1000)
                     }
@@ -617,16 +626,16 @@ define([],function () {
                     node.smallImageChangeColor =changeColor;
                     node.smallAlarmImageTag=isChangeColor?"true":null;
                     node.setImage('changeSmallImageColor');
-                    node.samllflashT&&JTopo.util.clearInterval(node.samllflashT);
+                    node.samllflashT&&clearInterval(node.samllflashT);
                     if(isChangeColor&&isFlash){
                         //闪动
                         var i=1;
                         var tag=null;
-                        node.samllflashT=JTopo.util.setInterval(function () {
+                        node.samllflashT=setInterval(function () {
                             tag=  ++i%2;
                             node.smallAlarmImageTag=tag?"true":null;
                             if(JTopo.flag.clearAllAnimateT){
-                                JTopo.util.clearInterval(node.samllflashT);
+                                clearInterval(node.samllflashT);
                             }
                         },1000)
                     }
@@ -693,7 +702,7 @@ define([],function () {
                     });
                 },
                 //设置弹窗的位置
-                setPopPos:function($pop,_nodeId,subW,subH) {
+                setPopPos:function($pop,_nodeId,subW,subH,$scroll) {
 
                     var _subW=subW||0;//横坐标微调值
                     var _subH=subH||0;//纵坐标微调值
@@ -708,7 +717,7 @@ define([],function () {
                     var targetNode=null;//目标节点
                     var px=null;
                     var py=null;
-
+                    var scrollTop=$scroll?$scroll.scrollTop():0;
                     JTopo.flag.curScene.childs.filter(function (child, p2, p3) {
                         if(child.id==nodeId){
                             targetNode=child;
@@ -723,27 +732,12 @@ define([],function () {
                     });
                     //算法
                     var conLeft=(1-k)*w*0.5+(px+JTopo.flag.curScene.translateX)*k+left+_subW;
-                    var conTop=(1-k)*h*0.5+(py+JTopo.flag.curScene.translateY)*k+_top+_subH;
+                    var conTop=(1-k)*h*0.5+(py+JTopo.flag.curScene.translateY)*k+_top+_subH+scrollTop;
                     $con.css({
                         left:conLeft,
                         top:conTop
                     })
                 },
-                //改写window.setInterval成window.setTimeout
-                setInterval:function (fn,time) {
-                var T={};
-                sugar();
-                function  sugar() {
-                    T.timehandle = window.setTimeout(function () {
-                        fn();
-                        sugar();
-                    }, time);
-                }
-                return T;
-                },
-                clearInterval:function (obj) {
-                window.clearTimeout(obj.timehandle)
-            }
             },
                 JTopo.flag = {
                     clearAllAnimateT: false,
@@ -821,19 +815,19 @@ define([],function () {
                         var container_h=container_w *canvasObj.height/canvasObj.width;
 
                         //设置地图大小
-                     null != j && null != k ? this.setSize(b, c) : this.setSize(container_w, container_h);
+                        null != j && null != k ? this.setSize(b, c) : this.setSize(container_w, container_h);
                         var e = this.canvas.getContext("2d");
                         //绘制地图
                         if (a.childs.length > 0) {
-                                e.save(),
+                            e.save(),
                                 e.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                                a.childs.forEach(function(a) {
-                                    1 == a.visible && (
-                                        a.save(),
+                            a.childs.forEach(function(a) {
+                                1 == a.visible && (
+                                    a.save(),
                                         a.centerAndZoom(null, null, e),
                                         a.repaint(e,'eagleEye'),
                                         a.restore())
-                                });
+                            });
 
 //a为stage  ,a.childs[0]为大画布
                             var f = d(a.childs[0])
@@ -851,7 +845,7 @@ define([],function () {
                             i.top < 0 && (h -= Math.abs(i.top) * (this.height / i.height)),
                                 e.save(),
                                 e.fillStyle="rgba(168,168,168,0.3)",
-                              //  e.fillRect(-g, -h, e.canvas.width * j, e.canvas.height * k),
+                                //  e.fillRect(-g, -h, e.canvas.width * j, e.canvas.height * k),
                                 e.fillRect(-g+9, -h+5, this.canvas.width-18, this.canvas.height-10 ),
                                 e.restore();
                             //上面绘制小地图红色边框
@@ -867,9 +861,9 @@ define([],function () {
 
                     paint: function() {
                         if (null != this.eagleImageDatas) {
-                               var b = a.graphics;
-                               var w=4;
-                                b.save(),
+                            var b = a.graphics;
+                            var w=4;
+                            b.save(),
                                 b.lineWidth = 1,
                                 b.strokeStyle = "rgba(43,43,43,0.8)",
                                 b.strokeRect(a.canvas.width - this.canvas.width-w,
@@ -881,7 +875,7 @@ define([],function () {
                                     a.canvas.height - this.canvas.height-1
                                 ),
                                 b.restore()
-                           //上述,strokeStyle为小地图边框
+                            //上述,strokeStyle为小地图边框
                         } else
                             this.eagleImageDatas = this.getData(a);
                     },
@@ -962,10 +956,10 @@ define([],function () {
                         o = !1;
                     var b = d(a);
                     n.mouseDown ? 0 == a.button && (b.dx = b.x - n.mouseDownX,
-                            b.dy = b.y - n.mouseDownY,
-                            n.dispatchEventToScenes("mousedrag", b),
-                            n.dispatchEvent("mousedrag", b),
-                        1 == n.eagleEye.visible && n.eagleEye.update()) : (n.dispatchEventToScenes("mousemove", b),
+                        b.dy = b.y - n.mouseDownY,
+                        n.dispatchEventToScenes("mousedrag", b),
+                        n.dispatchEvent("mousedrag", b),
+                    1 == n.eagleEye.visible && n.eagleEye.update()) : (n.dispatchEventToScenes("mousemove", b),
                         n.dispatchEvent("mousemove", b))
                 }
                 function j(a) {
@@ -1379,7 +1373,7 @@ define([],function () {
                     },
                     this.getOffsetTranslate = function(a) {
                         var b = this.stage.canvas.width
-                            , c = this.stage.canvas.height; 
+                            , c = this.stage.canvas.height;
                         null != a && "move" != a && (b = a.canvas.width,c = a.canvas.height);
                         var d = b / this.scaleX / 2
                             , e = c / this.scaleY / 2
@@ -1546,8 +1540,8 @@ define([],function () {
                                 return this.lastTranslateX = this.translateX,
                                     void (this.lastTranslateY = this.translateY);
                             this.mode == a.SceneMode.select ? this.selectElement(c) : this.mode == a.SceneMode.edit && (this.selectElement(c),
-                                (null == this.currentElement || this.currentElement instanceof a.Link) && 1 == this.translate && (this.lastTranslateX = this.translateX,
-                                    this.lastTranslateY = this.translateY))
+                            (null == this.currentElement || this.currentElement instanceof a.Link) && 1 == this.translate && (this.lastTranslateX = this.translateX,
+                                this.lastTranslateY = this.translateY))
                         }
                         e.dispatchEvent("mousedown", c)
                     },
@@ -1592,11 +1586,11 @@ define([],function () {
                                         1 == this.areaSelect && this.areaSelectHandle(c)
                                     :
                                     this.mode == a.SceneMode.edit && (null == this.currentElement || this.currentElement instanceof a.Link ?
-                                        1 == this.translate && (this.stage.cursor = a.MouseCursor.closed_hand,
-                                            this.translateX = this.lastTranslateX + c.dx,
-                                            this.translateY = this.lastTranslateY + c.dy)
-                                        :
-                                        this.dragElements(c)),
+                                    1 == this.translate && (this.stage.cursor = a.MouseCursor.closed_hand,
+                                        this.translateX = this.lastTranslateX + c.dx,
+                                        this.translateY = this.lastTranslateY + c.dy)
+                                    :
+                                    this.dragElements(c)),
                             this.dispatchEvent("mousedrag", c)
                     },
                     this.areaSelectHandle = function(a) {
@@ -1779,7 +1773,7 @@ define([],function () {
                             if (i > 1)
                                 return;
                             this.zoom(g,h)
-                           //   this.zoom(i, i)
+                            //   this.zoom(i, i)
                         }
                         this.zoom(a, b)
                     },
@@ -1842,7 +1836,7 @@ define([],function () {
         //displayElement的具体实现,包含所有元素默认展示属性，挂载在jTopo上
         function(a) {
             function b() {
-                    this.initialize = function() {
+                this.initialize = function() {
                     b.prototype.initialize.apply(this, arguments),
                         this.elementType = "displayElement",
                         this.x = 0,
@@ -1969,9 +1963,9 @@ define([],function () {
                             x: this.cx,
                             y: c.bottom
                         } :"Bottom_Right" == a && (b = {
-                                x: c.right,
-                                y: c.bottom
-                            }),
+                            x: c.right,
+                            y: c.bottom
+                        }),
                             b
                     }
             }
@@ -1989,7 +1983,7 @@ define([],function () {
                 },
                     this.initialize(),
                     this.paintSelected = function(a) {
-                            0 != this.showSelected && (a.save(),
+                        0 != this.showSelected && (a.save(),
                             a.beginPath(),
                             a.strokeStyle = "rgba(168,202,255, 0.5)",
                             a.fillStyle = "rgba(168,202,236,0.4)",
@@ -2243,8 +2237,8 @@ define([],function () {
                         this.text = c,
                         this.nodeFn=null,
                         this.textBreakNumber=5;
-                        this.textLineHeight=15;
-                        this.font = "12px Consolas",
+                    this.textLineHeight=15;
+                    this.font = "12px Consolas",
                         this.fontColor = "85,85,85",
                         this.borderWidth = 0,
                         this.borderColor = "255,255,255",
@@ -2425,16 +2419,10 @@ define([],function () {
                                     context.textAlign = obj.textAlign;
                                     switch(obj.textAlign){
                                         case "center":
-                                            begin_width=obj.textOffsetX;
+                                            begin_width=0;
                                             break;
                                         case "left":
-                                            begin_width=obj.textOffsetX;
-                                            var cn=(longtext.split('$')).length;//行数
-                                            var csh=cn*lineHeight-textHeight; //总高度
-                                            begin_height=nBegin_height-csh/2;
-                                            break;
-                                        case "right":
-                                            begin_width=obj.textOffsetX;
+                                            begin_width=nBegin_width+7;
                                             var cn=(longtext.split('$')).length;//行数
                                             var csh=cn*lineHeight-textHeight; //总高度
                                             begin_height=nBegin_height-csh/2;
@@ -2515,9 +2503,9 @@ define([],function () {
                             x: this.width / 2,
                             y: c / 2
                         } : "Middle_Left" == a && (d = {
-                                x: -this.width / 2 - b,
-                                y: c / 2
-                            }),
+                            x: -this.width / 2 - b,
+                            y: c / 2
+                        }),
                         null != this.textOffsetX && (d.x += this.textOffsetX),
                         null != this.textOffsetY && (d.y += this.textOffsetY),
                             d
@@ -2593,13 +2581,13 @@ define([],function () {
                         //对父级容器处理
                         var pc=this.parentContainer;
                         if(pc&&pc.length>0){
-                             for(var i=0;i<pc.length;i++){
-                                 var pcObj=pc[i];
-                                 pcObj.remove(b);
-                                 if(pcObj.childs.length==0){
-                                     JTopo.flag.curScene.remove(pcObj);
-                                 }
-                             }
+                            for(var i=0;i<pc.length;i++){
+                                var pcObj=pc[i];
+                                pcObj.remove(b);
+                                if(pcObj.childs.length==0){
+                                    JTopo.flag.curScene.remove(pcObj);
+                                }
+                            }
                         }
                     }
             }
@@ -2607,12 +2595,12 @@ define([],function () {
                 c.prototype.initialize.apply(this, arguments)
             }
             function d(a) {
-                    this.initialize(),
+                this.initialize(),
                     this.text = a,
                     this.elementType = "TextNode",
                     //textnode放到容器中，容器再外加一个容器，移动容器，textnode不能触发位移
                     this.paint = function(a) {
-                            a.beginPath(),
+                        a.beginPath(),
                             a.font = this.font,
                             this.width = a.measureText(this.text).width,
                             this.height = a.measureText("田").width,
@@ -2643,17 +2631,17 @@ define([],function () {
                             this.isVisited && null != this.visitedColor ? (a.strokeStyle = "rgba(" + this.visitedColor + ", " + this.alpha + ")",
                                 a.fillStyle = "rgba(" + this.visitedColor + ", " + this.alpha + ")") : (a.strokeStyle = "rgba(" + this.fontColor + ", " + this.alpha + ")",
                                 a.fillStyle = "rgba(" + this.fontColor + ", " + this.alpha + ")");
-                            draw_long_text(this.text,a,-this.width / 2,this.height / 2,this);
-                            // a.fillText(this.text, -this.width / 2, this.height / 2);
-                            this.isMouseOver && (a.moveTo(-this.width / 2, this.height),
+                        draw_long_text(this.text,a,-this.width / 2,this.height / 2,this);
+                        // a.fillText(this.text, -this.width / 2, this.height / 2);
+                        this.isMouseOver && (a.moveTo(-this.width / 2, this.height),
                             a.lineTo(this.width / 2, this.height),
                             a.stroke()),
                             a.closePath(),
                             this.paintBorder(a),
                             this.paintCtrl(a),
                             this.paintAlarmText(a);
-                            function draw_long_text(longtext,cxt,nBegin_width,nBegin_height,obj)
-                            {
+                        function draw_long_text(longtext,cxt,nBegin_width,nBegin_height,obj)
+                        {
                             //文字内容,画布对象,坐标x,坐标y,结点对象
                             var lineHeight= obj.textLineHeight;
                             if(obj.nodeFn=='alarm'){
@@ -2722,7 +2710,7 @@ define([],function () {
                             this.paintAlarmText(a)
                     },
                     this.paintSelected = function(a) {
-                            a.save(),
+                        a.save(),
                             a.beginPath(),
                             a.strokeStyle = "rgba(168,202,255, 0.9)",
                             a.fillStyle = "rgba(168,202,236,0.7)",
@@ -2886,13 +2874,13 @@ define([],function () {
                 return c(a, b).length
             }
             function f(b, c, g) {
-                    function h(b, c) {
-                        var d = a.util.lineF(b.cx, b.cy, c.cx, c.cy)
+                function h(b, c) {
+                    var d = a.util.lineF(b.cx, b.cy, c.cx, c.cy)
                         , e = b.getBound()
                         , f = a.util.intersectionLineBound(d, e);
-                        return f
-                    }
-                    this.initialize = function (b, c, d) {
+                    return f
+                }
+                this.initialize = function (b, c, d) {
                     if (f.prototype.initialize.apply(this, arguments),
                             this.elementType = "link",
                             this.zIndex = a.zIndex_Link,
@@ -2921,10 +2909,9 @@ define([],function () {
                             this.arrowsOffset = 0,
                             this.dashedPattern = null,
                             this.path = [];
-                            this.animateNodePath=null;
+                        this.animateNodePath=null;
                         this.linkType = null;//线条类型
                         this.animateNode = null;//线条上的动画节点
-
                         this.linkConnectType = 'toBorder';//连接类型，null为连接到中心点，toBorder为连接到边缘
                         this.mergeOutLink = false;//合并出线条,多条线条从节点出去,合并成一根线条
                         this.flexionalRadius = null;//二次折线的弧度半径
@@ -3019,15 +3006,15 @@ define([],function () {
 
                         if (1 == d)
                             return [b, c];
-                           var f = Math.atan2(c.y - b.y, c.x - b.x)
+                        var f = Math.atan2(c.y - b.y, c.x - b.x)
                             , g = {
                             x: b.x + this.bundleOffset * Math.cos(f),
                             y: b.y + this.bundleOffset * Math.sin(f)
-                            }
+                        }
                             , h = {
                             x: c.x + this.bundleOffset * Math.cos(f - Math.PI),
                             y: c.y + this.bundleOffset * Math.sin(f - Math.PI)
-                            }
+                        }
                             , i = f - Math.PI / 2
                             , j = f - Math.PI / 2
                             , k = d * this.bundleGap / 2 - this.bundleGap / 2
@@ -3044,7 +3031,7 @@ define([],function () {
                         return m = {
                             x: m.x + k * Math.cos(i - Math.PI),
                             y: m.y + k * Math.sin(i - Math.PI)
-                            },
+                        },
                             n = {
                                 x: n.x + k * Math.cos(j - Math.PI),
                                 y: n.y + k * Math.sin(j - Math.PI)
@@ -3073,10 +3060,10 @@ define([],function () {
                                 if (this.nodeA === this.nodeZ) return void this.paintLoop(a);
                                 a.beginPath(), a.moveTo(b[0].x, b[0].y);
                                 if(this.flexionalRadius!=null){
-                                      var b0=b[0];
-                                      var b1=b[1];
-                                      var b2=b[2];
-                                      var b3=b[3];
+                                    var b0=b[0];
+                                    var b1=b[1];
+                                    var b2=b[2];
+                                    var b3=b[3];
 
                                     if(this.openStartRadius&&this.openEndRadius){
                                         a.lineTo((b1.x+b0.x)/2, (b1.y+b0.y)/2);
@@ -3111,7 +3098,7 @@ define([],function () {
                                             a.JTopoDashedLineTo(b[c - 1].x, b[c - 1].y, b[c].x, b[c].y, this.dashedPattern);
                                     }
                                 }
-                               if (a.stroke(),
+                                if (a.stroke(),
                                         a.closePath(),
                                     null != this.arrowsRadius) {
                                     var d = b[b.length - 2]
@@ -3218,8 +3205,8 @@ define([],function () {
                             b && b.length > 0 && this.paintText(a, b)
                         }
                     };
-                    var i = -(Math.PI / 2 + Math.PI / 4);
-                    this.paintText = function (a, b) {
+                var i = -(Math.PI / 2 + Math.PI / 4);
+                this.paintText = function (a, b) {
                     var c = b[0]
                         , d = b[b.length - 1];
                     if (!this.isShowLinkName) {
@@ -3301,9 +3288,9 @@ define([],function () {
                         if (this.nodeA === this.nodeZ) {
                             var d = this.bundleGap * (this.nodeIndex + 1) / 2
                                 , e = a.util.getDistance(this.nodeA, {
-                                    x: b,
-                                    y: c
-                                }) - d;
+                                x: b,
+                                y: c
+                            }) - d;
                             return Math.abs(e) <= 3
                         }
                         for (var f = !1, g = 1; g < this.path.length; g++) {
@@ -3438,41 +3425,41 @@ define([],function () {
                         this.mergeOutLink&&(outH=0);//如果合并,则出线的相对坐标为0
                         var i = this.offsetGap;
                         return "horizontal" == this.direction ? (this.nodeA.cx > this.nodeZ.cx && (i = -i),
-                            d.push({
-                                x: b.x,
-                                y: b.y + outH
-                            }),
-                            d.push({
-                                x: b.x + i,
-                                y: b.y + outH
-                            }),
-                            d.push({
-                                x: c.x - i,
-                                y: c.y + h
-                            }),
-                            d.push({
-                                x: c.x,
-                                y: c.y + h
-                            }))
+                                d.push({
+                                    x: b.x,
+                                    y: b.y + outH
+                                }),
+                                d.push({
+                                    x: b.x + i,
+                                    y: b.y + outH
+                                }),
+                                d.push({
+                                    x: c.x - i,
+                                    y: c.y + h
+                                }),
+                                d.push({
+                                    x: c.x,
+                                    y: c.y + h
+                                }))
                             :
                             (
                                 this.nodeA.cy > this.nodeZ.cy && (i = -i),
-                                d.push({
-                                    x: b.x + outH,
-                                    y: b.y
-                                }),
-                                d.push({
-                                    x: b.x + outH,
-                                    y: b.y + i
-                                }),
-                                d.push({
-                                    x: c.x + h,
-                                    y: c.y - i
-                                }),
-                                d.push({
-                                    x: c.x + h,
-                                    y: c.y
-                                })),
+                                    d.push({
+                                        x: b.x + outH,
+                                        y: b.y
+                                    }),
+                                    d.push({
+                                        x: b.x + outH,
+                                        y: b.y + i
+                                    }),
+                                    d.push({
+                                        x: c.x + h,
+                                        y: c.y - i
+                                    }),
+                                    d.push({
+                                        x: c.x + h,
+                                        y: c.y
+                                    })),
                             d
                     }
             }
@@ -3532,7 +3519,7 @@ define([],function () {
                 imgnode.visible=true;
 
                 if(thislink.animateNode){
-                    JTopo.util.clearInterval(thislink.animateT);
+                    clearInterval(thislink.animateT);
                     JTopo.flag.curScene.remove(thislink.animateNode);
                     delete thislink.animateNode;
                 }
@@ -3658,16 +3645,16 @@ define([],function () {
                             }
                         }
                     }else{
-                        JTopo.util.clearInterval(thislink.animateT);
+                        clearInterval(thislink.animateT);
                         scene.remove(imgnode)
                     }
                 }
 
-                thislink.animateT=JTopo.util.setInterval(function () {
-                        imgnodeanime();
-                        if(JTopo.flag.clearAllAnimateT){
-                            JTopo.util.clearInterval(thislink.animateT);
-                        }
+                thislink.animateT=setInterval(function(){
+                    imgnodeanime();
+                    if(JTopo.flag.clearAllAnimateT){
+                        clearInterval(thislink.animateT);
+                    }
                 },_rate);
 
                 scene.add(imgnode);
@@ -3686,8 +3673,8 @@ define([],function () {
         //container的具体实现 ,container不能使用layout布局,如果要用,需要自己实现
         function(d) {
             function c(a) {
-                    this.initialize = function(b) {
-                        c.prototype.initialize.apply(this, null),
+                this.initialize = function(b) {
+                    c.prototype.initialize.apply(this, null),
                         this.elementType = "container",
                         this.zIndex = d.zIndex_Container,
                         this.width = 100,
@@ -3724,13 +3711,13 @@ define([],function () {
                             width: null,
                             height: null
                         };
-                        this.layout = new d.layout.AutoBoundLayout,
+                    this.layout = new d.layout.AutoBoundLayout,
                         this.borderPadding = 15
                 },
                     this.initialize(a),
                     this.add = function(b) {
                         this.childs.push(b),
-                        b.dragable = this.childDragble;
+                            b.dragable = this.childDragble;
                         if(!b.parentContainer){b.parentContainer=[]};
                         b.parentContainer.push(this);
                     },
@@ -3774,89 +3761,89 @@ define([],function () {
                             this.paintBorder(b)),
                             this.paintText(b);    //先绘制边框,再绘制文字
 
-                            if(this.childs.length==0){
-                                JTopo.flag.scene.remove(this);
-                            }
+                        if(this.childs.length==0){
+                            JTopo.flag.scene.remove(this);
+                        }
                     },
                     this.paintBorder = function(a) {
                         if (0 != this.borderWidth) {
                             //获取容器内部所有的子元素
                             var textHeight = a.measureText("田").width;//所有一行文字的高度
                             var thisObj = this;
-                                var compareObj = {
-                                    left: null,
-                                    right: null,
-                                    top: null,
-                                    bottom: null
-                                };
-                                thisObj.childs.forEach(function (p) {
-                                    var textWidth = a.measureText(p.text || '').width;
+                            var compareObj = {
+                                left: null,
+                                right: null,
+                                top: null,
+                                bottom: null
+                            };
+                            thisObj.childs.forEach(function (p) {
+                                var textWidth = a.measureText(p.text || '').width;
 
-                                    var pObj = p.getTextPostion(p.textPosition, textWidth, textHeight);//获取文字的相对位置
-                                    //获取文字左下角的位置，注意不是左上角
-                                    pObj.x += p.x + p.width / 2;
-                                    pObj.y += p.y + p.height / 2;
+                                var pObj = p.getTextPostion(p.textPosition, textWidth, textHeight);//获取文字的相对位置
+                                //获取文字左下角的位置，注意不是左上角
+                                pObj.x += p.x + p.width / 2;
+                                pObj.y += p.y + p.height / 2;
 
-                                    //获取文字+节点整体的边界
-                                    if (p.width > textWidth) {
-                                        pObj.x = p.x;
-                                        textWidth = p.width;
-                                    }
-
-                                    if (compareObj.left === null || compareObj.left > pObj.x) {
-                                        compareObj.left = pObj.x
-                                    }
-                                    ;
-                                    if (compareObj.right === null || compareObj.right < pObj.x + textWidth) {
-                                        compareObj.right = pObj.x + textWidth
-                                    }
-                                    ;
-                                    if (compareObj.top === null || compareObj.top > pObj.y - textHeight) {
-                                        compareObj.top = pObj.y - textHeight
-                                    }
-                                    ;
-                                    if (compareObj.bottom === null || compareObj.bottom < pObj.y) {
-                                        compareObj.bottom = pObj.y
-                                    }
-                                    ;
-                                });
-                                sugar(thisObj, compareObj);
-                                function sugar(thisObj, compareObj) {
-                                    var leftW = thisObj.x - compareObj.left;
-                                    var rightW = thisObj.x + thisObj.width - compareObj.right;
-                                    var topH = thisObj.y - compareObj.top;
-                                    var bottomH = thisObj.y + textHeight - compareObj.bottom;
-                                    if (leftW > 0) {
-                                        thisObj.x = compareObj.left;
-                                        thisObj.width += leftW;
-                                    }
-                                    if (rightW < 0) {
-                                        thisObj.width = compareObj.right - thisObj.x;
-                                    }
-                                    if (topH > 0) {
-                                        thisObj.y = compareObj.top;
-                                        thisObj.height += topH;
-                                    }
-                                    if (bottomH < 0) {
-                                        thisObj.height = compareObj.bottom - thisObj.y;
-                                    }
-
-                                    var len = thisObj.borderPadding;
-                                    thisObj.x -= len * 2;
-                                    thisObj.y -= len * 4;
-                                    thisObj.width += len * 4;
-                                    thisObj.height += len * 5;
-                                    //跟title比较宽度
-                                    var titleWidth = a.measureText(thisObj.text || '').width + 60;
-                                    var subWidth = titleWidth - thisObj.width;
-                                    if (subWidth > 0) {
-                                        thisObj.x -= subWidth / 2 + len;
-                                        thisObj.width = titleWidth + 2 * len;
-                                    }
-
+                                //获取文字+节点整体的边界
+                                if (p.width > textWidth) {
+                                    pObj.x = p.x;
+                                    textWidth = p.width;
                                 }
+
+                                if (compareObj.left === null || compareObj.left > pObj.x) {
+                                    compareObj.left = pObj.x
+                                }
+                                ;
+                                if (compareObj.right === null || compareObj.right < pObj.x + textWidth) {
+                                    compareObj.right = pObj.x + textWidth
+                                }
+                                ;
+                                if (compareObj.top === null || compareObj.top > pObj.y - textHeight) {
+                                    compareObj.top = pObj.y - textHeight
+                                }
+                                ;
+                                if (compareObj.bottom === null || compareObj.bottom < pObj.y) {
+                                    compareObj.bottom = pObj.y
+                                }
+                                ;
+                            });
+                            sugar(thisObj, compareObj);
+                            function sugar(thisObj, compareObj) {
+                                var leftW = thisObj.x - compareObj.left;
+                                var rightW = thisObj.x + thisObj.width - compareObj.right;
+                                var topH = thisObj.y - compareObj.top;
+                                var bottomH = thisObj.y + textHeight - compareObj.bottom;
+                                if (leftW > 0) {
+                                    thisObj.x = compareObj.left;
+                                    thisObj.width += leftW;
+                                }
+                                if (rightW < 0) {
+                                    thisObj.width = compareObj.right - thisObj.x;
+                                }
+                                if (topH > 0) {
+                                    thisObj.y = compareObj.top;
+                                    thisObj.height += topH;
+                                }
+                                if (bottomH < 0) {
+                                    thisObj.height = compareObj.bottom - thisObj.y;
+                                }
+
+                                var len = thisObj.borderPadding;
+                                thisObj.x -= len * 2;
+                                thisObj.y -= len * 4;
+                                thisObj.width += len * 4;
+                                thisObj.height += len * 5;
+                                //跟title比较宽度
+                                var titleWidth = a.measureText(thisObj.text || '').width + 60;
+                                var subWidth = titleWidth - thisObj.width;
+                                if (subWidth > 0) {
+                                    thisObj.x -= subWidth / 2 + len;
+                                    thisObj.width = titleWidth + 2 * len;
+                                }
+
+                            }
                             var pp = this.containerPadding;
-                                a.beginPath(),
+                            a.beginPath(),
                                 a.lineWidth = this.borderWidth,
                                 a.strokeStyle = "rgba(" + this.borderColor + "," + this.borderAlpha + ")";
                             var b = this.borderWidth / 2;
@@ -3873,7 +3860,7 @@ define([],function () {
                             a.closePath();
                         }
                     }
-                    this.paintText = function(g) {
+                this.paintText = function(g) {
                     var f = this.text;
                     if (null != f && "" != f) {
                         g.beginPath(),
@@ -3892,7 +3879,7 @@ define([],function () {
                         g.fill();
                         g.fillStyle = "rgba(" + this.fontColor + ", " + this.textAlpha + ")";
                         g.fillText(f, h.x, h.y - 1),
-                        g.closePath();
+                            g.closePath();
                         this.textPositionMsg = {
                             x: h.x - 20,
                             y: h.y - i - 3,
@@ -3935,9 +3922,9 @@ define([],function () {
                             x: this.x + this.width - e,
                             y: this.y + this.height / 2 + h / 2
                         } : "Middle_Left" == f && (g = {
-                                x: this.x,
-                                y: this.y + this.height / 2 + h / 2
-                            }),
+                            x: this.x,
+                            y: this.y + this.height / 2 + h / 2
+                        }),
                         null != this.textOffsetX && (g.x += this.textOffsetX),
                         null != this.textOffsetY && (g.y += this.textOffsetY),
                             g
@@ -4000,7 +3987,7 @@ define([],function () {
                 },
                     this.initialize(c),
                     this.add = function(b) {
-                            this.childs.push(b),
+                        this.childs.push(b),
                             b.dragable = this.childDragble;
                         if(!b.parentContainer){b.parentContainer=[]};
                         b.parentContainer.push(this);
@@ -4104,9 +4091,9 @@ define([],function () {
                             x: this.x + this.width - b,
                             y: this.y + this.height / 2 + c / 2
                         } : "Middle_Left" == a && (d = {
-                                x: this.x,
-                                y: this.y + this.height / 2 + c / 2
-                            }),
+                            x: this.x,
+                            y: this.y + this.height / 2 + c / 2
+                        }),
                         null != this.textOffsetX && (d.x += this.textOffsetX),
                         null != this.textOffsetY && (d.y += this.textOffsetY),
                             d
@@ -4329,7 +4316,7 @@ define([],function () {
                                 , p = h * d;
                             "down" == b || ("up" == b ? p = -p : "left" == b ? (o = -h * d,
                                 p = (m + 1) * (c + 10)) : "right" == b && (o = h * d,
-                                    p = (m + 1) * (c + 10))),
+                                p = (m + 1) * (c + 10))),
                                 n.setLocation(o, p)
                         }
                         for (var q = h - 1; q >= 0; q--)
@@ -4641,13 +4628,13 @@ define([],function () {
                 var d, e = null;
                 return {
                     stop: function() {
-                        return d ? (JTopo.util.clearInterval(d),
+                        return d ? (window.clearInterval(d),
                         e && e.publish("stop"),
                             this) : this
                     },
                     start: function() {
                         var a = this;
-                        return d = JTopo.util.setInterval(function() {
+                        return d = setInterval(function() {
                             b.call(a)
                         }, c),
                             this
@@ -4727,12 +4714,12 @@ define([],function () {
                         this.stop(),
                             a = null == a ? 1e3 / 24 : a;
                         var b = this;
-                        this.timer = JTopo.util.setInterval(function() {
+                        this.timer = setInterval(function() {
                             b.nextFrame()
                         }, a)
                     },
                     stop: function() {
-                        null != this.timer && JTopo.util.clearInterval(this.timer)
+                        null != this.timer && window.clearInterval(this.timer)
                     },
                     nextFrame: function() {
                         for (var a = 0; a < this.items.length; a++) {
@@ -4765,14 +4752,14 @@ define([],function () {
             }
             function f(a, b) {
                 function c() {
-                    return e = JTopo.util.setInterval(function() {
+                    return e = setInterval(function() {
                         return o ? void f.stop() : (a.rotate += g || .2,
                             void (a.rotate > 2 * Math.PI && (a.rotate = 0)))
                     }, 100),
                         f
                 }
                 function d() {
-                    return JTopo.util.clearInterval(e),
+                    return window.clearInterval(e),
                     f.onStop && f.onStop(a),
                         f
                 }
@@ -4788,14 +4775,14 @@ define([],function () {
             }
             function g(a, b) {
                 function c() {
-                    return JTopo.util.clearInterval(g),
+                    return window.clearInterval(g),
                     h.onStop && h.onStop(a),
                         h
                 }
                 function d() {
                     var d = b.dx || 0
                         , i = b.dy || 2;
-                    return g = JTopo.util.setInterval(function() {
+                    return g = setInterval(function() {
                         return o ? void h.stop() : (i += f,
                             void (a.y + a.height < e.stage.canvas.height ? a.setLocation(a.x + d, a.y + i) : (i = 0,
                                 c())))
@@ -4884,7 +4871,7 @@ define([],function () {
                 }
                 function d() {
                     return c(a),
-                        h = JTopo.util.setInterval(function() {
+                        h = setInterval(function() {
                             return o ? void i.stop() : (a.vy += f,
                                 a.x += a.vx,
                                 a.y += a.vy,
@@ -4894,7 +4881,7 @@ define([],function () {
                         i
                 }
                 function e() {
-                    JTopo.util.clearInterval(h)
+                    window.clearInterval(h)
                 }
                 var f = .8, g = b.context, h = null, i = {};
                 return i.onStop = function(a) {
@@ -4913,7 +4900,7 @@ define([],function () {
             }
             function l(b, c) {
                 function d() {
-                    return n = JTopo.util.setInterval(function() {
+                    return n = setInterval(function() {
                         if (o)
                             return void m.stop();
                         var a = f.y + h + Math.sin(k) * j;
@@ -4923,7 +4910,7 @@ define([],function () {
                         m
                 }
                 function e() {
-                    JTopo.util.clearInterval(n)
+                    window.clearInterval(n)
                 }
                 var f = c.p1, g = c.p2, h = (c.context,
                 f.x + (g.x - f.x) / 2), i = f.y + (g.y - f.y) / 2, j = a.util.getDistance(f, g) / 2, k = Math.atan2(i, h), l = c.speed || .2, m = {}, n = null;
@@ -4933,7 +4920,7 @@ define([],function () {
             }
             function m(a, b) {
                 function c() {
-                    return h = JTopo.util.setInterval(function() {
+                    return h = setInterval(function() {
                         if (o)
                             return void g.stop();
                         var b = e.x - a.x
@@ -4947,7 +4934,7 @@ define([],function () {
                         g
                 }
                 function d() {
-                    JTopo.util.clearInterval(h)
+                    window.clearInterval(h)
                 }
                 var e = b.position, f = (b.context,
                 b.easing || .2), g = {}, h = null;
@@ -4961,7 +4948,7 @@ define([],function () {
             }
             function n(a, b) {
                 function c() {
-                    return j = JTopo.util.setInterval(function() {
+                    return j = setInterval(function() {
                         a.scaleX += f,
                             a.scaleY += f,
                         a.scaleX >= e && d()
@@ -4972,7 +4959,7 @@ define([],function () {
                     i.onStop && i.onStop(a),
                         a.scaleX = g,
                         a.scaleY = h,
-                        JTopo.util.clearInterval(j)
+                        window.clearInterval(j)
                 }
                 var e = (b.position,
                     b.context,

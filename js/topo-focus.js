@@ -39,7 +39,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                     {
                         "id": "100",
                         "type": 'node',
-                        "json": "{x:100,y:100,width:52,height:52,text:'luozheao$luojie',textOffsetX:0,textAlign:'left',elementType:'node',imgName:'apple',shadow:true,shadowBlur:5,shadowOffsetX:1,shadowOffsetY:2,showSelected:false}"
+                        "json": "{x:100,y:100,width:52,height:52,ellipsisLength:5,text:'luozsssssssssssssssssheao$luojie',textAlign:'center',elementType:'node',imgName:'apple',shadow:true,shadowBlur:5,shadowOffsetX:1,shadowOffsetY:2,showSelected:false}"
                     },
                     {
                         "id": "101",
@@ -72,7 +72,6 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                     //      "json":'{"nodeFn":"haha","elementType":"containerNode"}'
                     //  }
                 ],
-
                 "links": [
                     {
 
@@ -112,6 +111,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
             callback(data)
         }
 
+
 //存储拓扑图数据
         dataManager.saveTopoData = function (data) {
 
@@ -124,9 +124,6 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
         canvasManager.nodeEvent = {
             mouseup: function (e) {
                 if (e.which == 3) {
-
-                    stateManager.currentNode
-
                     //右键
                     $('#contextmenuNode').css({
                         "left": e.pageX + 40,
@@ -451,8 +448,8 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
         $('.contextmenu li').click(function () {
             var $this = $(this);
             if ($this.hasClass('del')) {
-
                 stateManager.scene.remove(stateManager.currentChooseElement);
+                stateManager.romveAgentLink();
             }
             else if ($this.hasClass('rename')) {
 
