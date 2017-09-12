@@ -416,6 +416,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                     node.fillColor = '43,43,43';
 
                     stateManager.scene.add(node);
+
                     node.paintCallback = function (ctx) {
                         ctx.strokeColor = '#e8e8e8';
                         ctx.beginPath();
@@ -440,6 +441,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                 }
             }
         ];
+
         canvasManager.renderTopoCallback = function () {
 
         }

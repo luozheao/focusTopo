@@ -20,6 +20,7 @@ define([],function () {
             isSetting: false,
             linkType: ''
         },
+        isNeedSave:false,//用于判断画布内容是否改变,用于是否保存
         fineTuneMouseUpX:0,//鼠标松开后,微调节点的x位置
         fineTuneMouseUpY:0,
         curExpandNode:null,//目录树样式设置
@@ -958,6 +959,8 @@ define([],function () {
                 //节点省略处理
                 node.detailText=node.detailText||node.text;
                 canvasManager.fnDoBriefText(node);
+
+                stateManager.isNeedSave=true;
             }
             return node;
         },
@@ -994,6 +997,7 @@ define([],function () {
 //节点省略处理
             node.detailText=node.detailText||node.text;
             canvasManager.fnDoBriefText(node);
+
             return node;
         },
         //设置节点的事件
@@ -1009,12 +1013,14 @@ define([],function () {
                     stateManager.currentChooseElement = thisObj;
                     stateManager.currentNode = thisObj;
                     nodeEventObj.mouseup && nodeEventObj.mouseup(e);
+                    stateManager.isNeedSave=true;
                 },300);
             });
             node.addEventListener('mousemove', function (e) {
                 stateManager.currentChooseElement = this;
                 stateManager.currentNode = this;
                 nodeEventObj.mousemove&&nodeEventObj.mousemove(e);
+
             });
             node.addEventListener('mouseover', function (e) {
                 stateManager.currentChooseElement = this;
@@ -1145,6 +1151,7 @@ define([],function () {
 
                 this._setGroupEvent(container);
                 scene.add(container);
+                stateManager.isNeedSave=true;
             }
         },
         //创建容器
@@ -1281,6 +1288,7 @@ define([],function () {
                 link.bundleGap=15;
                 link.id=link._id;
                 link.type='link';
+                stateManager.isNeedSave=true;
                 if(linkObj){
                     for(var i in linkObj){
                         link[i]=linkObj[i]
@@ -1304,6 +1312,7 @@ define([],function () {
                 stateManager.currentChooseElement=this;
                 toolbarManager.history.save();
                 linkEventObj.mouseup&&linkEventObj.mouseup(e);
+                stateManager.isNeedSave=true;
             });
             link.addEventListener('mousemove', function (e) {
                 stateManager.currentLink = this;
