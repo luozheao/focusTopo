@@ -115,7 +115,6 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
 //存储拓扑图数据
         dataManager.saveTopoData = function (data) {
 
-
         }
         /************工具栏管理者***************/
 
