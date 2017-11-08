@@ -119,6 +119,13 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
         /************工具栏管理者***************/
 
         /*************画布管理者*********/
+
+        canvasManager.beforeCreateLink=function (link) {
+            if(stateManager.setLink.isSetting){
+                return false;
+            }
+            return true;
+        }
 //结点事件
         canvasManager.nodeEvent = {
             mouseup: function (e) {

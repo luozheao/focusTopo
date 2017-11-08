@@ -748,6 +748,9 @@ define([],function () {
                         textIsTilt:false,
                         textIsNearToNodeZ:false
                     },
+                    nodeConfigure:{
+                        hoverBg:"rgba(168,202,255, 0.5)",//覆盖节点时,背景颜色,格式:"rgba(168,202,255, 0.5)"
+                    },
                     topoImgMap:null,//webpack打包时,需要把所有图片引入进来,形成静态资源,然后用映射来调用图片
                 },
                 window.$for = $for,
@@ -1986,7 +1989,7 @@ define([],function () {
                         0 != this.showSelected && (a.save(),
                             a.beginPath(),
                             a.strokeStyle = "rgba(168,202,255, 0.5)",
-                            a.fillStyle = "rgba(168,202,236,0.4)",
+                            a.fillStyle = JTopo.flag.nodeConfigure.hoverBg,//节点背景颜色
                             a.rect(-this.width / 2 - 3, -this.height / 2 - 3, this.width + 6, this.height + 6),
                             a.fill(),
                             a.stroke(),

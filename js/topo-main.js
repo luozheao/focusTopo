@@ -557,6 +557,7 @@ define([],function () {
         },
         renderTopoCallback:null,
         isRunRenderCallback:true,
+        afterCreateLink:null,//创建连线之前的事件
         idToNode:{},
         /******************画布处理，start***************************/
         /**
@@ -626,8 +627,6 @@ define([],function () {
             var scene = stateManager.scene;
             var setLink = stateManager.setLink;
 
-
-
             var tempNodeA = new JTopo.Node('tempA');
             tempNodeA.setSize(1, 1);
             var tempNodeZ = new JTopo.Node('tempZ');
@@ -671,6 +670,7 @@ define([],function () {
                                 scene.add(l);
 
                             }
+                            canvasManager.afterCreateLink&&canvasManager.afterCreateLink(stateManager.beginNode,endNode,l);
                             stateManager.beginNode = null;
                             scene.remove(link);
 
@@ -1237,6 +1237,7 @@ define([],function () {
             if (!sNode || !tNode) {
                 return;
             }
+
             if (linkType == 'Link') {
                 //实线
                 link = new JTopo.Link(sNode, tNode);
@@ -1389,7 +1390,6 @@ define([],function () {
             toolbarManager.init();
         }
     }
-
 
     return topoManager;
 });
