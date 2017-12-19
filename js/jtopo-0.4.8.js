@@ -1491,6 +1491,7 @@ define([],function () {
                         },100);
                     },
                     this.addToSelected = function(a) {
+
                         this.selectedElements.push(a)
                     },
                     this.cancelAllSelected = function(a) {

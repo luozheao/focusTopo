@@ -713,11 +713,13 @@ define(['jquery'],function ($) {
             toolbarManager.setShortcutKey();
         },
         //复现
-        renderTopo:function (data) {
+        renderTopo:function (data,type) {
             var self = canvasManager;
             var stage = stateManager.stage;
-            stage.remove(stateManager.scene);
-            var scene = stateManager.scene = new JTopo.Scene(stage);
+            if(!(type&&type=='add')){
+                stage.remove(stateManager.scene);
+                var scene = stateManager.scene = new JTopo.Scene(stage);
+            }
 
             var idToNode =canvasManager.idToNode;
             //绑定画布事件
@@ -793,7 +795,7 @@ define(['jquery'],function ($) {
 
         },
         //保存
-        saveTopo:function (callback) {
+        saveTopo:function (callback,changeData) {
             var saveNodeAttr=stateManager.formatNodes;//获取后台所需节点字段
             var saveContainerNodeAttr=stateManager.formatContainerNodes;//获取后台所需节点字段
             var saveContainerAttr=stateManager.formatContainers;//获取后台所需节点字段
@@ -802,7 +804,8 @@ define(['jquery'],function ($) {
             var nodes=[];
             var links=[];
             //拼接
-            stateManager.scene.childs.filter(function (child) {
+            var dataArr=changeData||stateManager.scene.childs;
+            dataArr.filter(function (child) {
                 var isContainer=['container'].indexOf(child.elementType)>=0;
                 var typeToSaveAttr={
                     "node":saveNodeAttr,
@@ -1371,6 +1374,7 @@ define(['jquery'],function ($) {
     //节点排列管理者
     var nodesRankManager={
         /****状态值*****/
+        dataJson:{},//用于存储画布数据
         nodesArr:[],
         linksArr:[],
         nodesRankArr:[],//二维数组,用于根据节点关系,存储节点
@@ -1384,15 +1388,27 @@ define(['jquery'],function ($) {
         nodeNoRankPositionJson:{},//没有用于自动排列的节点位置
         nodesRankIdArr:[],//用于自动排列节点id
         nodesNoRankIdArr:[],//没有用于自动排列的节点id
+        isRankTag:false,//判断是否是手动触发排序
         /****数据层*****/
         /****显示层*****/
         /****控制层*****/
-        setNodesRank:function (dataJson,rootNodeId,params,type) {
+        setNodesRank:function (dataObj,rootNodeId,params,type) {
+            nodesRankManager.init()//清空所有数据
+            var dataJson=dataObj;
+            if(dataJson){
+                nodesRankManager.dataJson = dataJson
+            }else{
+                nodesRankManager.isRankTag=true;
+                dataJson=canvasManager.saveTopo();//当dataObj不存在时,调用画布以后的数据
+            }
+
             nodesRankManager.nodesArr = dataJson.nodes;
             nodesRankManager.linksArr = dataJson.links;
             nodesRankManager.originX = params.originX;
             nodesRankManager.originY = params.originY;
             this.getArrTwoDimensional([rootNodeId]);
+
+
             if(type=='tree'){
                 nodesRankManager.subWidth = params.subWidth;
                 nodesRankManager.subHeight = params.subHeight;
@@ -1403,7 +1419,9 @@ define(['jquery'],function ($) {
 
                 nodesRankManager.rankRing();
             }
-            nodesRankManager.rankNoRelatedNodes(); //设置跟根节点不产生关系的节点位置
+            if(dataObj){
+                nodesRankManager.rankNoRelatedNodes(); //设置跟根节点不产生关系的节点位置
+            }
             nodesRankManager.setNodesPosition();//设置自动排列节点的位置
 
 
@@ -1483,16 +1501,29 @@ define(['jquery'],function ($) {
         },
         //设置节点坐标
         setNodesPosition:function(){
+            var maxLength=nodesRankManager.maxLength;
+            var width=nodesRankManager.subWidth;
+
             stateManager.scene.childs.forEach(function(p){
                 var obj=nodesRankManager.nodePositionJson[p.id];
                 var obj2=nodesRankManager.nodeNoRankPositionJson[p.id];
                 if(obj){
-                    p.x=obj.x;
+
+                    if(nodesRankManager.isRankTag){
+                        //手动触发排列
+                        p.x=obj.x-(maxLength/2)*width;
+                    }
+                    else{
+                        p.x=obj.x;
+                    }
                     p.y=obj.y;
+                    p.selected=true;
+                    stateManager.scene.addToSelected(p);
                 }
                 else if(obj2){
                     p.x=obj2.x;
                     p.y=obj2.y;
+
                 }
             });
         },
@@ -1511,8 +1542,22 @@ define(['jquery'],function ($) {
                 }
             });
         },
-        init:function(){
-
+        init:function() {
+            nodesRankManager.dataJson = {};//用于存储画布数据
+            nodesRankManager.nodesArr = [];
+            nodesRankManager.linksArr = [];
+            nodesRankManager.nodesRankArr = [];//二维数组;用于根据节点关系;存储节点
+            nodesRankManager.maxLength = 0;//最长一维数组的长度
+            nodesRankManager.subWidth = 0;
+            nodesRankManager.subHeight = 0;
+            nodesRankManager.originX = 0;
+            nodesRankManager.originY = 0;
+            nodesRankManager.subRadius = 0;
+            nodesRankManager.nodePositionJson = {};
+            nodesRankManager.nodeNoRankPositionJson = {};//没有用于自动排列的节点位置
+            nodesRankManager.nodesRankIdArr = [];//用于自动排列节点id
+            nodesRankManager.nodesNoRankIdArr = [];//没有用于自动排列的节点id
+            nodesRankManager.isRankTag=false;
         }
     }
 

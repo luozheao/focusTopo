@@ -40,7 +40,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                     {
                         "id": "100",
                         "type": 'node',
-                        "json": "{x:100,y:100,width:52,height:52,ellipsisLength:5,text:'luozsssssssssssssssssheao$luojie',textAlign:'center',elementType:'node',imgName:'apple',shadow:true,shadowBlur:5,shadowOffsetX:1,shadowOffsetY:2,showSelected:false}"
+                        "json": "{x:100,y:100,width:52,height:52,ellipsisLength:5,text:'123',textAlign:'center',elementType:'node',imgName:'apple'}"
                     },
                     {
                         "id": "101",
@@ -614,6 +614,14 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
             }
             else if($this.hasClass('addColor')){
 
+            }
+            else if($this.hasClass('rank')){
+                nodesRankManager.setNodesRank(null,stateManager.currentChooseElement.id,{
+                    subWidth:200,
+                    subHeight:200,
+                    originX:stateManager.currentChooseElement.x,
+                    originY:stateManager.currentChooseElement.y,
+                },'tree');
             }
             $('.contextmenu').hide();
         });
