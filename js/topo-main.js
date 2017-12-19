@@ -1426,6 +1426,23 @@ define(['jquery'],function ($) {
 
 
         },
+        //选中树
+        chooseTree:function(rootNodeId){
+            nodesRankManager.init()//清空所有数据
+
+            var  dataJson=canvasManager.saveTopo();//当dataObj不存在时,调用画布以后的数据
+            nodesRankManager.nodesArr = dataJson.nodes;
+            nodesRankManager.linksArr = dataJson.links;
+            this.getArrTwoDimensional([rootNodeId]);
+
+            stateManager.scene.childs.forEach(function(p){
+                if(nodesRankManager.nodesRankIdArr.indexOf(p.id)>=0){
+                    p.selected=true;
+                    stateManager.scene.addToSelected(p);
+                }
+            });
+
+        },
         /****辅助方法*****/
         //获取关联节点id
         getRelatedNodesId:function(nodesIdArr){
@@ -1451,6 +1468,7 @@ define(['jquery'],function ($) {
                 if(nodesIdArr.length>nodesRankManager.maxLength){
                     nodesRankManager.maxLength=nodesIdArr.length;
                 }
+
                 nodesRankManager.nodesRankArr.push(nodesIdArr);
                 nodesRankManager.nodesRankIdArr=nodesRankManager.nodesRankIdArr.concat(nodesIdArr);//用数组装下所有id
                 var arr=this.getRelatedNodesId(nodesIdArr);

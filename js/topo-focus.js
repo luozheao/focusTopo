@@ -623,6 +623,9 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                     originY:stateManager.currentChooseElement.y,
                 },'tree');
             }
+            else if($this.hasClass('chooseTree')){
+                nodesRankManager.chooseTree(stateManager.currentChooseElement.id);
+            }
             $('.contextmenu').hide();
         });
         /*****注入用于拖拽的图标********/
