@@ -11,6 +11,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
         var toolbarManager = topoManager.toolbarManager;
         var canvasManager = topoManager.canvasManager;
         var dragManager = topoManager.dragManager;
+        var nodesRankManager = topoManager.nodesRankManager;
         stateManager.formatContainerNodes = ['id', 'type', 'json'];
         stateManager.formatNodes = ['id', 'type', 'json'];
         stateManager.formatContainers = ['id', 'type', 'json'];
@@ -44,12 +45,68 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                     {
                         "id": "101",
                         "type": "node",
-                        "json": "{x:400,y:100,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
+                        "json": "{x:160,y:100,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
                     },
                     {
                         "id": "102",
                         "type": "node",
-                        "json": "{x:400,y:400,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
+                        "json": "{x:220,y:100,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
+                    },
+                    {
+                        "id": "103",
+                        "type": "node",
+                        "json": "{x:220,y:100,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
+                    },
+                    {
+                        "id": "104",
+                        "type": "node",
+                        "json": "{x:220,y:100,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
+                    },
+                    {
+                        "id": "105",
+                        "type": "node",
+                        "json": "{x:220,y:100,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
+                    },
+                    {
+                        "id": "106",
+                        "type": "node",
+                        "json": "{x:220,y:100,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
+                    },
+                    {
+                        "id": "107",
+                        "type": "node",
+                        "json": "{x:220,y:100,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
+                    },
+                    {
+                        "id": "108",
+                        "type": "node",
+                        "json": "{x:220,y:100,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
+                    },
+                    {
+                        "id": "109",
+                        "type": "node",
+                        "json": "{x:220,y:100,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
+                    },
+                    {
+                        "id": "110",
+                        "type": "node",
+                        "json": "{x:220,y:100,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
+                    },
+
+                    {
+                        "id": "111",
+                        "type": "node",
+                        "json": "{x:220,y:100,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
+                    },
+                    {
+                        "id": "112",
+                        "type": "node",
+                        "json": "{x:220,y:100,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
+                    },
+                    {
+                        "id": "113",
+                        "type": "node",
+                        "json": "{x:220,y:100,width:52,height:52,text:'liyinxing',elementType:'node',imgName:'apple'}"
                     },
                     // {
                     //     "id": "103",
@@ -59,7 +116,8 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                     // {
                     //     'id':'104',
                     //     'type':'container',
-                    //     'json':"{elementType:'container',borderBgFillColor:'10,10,100',borderBgAlpha:'0.5',childsArr:['100','101'],text:'luozheao'}"
+                    //
+                    //     'json':"{elementType:'container',borderBgFillColor:'10,10,100',borderBgAlpha:'0.1',childsArr:['100','101'],text:'luozheao'}"
                     // },
                     //  {
                     // "id": '102',
@@ -83,7 +141,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                     },
                     {
 
-                        "from_id": "101",
+                        "from_id": "100",
                         "to_id": "102",
                         "id": "1001",
                         "type": "link",
@@ -91,7 +149,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                     },
                     {
 
-                        "from_id": "102",
+                        "from_id": "101",
                         "to_id": "103",
                         "id": "1002",
                         "type": "link",
@@ -99,22 +157,114 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                     },
                     {
 
-                        "from_id": "103",
-                        "to_id": "100",
+                        "from_id": "102",
+                        "to_id": "104",
                         "id": "1003",
+                        "type": "link",
+                        "json": "{elementType:'link',linkType:'flow',text:'我是线条名字',fontColor:'237,165,72'}"
+                    },
+                    {
+
+                        "from_id": "102",
+                        "to_id": "105",
+                        "id": "1004",
+                        "type": "link",
+                        "json": "{elementType:'link',linkType:'flow',text:'我是线条名字',fontColor:'237,165,72'}"
+                    },
+                    {
+
+                        "from_id": "104",
+                        "to_id": "106",
+                        "id": "1005",
+                        "type": "link",
+                        "json": "{elementType:'link',linkType:'flow',text:'我是线条名字',fontColor:'237,165,72'}"
+                    },
+                    {
+
+                        "from_id": "104",
+                        "to_id": "107",
+                        "id": "1006",
+                        "type": "link",
+                        "json": "{elementType:'link',linkType:'flow',text:'我是线条名字',fontColor:'237,165,72'}"
+                    },
+                    {
+
+                        "from_id": "105",
+                        "to_id": "107",
+                        "id": "1007",
+                        "type": "link",
+                        "json": "{elementType:'link',linkType:'flow',text:'我是线条名字',fontColor:'237,165,72'}"
+                    },
+                    {
+
+                        "from_id": "106",
+                        "to_id": "108",
+                        "id": "1008",
+                        "type": "link",
+                        "json": "{elementType:'link',linkType:'flow',text:'我是线条名字',fontColor:'237,165,72'}"
+                    },
+                    {
+
+                        "from_id": "107",
+                        "to_id": "108",
+                        "id": "1009",
+                        "type": "link",
+                        "json": "{elementType:'link',linkType:'flow',text:'我是线条名字',fontColor:'237,165,72'}"
+                    },
+                    {
+
+                        "from_id": "107",
+                        "to_id": "109",
+                        "id": "1010",
+                        "type": "link",
+                        "json": "{elementType:'link',linkType:'flow',text:'我是线条名字',fontColor:'237,165,72'}"
+                    },
+                    {
+
+                        "from_id": "105",
+                        "to_id": "102",
+                        "id": "1011",
+                        "type": "link",
+                        "json": "{elementType:'link',linkType:'flow',text:'我是线条名字',fontColor:'237,165,72'}"
+                    },
+
+                    {
+
+                        "from_id": "111",
+                        "to_id": "112",
+                        "id": "1012",
+                        "type": "link",
+                        "json": "{elementType:'link',linkType:'flow',text:'我是线条名字',fontColor:'237,165,72'}"
+                    },
+                    {
+
+                        "from_id": "111",
+                        "to_id": "113",
+                        "id": "1013",
                         "type": "link",
                         "json": "{elementType:'link',linkType:'flow',text:'我是线条名字',fontColor:'237,165,72'}"
                     },
                 ]
             }
             //json属性需要处理成对象
-            callback(data)
+            callback(data);
+            nodesRankManager.setNodesRank(data,"100",{
+                subWidth:200,
+                subHeight:200,
+                originX:200,
+                originY:100,
+            },'tree');
+            // nodesRankManager.setNodesRank(data,"100",{
+            //     subRadius:100,
+            //     originX:400,
+            //     originY:400,
+            // },'ring');
         }
 
 
 //存储拓扑图数据
         dataManager.saveTopoData = function (data) {
-
+                console.log(data);
         }
         /************工具栏管理者***************/
 
@@ -142,8 +292,8 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
             },
             mousemove: null,
             mouseover:function(e){
-                $('#nodeTitle').show();
-                JTopo.util.setPopPos($('#nodeTitle'),e.target.id,0,0);
+                // $('#nodeTitle').show();
+                // JTopo.util.setPopPos($('#nodeTitle'),e.target.id,0,0);
             },
             mouseout: function (e) {
                 console.log(e.target);
@@ -497,6 +647,16 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
             var html = "";
             for (var i = 0; i < data.length; i++) {
                 var obj = data[i];
+
+                // obj.width=100;
+                // obj.height=20;
+                // obj.textOffsetY=-20;
+                // obj.text=obj.imgName;
+                // obj.imgName=null;
+                // obj.textAlpah=1;
+                // obj.alpha=0;
+
+
                 var jsonStr = JSON.stringify(obj);
 
                 html += '<div class="dragTag ' + obj.imgName + '" title="' + obj.name + '"  json=' + jsonStr + ' ><div class="dragNodeName">' + obj.name + '</div></div>';
@@ -514,7 +674,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
         setDragIcon();
 
         topoManager.init();
-        dataManager.setTopoData();
+        dataManager.setTopoData();//开关
 
 
 

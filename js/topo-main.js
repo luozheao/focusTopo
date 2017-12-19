@@ -9,7 +9,7 @@
  * 5、辅助方法用fn开头
  * 6、私有方法用下划线‘_’开头
  * */
-define([],function () {
+define(['jquery'],function ($) {
     //状态管理者
     var stateManager = {
         stage: {},
@@ -122,7 +122,7 @@ define([],function () {
         },
         //判断对象中的属性是否应该保存
         attrIsNeedSave:function (attr,value,elementType) {
-            var attrArr=['propertiesStack','serializedProperties','animateNode','childs','image','inLinks','messageBus','outLinks','json','nodeA','nodeZ','selectedLocation','parentContainer'];
+            var attrArr=['lastParentContainer','propertiesStack','serializedProperties','animateNode','childs','image','inLinks','messageBus','outLinks','json','nodeA','nodeZ','selectedLocation','parentContainer'];
             if(elementType=='containerNode'){
                 attrArr.push('childs');
             }
@@ -517,6 +517,7 @@ define([],function () {
     var canvasManager = {
         nodeEvent:{
             mouseup:null,
+            mousedown:null,
             mousemove:null,
             mouseover:null,
             mouseout:null,
@@ -790,18 +791,6 @@ define([],function () {
             canvasManager.renderTopoCallback&&canvasManager.isRunRenderCallback&&canvasManager.renderTopoCallback();
 
 
-            //
-            //  var linkObj=JTopo.util.findEleById('1000');
-            //  var nodeObj=JTopo.util.findEleById('100');
-            //  var nodeObj2=JTopo.util.findEleById('101');
-            //  linkObj.drawanimepic('/base-topu/images/testspecialline.png',JTopo.flag.curScene,200,10,90,88,1,4,1000,0);
-            // setTimeout(function () {
-            //
-            //    JTopo.util.clearInterval(linkObj.animateT);
-            //    JTopo.util.nodeFlash(nodeObj,false,false,[183,187,190],[43,43,43]);
-            // },110000);
-            //  JTopo.util.nodeFlash(nodeObj,true,true,[183,187,190],[43,43,43]);
-            //  JTopo.util.nodeFlash(nodeObj2,true,true,[183,187,190],[43,43,43]);
         },
         //保存
         saveTopo:function (callback) {
@@ -1015,6 +1004,12 @@ define([],function () {
                     nodeEventObj.mouseup && nodeEventObj.mouseup(e);
                     stateManager.isNeedSave=true;
                 },300);
+            });
+            node.addEventListener('mousedown', function (e) {
+                stateManager.currentChooseElement = this;
+                stateManager.currentNode = this;
+                nodeEventObj.mousedown&&nodeEventObj.mousedown(e);
+
             });
             node.addEventListener('mousemove', function (e) {
                 stateManager.currentChooseElement = this;
@@ -1373,6 +1368,153 @@ define([],function () {
             dataManager.setTopoData();
         }
     }
+    //节点排列管理者
+    var nodesRankManager={
+        /****状态值*****/
+        nodesArr:[],
+        linksArr:[],
+        nodesRankArr:[],//二维数组,用于根据节点关系,存储节点
+        maxLength:0,//最长一维数组的长度
+        subWidth:0,
+        subHeight:0,
+        originX:0,
+        originY:0,
+        subRadius:0,
+        nodePositionJson:{},
+        nodeNoRankPositionJson:{},//没有用于自动排列的节点位置
+        nodesRankIdArr:[],//用于自动排列节点id
+        nodesNoRankIdArr:[],//没有用于自动排列的节点id
+        /****数据层*****/
+        /****显示层*****/
+        /****控制层*****/
+        setNodesRank:function (dataJson,rootNodeId,params,type) {
+            nodesRankManager.nodesArr = dataJson.nodes;
+            nodesRankManager.linksArr = dataJson.links;
+            nodesRankManager.originX = params.originX;
+            nodesRankManager.originY = params.originY;
+            this.getArrTwoDimensional([rootNodeId]);
+            if(type=='tree'){
+                nodesRankManager.subWidth = params.subWidth;
+                nodesRankManager.subHeight = params.subHeight;
+                nodesRankManager.rankTree();
+            }
+            else if(type=='ring'){
+                nodesRankManager.subRadius = params.subRadius;
+
+                nodesRankManager.rankRing();
+            }
+            nodesRankManager.rankNoRelatedNodes(); //设置跟根节点不产生关系的节点位置
+            nodesRankManager.setNodesPosition();//设置自动排列节点的位置
+
+
+        },
+        /****辅助方法*****/
+        //获取关联节点id
+        getRelatedNodesId:function(nodesIdArr){
+            var linksArr=nodesRankManager.linksArr;
+            var fatherNodesArr=nodesRankManager.nodesRankArr.length>1? nodesRankManager.nodesRankArr[nodesRankManager.nodesRankArr.length-2]:[];
+            var targetNodesIdArr=[];
+            linksArr.forEach(function(p){
+                if(nodesIdArr.indexOf(p.from_id)>=0){
+                    if(targetNodesIdArr.indexOf(p.to_id)<0&&fatherNodesArr.indexOf(p.to_id)<0){
+                        targetNodesIdArr.push(p.to_id);
+                    }
+                }else if(nodesIdArr.indexOf(p.to_id)>=0){
+                    if(targetNodesIdArr.indexOf(p.from_id)<0&&fatherNodesArr.indexOf(p.from_id)<0) {
+                        targetNodesIdArr.push(p.from_id);
+                    }
+                }
+            });
+            return targetNodesIdArr;
+        },
+        //获取金字塔二维数组
+        getArrTwoDimensional:function(nodesIdArr){
+            if(nodesIdArr.length>0){
+                if(nodesIdArr.length>nodesRankManager.maxLength){
+                    nodesRankManager.maxLength=nodesIdArr.length;
+                }
+                nodesRankManager.nodesRankArr.push(nodesIdArr);
+                nodesRankManager.nodesRankIdArr=nodesRankManager.nodesRankIdArr.concat(nodesIdArr);//用数组装下所有id
+                var arr=this.getRelatedNodesId(nodesIdArr);
+                this.getArrTwoDimensional(arr);
+            }
+        },
+        //获取节点坐标,树形
+        rankTree:function(){
+
+            var maxLength=nodesRankManager.maxLength;
+            var width=nodesRankManager.subWidth;
+            var height=nodesRankManager.subHeight;
+            var originX=nodesRankManager.originX;
+            var originY=nodesRankManager.originY;
+
+
+            nodesRankManager.nodesRankArr.forEach(function (oneDimensionalArr,index1) {
+                var onoDimensionalLength=oneDimensionalArr.length;
+                oneDimensionalArr.forEach(function (id,index2) {
+                    nodesRankManager.nodePositionJson[id]={
+                        x: originX+(((maxLength-onoDimensionalLength)/2)+index2)*width  ,
+                        y: originY+index1*height,
+                    }
+                });
+            });
+
+
+        },
+        //获取节点坐标,环形
+        rankRing:function(){
+            var subRadius=nodesRankManager.subRadius;
+            var originX=nodesRankManager.originX;
+            var originY=nodesRankManager.originY;
+
+            nodesRankManager.nodesRankArr.forEach(function (oneDimensionalArr,index1) {
+                var onoDimensionalLength=oneDimensionalArr.length;
+                var subPI=360/onoDimensionalLength;
+                oneDimensionalArr.forEach(function (id,index2) {
+                    var isV=index2%2?0:(Math.PI/4);
+                    nodesRankManager.nodePositionJson[id]={
+                        x: originX+ subRadius*index1*Math.cos((0+subPI*index2)*Math.PI/180) ,
+                        y:originY+subRadius*index1*Math.sin((0+subPI*index2)*Math.PI/180)
+                    }
+                });
+            });
+
+            console.log(nodesRankManager.nodePositionJson);
+        },
+        //设置节点坐标
+        setNodesPosition:function(){
+            stateManager.scene.childs.forEach(function(p){
+                var obj=nodesRankManager.nodePositionJson[p.id];
+                var obj2=nodesRankManager.nodeNoRankPositionJson[p.id];
+                if(obj){
+                    p.x=obj.x;
+                    p.y=obj.y;
+                }
+                else if(obj2){
+                    p.x=obj2.x;
+                    p.y=obj2.y;
+                }
+            });
+        },
+        //设置其他节点的排列
+        rankNoRelatedNodes:function(){
+            nodesRankManager.nodesArr.forEach(function (p) {
+                if(nodesRankManager.nodesRankIdArr.indexOf(p.id)<0){
+                     nodesRankManager.nodesNoRankIdArr.push(p.id);
+
+                }
+            });
+            nodesRankManager.nodesNoRankIdArr.forEach(function (id,index) {
+                nodesRankManager.nodeNoRankPositionJson[id]={
+                    x:nodesRankManager.originX+index*nodesRankManager.subWidth/2,
+                    y:nodesRankManager.originY-nodesRankManager.subHeight/2,
+                }
+            });
+        },
+        init:function(){
+
+        }
+    }
 
     var topoManager={
         stateManager:stateManager,
@@ -1382,12 +1524,15 @@ define([],function () {
         dragManager:dragManager,
         canvasManager:canvasManager,
         dataManager:dataManager,
+        nodesRankManager:nodesRankManager,
+        //各模块初始化
         init:function () {
             stateManager.init();
             powerManager.init();
             canvasManager.init();
             dragManager.init();
             toolbarManager.init();
+            nodesRankManager.init();
         }
     }
 

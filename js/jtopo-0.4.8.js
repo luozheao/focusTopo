@@ -50,7 +50,7 @@ define([],function () {
                 }
         }
 
-        CanvasRenderingContext2D.prototype.JTopoRoundRect = function(a, b, c, d, e,f) {
+            CanvasRenderingContext2D.prototype.JTopoRoundRect = function(a, b, c, d, e,f) {
             //f表示边框为虚线
             if(f){
                 "undefined" == typeof e && (e = 5),
@@ -737,6 +737,26 @@ define([],function () {
                         left:conLeft,
                         top:conTop
                     })
+                },
+                //根据开辟空间的宽高和坐标,移动其四周的元素
+                moveElePosByContainerBorder:function(eleObj,isOpen,callback){
+                    JTopo.flag.curScene.childs.forEach(function(p){
+                        if(isOpen){
+                            //1.不处理1,2,3象限
+                            //2.处理4象限,且右移
+                            var subValue=eleObj.width;
+                            if(p.elementType=='node'&&(p.x>=eleObj.x&&p.y>=eleObj.y)){
+                                JTopo.Animate.stepByStep(p,{x:p.x+subValue}, 300, false).start();
+                            }
+                        }else{
+                            var subValue=eleObj.width;
+                            eleObj.x+=subValue;
+                            if(p.elementType=='node'&&(p.x>=eleObj.x&&p.y>=eleObj.y)){
+                                JTopo.Animate.stepByStep(p,{x:p.x-subValue}, 300, false).start();
+                            }
+                        }
+                    });
+                    callback&&callback();
                 },
             },
                 JTopo.flag = {
@@ -2241,6 +2261,7 @@ define([],function () {
                         this.nodeFn=null,
                         this.textBreakNumber=5;
                     this.textLineHeight=15;
+                    this.textAlpah=1;
                     this.font = "12px Consolas",
                         this.fontColor = "85,85,85",
                         this.borderWidth = 0,
@@ -2292,7 +2313,7 @@ define([],function () {
                             a.globalAlpha = b;
                         }
                         else {
-                            a.beginPath(),
+                                a.beginPath(),
                                 a.fillStyle = "rgba(" + this.fillColor + "," + this.alpha + ")",
                                 null == this.borderRadius || 0 == this.borderRadius ? a.rect(-this.width / 2, -this.height / 2, this.width, this.height) : a.JTopoRoundRect(-this.width / 2, -this.height / 2, this.width, this.height, this.borderRadius),
                                 a.fill();
@@ -2375,7 +2396,7 @@ define([],function () {
                                 a.font = this.font;
                             var c = a.measureText(b).width
                                 , d = a.measureText("田").width;
-                            a.fillStyle = "rgba(" + this.fontColor + ", " + this.alpha + ")";
+                            a.fillStyle = "rgba(" + this.fontColor + ", " + this.textAlpah + ")";
                             var e = this.getTextPostion(this.textPosition, c, d);
 
                             draw_long_text(b,a, e.x, e.y,this,d),
@@ -3689,7 +3710,7 @@ define([],function () {
                         this.childDragble = !0,
                         this.visible = !0,
                         this.fillColor = "79,164,218",
-                        this.borderBgFillColor=null,
+                        this.borderBgFillColor=null,//背景颜色
                         this.borderBgAlpha=0.3,
                         this.borderTextBg="rgba(108,208,226,1)",
                         this.borderWidth = 1,
@@ -3701,6 +3722,8 @@ define([],function () {
                         this.borderRadius = 5,
                         this.borderDashed = false,
                         this.borderAlpha = 1,
+                        this.borderPadding = 15,
+                        this.topPadding=60,//顶部间距
                         this.font = "16px 微软雅黑",
                         this.fontColor = "255,255,255",
                         this.text = b,
@@ -3714,8 +3737,7 @@ define([],function () {
                             width: null,
                             height: null
                         };
-                    this.layout = new d.layout.AutoBoundLayout,
-                        this.borderPadding = 15
+                        this.layout = new d.layout.AutoBoundLayout
                 },
                     this.initialize(a),
                     this.add = function(b) {
@@ -3802,7 +3824,8 @@ define([],function () {
                                 }
                                 ;
                                 if (compareObj.top === null || compareObj.top > pObj.y - textHeight) {
-                                    compareObj.top = pObj.y - textHeight
+                                     compareObj.top = pObj.y - textHeight
+
                                 }
                                 ;
                                 if (compareObj.bottom === null || compareObj.bottom < pObj.y) {
@@ -3833,7 +3856,7 @@ define([],function () {
 
                                 var len = thisObj.borderPadding;
                                 thisObj.x -= len * 2;
-                                thisObj.y -= len * 4;
+                                thisObj.y -= thisObj.topPadding;
                                 thisObj.width += len * 4;
                                 thisObj.height += len * 5;
                                 //跟title比较宽度
@@ -3843,13 +3866,13 @@ define([],function () {
                                     thisObj.x -= subWidth / 2 + len;
                                     thisObj.width = titleWidth + 2 * len;
                                 }
-
                             }
                             var pp = this.containerPadding;
                             a.beginPath(),
                                 a.lineWidth = this.borderWidth,
                                 a.strokeStyle = "rgba(" + this.borderColor + "," + this.borderAlpha + ")";
                             var b = this.borderWidth / 2;
+
                             null == this.borderRadius || 0 == this.borderRadius
                                 ?
                                 a.rect(this.x - b - pp, this.y - b - pp, this.width + this.borderWidth + 2 * pp, this.height + this.borderWidth + 2 * pp)
