@@ -418,6 +418,9 @@ define([],function () {
                 // return alarmImageCache[b.src+nodeId] = m,
                 //     m
 
+                if(c1!==undefined||d1!==undefined||e1!==undefined){
+                    JTopo.flag.alarmImageCache[b.src+'tag'+c+d+e] = m;
+                }
                 return m;
 
             }
@@ -425,10 +428,12 @@ define([],function () {
 
                 null == b && (b = 255);
                 try {
-                    // if (alarmImageCache[a.src]){
-                    //     return alarmImageCache[a.src];
-                    // }
                     var c = new Image;
+                    var alarmImage=JTopo.flag.alarmImageCache[a.src+'tag'+f[0]+f[1]+f[2]];
+                    if (alarmImage) {
+                        c.src=alarmImage;
+                        return c;
+                    }
                     if(f&&m){
                         c.src = changeColor(graphics, a,f[0],f[1],f[2],m[0],m[1],m[2]);
                     }else{
@@ -548,8 +553,7 @@ define([],function () {
                 error: function() {}
             });
             var canvas = document.createElement("canvas")
-                , graphics = canvas.getContext("2d")
-                , alarmImageCache = {};
+                , graphics = canvas.getContext("2d");
             JTopo.util = {
                 //全局通用方法
                 rotatePoint: rotatePoint,
@@ -775,6 +779,7 @@ define([],function () {
                     nodeConfigure:{
                         hoverBg:"rgba(168,202,255, 0.5)",//覆盖节点时,背景颜色,格式:"rgba(168,202,255, 0.5)"
                     },
+                    alarmImageCache:{},
                     topoImgMap:null,//webpack打包时,需要把所有图片引入进来,形成静态资源,然后用映射来调用图片
                 },
                 window.$for = $for,
