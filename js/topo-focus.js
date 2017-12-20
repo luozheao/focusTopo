@@ -259,6 +259,8 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
             //     originX:400,
             //     originY:400,
             // },'ring');
+
+
         }
 
 
@@ -286,9 +288,8 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                         "top": e.pageY - 75
                     }).show();
                 }
-                console.log(e.target);
 
-                // e.target.setImage('./images/'+'scriptH_bga.png');
+                JTopo.util.nodeFlash(e.target,true,true,[255,255,255],[43,43,43]);
             },
             mousemove: null,
             mouseover:function(e){

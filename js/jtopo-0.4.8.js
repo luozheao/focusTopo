@@ -399,24 +399,25 @@ define([],function () {
                     d += "}"
             }
             function changeColor(a, b, c, d, e,c1,d1,e1) {
+
                 var f = canvas.width = b.width, g = canvas.height = b.height;
                 a.clearRect(0, 0, canvas.width, canvas.height),
                     a.drawImage(b, 0, 0);
                 for (var h = a.getImageData(0, 0, b.width, b.height), i = h.data, j = 0; f > j; j++) {
                     for (var k = 0; g > k; k++) {
                         var l = 4 * (j + k * f);//第l个像素点
-                        if(i[l + 0]==c1&&i[l + 1]==d1&&i[l + 2]==e1){
+                        if((c1||d1||e1)&&(i[l + 0]==c1&&i[l + 1]==d1&&i[l + 2]==e1)){
                             i[l + 0]=c;
                             i[l + 1]=d;
                             i[l + 2]=e;
                         }
-
                     }
                     a.putImageData(h, 0, 0, 0, 0, b.width, b.height);
                 }
                 var m = canvas.toDataURL();
                 // return alarmImageCache[b.src+nodeId] = m,
                 //     m
+
                 return m;
 
             }
@@ -428,10 +429,13 @@ define([],function () {
                     //     return alarmImageCache[a.src];
                     // }
                     var c = new Image;
+                    if(f&&m){
+                        c.src = changeColor(graphics, a,f[0],f[1],f[2],m[0],m[1],m[2]);
+                    }else{
+                        c.src = changeColor(graphics, a, b);
+                    }
+                    return c;
 
-                    return f&&m?c.src = changeColor(graphics, a,f[0],f[1],f[2],m[0],m[1],m[2]):c.src = changeColor(graphics, a, b),
-                        //  alarmImageCache[a.src] = c,
-                        c
                 } catch (d) {}
                 return null
             }
@@ -599,7 +603,7 @@ define([],function () {
                 },
                 //结点本身图片闪动
                 nodeFlash:function (node,isChangeColor,isFlash,originColor,changeColor) {
-                    node.fillAlarmForChangeColor=originColor;
+                    node.nodeOriginColor=originColor;
                     node.alarm=isChangeColor?"true":null;
                     node.fillAlarmNode=changeColor;
                     node.setImage('changeColor');
@@ -2270,7 +2274,7 @@ define([],function () {
                         this.borderRadius = null,
                         this.alarmColor="255,0,0";
                     this.fillAlarmNode=[255,0,0];
-                    this.fillAlarmForChangeColor=null;
+                    this.nodeOriginColor=null;
                     this.showAlarmText=false;
                     this.keepChangeColor=false;//true则保持改变后的颜色不变
                     this.dragable = !0,
@@ -2542,7 +2546,7 @@ define([],function () {
                         var d = this;
                         if (b=='changeColor') {
 
-                            d.image&&(d.image.alarm=a.util.getImageAlarm(d.image,null,d.fillAlarmNode,d.fillAlarmForChangeColor));
+                            d.image&&(d.image.alarm=a.util.getImageAlarm(d.image,null,d.fillAlarmNode,d.nodeOriginColor));//目标色,底色
                         }
                         else if(b=='changeSmallImageColor'){
 
@@ -2565,7 +2569,7 @@ define([],function () {
                             e = new Image,
                                 e.src = JTopo.flag.topoImgMap[b],
                                 e.onload = function() {
-                                    var f= a.util.getImageAlarm(e,null,d.fillAlarmNode,d.fillAlarmForChangeColor);
+                                    var f= a.util.getImageAlarm(e,null,d.fillAlarmNode,d.nodeOriginColor);
                                     f&&(e.alarm=f);
                                     d.image = e;
                                 }
@@ -2578,7 +2582,7 @@ define([],function () {
                                     e.onload = function() {
                                         j[b] = e,
                                         1 == c && d.setSize(e.width, e.height);
-                                        var f = a.util.getImageAlarm(e,null,d.fillAlarmNode,d.fillAlarmForChangeColor);//告警色,指定色
+                                        var f = a.util.getImageAlarm(e,null,d.fillAlarmNode,d.nodeOriginColor);//告警色,指定色
 
                                         f && (e.alarm = f),
                                             d.image = e
