@@ -1449,14 +1449,17 @@ define(['jquery'],function ($) {
         getRelatedNodesId:function(nodesIdArr){
             var linksArr=nodesRankManager.linksArr;
             var fatherNodesArr=nodesRankManager.nodesRankArr.length>1? nodesRankManager.nodesRankArr[nodesRankManager.nodesRankArr.length-2]:[];
+            var thisNodesArr= nodesRankManager.nodesRankArr.length>0?nodesRankManager.nodesRankArr[nodesRankManager.nodesRankArr.length-1]:[];
             var targetNodesIdArr=[];
             linksArr.forEach(function(p){
                 if(nodesIdArr.indexOf(p.from_id)>=0){
-                    if(targetNodesIdArr.indexOf(p.to_id)<0&&fatherNodesArr.indexOf(p.to_id)<0){
+                    if(targetNodesIdArr.indexOf(p.to_id)<0&&fatherNodesArr.indexOf(p.to_id)<0&&thisNodesArr.indexOf(p.to_id)<0){
+                        //父层不包括,本层不包括
                         targetNodesIdArr.push(p.to_id);
                     }
                 }else if(nodesIdArr.indexOf(p.to_id)>=0){
-                    if(targetNodesIdArr.indexOf(p.from_id)<0&&fatherNodesArr.indexOf(p.from_id)<0) {
+                    if(targetNodesIdArr.indexOf(p.from_id)<0&&fatherNodesArr.indexOf(p.from_id)<0&&thisNodesArr.indexOf(p.from_id)<0) {
+                        //父层不包括,本层不包括
                         targetNodesIdArr.push(p.from_id);
                     }
                 }
