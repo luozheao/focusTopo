@@ -594,7 +594,7 @@ define([],function () {
                 creatId:function () {
                     return "front" + (new Date).getTime()+Math.round(Math.random()*1000000);
                 },
-                setCurHandUrl: function(url) {
+                setImageUrl: function(url) {
                     JTopo.flag.imageUrl = url;
                     if(JTopo.flag.topoImgMap){
                         JTopo.MouseCursor.open_hand = "default";
@@ -604,6 +604,9 @@ define([],function () {
                         JTopo.MouseCursor.closed_hand = "url(" + url + "closedhand.cur) 8 8, default"
                     }
 
+                },
+                setCurHandUrl:function (url) {
+                    JTopo.util.setCurHandUrl(url);
                 },
                 //结点本身图片闪动
                 nodeFlash:function (node,isChangeColor,isFlash,originColor,changeColor) {
