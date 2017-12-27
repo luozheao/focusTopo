@@ -720,11 +720,12 @@ define(['jquery'],function ($) {
             if(!(type&&type=='add')){
                 stage.remove(stateManager.scene);
                 var scene = stateManager.scene = new JTopo.Scene(stage);
+                //绑定画布事件
+                self.initCanvasEvent();
             }
 
             var idToNode =canvasManager.idToNode;
-            //绑定画布事件
-            self.initCanvasEvent();
+
             if (!data) {
                 return;
             }
