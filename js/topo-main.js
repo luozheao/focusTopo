@@ -1604,7 +1604,8 @@ define(['jquery'],function ($) {
             toolbarManager.init();
             nodesRankManager.init();
         }
-    } 
+    }
+    //123
     return topoManager;
 });
 
