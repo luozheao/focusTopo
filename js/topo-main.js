@@ -1603,6 +1603,7 @@ define(['jquery'],function ($) {
             nodesRankManager.init();
         }
     }
+    //test123
     return topoManager;
 });
 
