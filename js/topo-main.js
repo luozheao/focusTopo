@@ -540,7 +540,6 @@ define(['jquery'],function ($) {
         },
         sceneEvent:{
             mouseup:null,
-            click:null,
             mousedrag:null
         },
         userDefinedNodes:[],//自定义结点样例
@@ -644,6 +643,7 @@ define(['jquery'],function ($) {
 
             });
             scene.addEventListener('mouseup', function (e) {
+                sceneEventObj.mouseup&&sceneEventObj.mouseup(e);
                 var isInstanceofElement=e.target instanceof JTopo.Node || e.target instanceof JTopo.Container || e.target instanceof JTopo.ContainerNode;
                 if (e.button == 2) {
                     // scene.remove(link);
@@ -689,7 +689,6 @@ define(['jquery'],function ($) {
                         link&&scene.remove(link);
                     }
                 }
-                sceneEventObj.mouseup&&sceneEventObj.mouseup(e);
 
             });
             scene.addEventListener('mousedown', function (e) {
@@ -1605,7 +1604,6 @@ define(['jquery'],function ($) {
             nodesRankManager.init();
         }
     }
-    //123
     return topoManager;
 });
 

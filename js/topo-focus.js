@@ -340,8 +340,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
 //画布事件
         canvasManager.sceneEvent={
             mouseup:function(e){
-                // console.log(e);
-
+                 console.log(e);
             }
 
         }
