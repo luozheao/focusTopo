@@ -343,6 +343,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                 // console.log(e);
 
             }
+
         }
 //自定义节点拓展，样例
         canvasManager.userDefinedNodes = [
