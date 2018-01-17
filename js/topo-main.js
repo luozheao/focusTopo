@@ -8,9 +8,8 @@
  * 4、mvc结构里面，数据层用get开头，显示层show开头，控制层用set开头
  * 5、辅助方法用fn开头
  * 6、私有方法用下划线‘_’开头
- * 7.
  * */
-define(['jquery'],function ($) {
+define(['jquery',"drag"],function ($) {
     //状态管理者
     var stateManager = {
         stage: {},
@@ -43,6 +42,7 @@ define(['jquery'],function ($) {
         isLocalhost:window.location.href.indexOf('localhost:')>=0,//判断是否属于本地环境
         isFromParentTree:false,//点击系统视图节点，触发子拓扑图打开，并切换到系统视图或逻辑拓扑
         isFullScreen:false,//当前是否全屏的状态
+        isCreateGroupByDrag:false,//是否拖动成组
         formatNodes:['id','type','json'],//复现与保存时，读取后台nodes数组中node对象的属性
         formatContainerNodes:['id','type','json'],//复现与保存时，读取后台nodes数组中containerNode对象的属性
         formatContainers:['id','type','json'],//复现与保存时，读取后台nodes数组中container对象的属性
@@ -499,6 +499,7 @@ define(['jquery'],function ($) {
             var $dragContainer = $('#container');
 
             $('#equipmentArea .dragTag').each(function () {
+                if($(this).attr('isDragTag')=='true'){return;}
                 $(this).dragging({
                     move: 'both', //拖动方向，x y both
                     randomPosition: false, //初始位置是否随机
@@ -541,6 +542,11 @@ define(['jquery'],function ($) {
         sceneEvent:{
             mouseup:null,
             mousedrag:null
+        },
+        groupObj:{
+            paddingWidth:100,
+            paddingHeight:100,
+            parentContainerRecord:null,
         },
         userDefinedNodes:[],//自定义结点样例
         elementShowEffect:{
@@ -640,7 +646,6 @@ define(['jquery'],function ($) {
                 if (e.button == 0) {
                     $(".contextmenu").hide();
                 }
-
             });
             scene.addEventListener('mouseup', function (e) {
                 sceneEventObj.mouseup&&sceneEventObj.mouseup(e);
@@ -689,7 +694,6 @@ define(['jquery'],function ($) {
                         link&&scene.remove(link);
                     }
                 }
-
             });
             scene.addEventListener('mousedown', function (e) {
                 if ((e.target == null || e.target ===   stateManager.beginNode || e.target === link) && e.button !== 2) {
@@ -708,6 +712,31 @@ define(['jquery'],function ($) {
                     }
                 });
                 sceneEventObj.mousedrag&&sceneEventObj.mousedrag(e);
+
+
+                //拖动成组
+                if(stateManager.isCreateGroupByDrag){
+                    var nodeObj=e.target;
+                    if(!nodeObj){return;}
+                    var containerObjArr=nodeObj.parentContainer;//只记录一次
+                    if(containerObjArr){
+                        var containerObj=containerObjArr[0];
+
+                        if(!canvasManager.groupObj.parentContainerRecord){
+                            canvasManager.groupObj.parentContainerRecord={
+                                x:containerObj.x,
+                                y:containerObj.y,
+                                width:containerObj.width,
+                                height:containerObj.height,
+                            };
+                        }
+                        if(!(nodeObj.x> canvasManager.groupObj.parentContainerRecord.x-canvasManager.groupObj.paddingWidth &&nodeObj.x+nodeObj.width< canvasManager.groupObj.parentContainerRecord.x+ canvasManager.groupObj.parentContainerRecord.width+canvasManager.groupObj.paddingWidth&&nodeObj.y> canvasManager.groupObj.parentContainerRecord.y-canvasManager.groupObj.paddingHeight&&nodeObj.y+nodeObj.height< canvasManager.groupObj.parentContainerRecord.y+ canvasManager.groupObj.parentContainerRecord.height+canvasManager.groupObj.paddingHeight) ) {
+                            containerObj.remove(nodeObj);
+                            canvasManager.groupObj.parentContainerRecord=null;
+                        }
+                    }
+                }
+
             });
             scene.addEventListener('mousemove', function (e) {
                 tempNodeZ.setLocation(e.x-3, e.y+3);
@@ -941,7 +970,9 @@ define(['jquery'],function ($) {
                 if(JTopo.flag.topoImgMap){
                     node.setImage(jsonObj.imgName,'imageDataFlow');
                 }else{
+
                     jsonObj.imgName&&node.setImage(JTopo.flag.imageUrl+jsonObj.imgName+'.png');
+                    jsonObj.imgUrl&&node.setImage(jsonObj.imgUrl);
                 }
                 node.id=node._id;
                 self._setNodeEvent(node);
@@ -959,7 +990,7 @@ define(['jquery'],function ($) {
             }
             return node;
         },
-        //创建节点
+        //创建节点,注:调用这个方法时,一定要有个id
         _createNode: function (obj) {
             var scene = stateManager.scene;
             var self = canvasManager;
@@ -980,6 +1011,7 @@ define(['jquery'],function ($) {
                 node.setImage(node.imgName,'imageDataFlow');
             }else{
                 node.imgName&&node.setImage(JTopo.flag.imageUrl+node.imgName+'.png');
+                node.imgUrl&&node.setImage(node.imgUrl);
             }
 
 
@@ -1010,12 +1042,25 @@ define(['jquery'],function ($) {
                     nodeEventObj.mouseup && nodeEventObj.mouseup(e);
                     stateManager.isNeedSave=true;
                 },300);
+
+                if(stateManager.isCreateGroupByDrag) {
+                    var nodeObj = e.target;
+                    var runTag = true;
+                    JTopo.flag.curScene.childs.forEach(function (child) {
+                        if (runTag && !nodeObj.parentContainer && child.elementType == "container") {
+
+                            if (nodeObj.x > child.x && nodeObj.x + nodeObj.width < child.x + child.width && nodeObj.y > child.y && nodeObj.y + nodeObj.height < child.y + child.height) {
+                                runTag = false;
+                                child.add(nodeObj);
+                            }
+                        }
+                    });
+                }
             });
             node.addEventListener('mousedown', function (e) {
                 stateManager.currentChooseElement = this;
                 stateManager.currentNode = this;
                 nodeEventObj.mousedown&&nodeEventObj.mousedown(e);
-
             });
             node.addEventListener('mousemove', function (e) {
                 stateManager.currentChooseElement = this;
@@ -1555,7 +1600,7 @@ define(['jquery'],function ($) {
         rankNoRelatedNodes:function(){
             nodesRankManager.nodesArr.forEach(function (p) {
                 if(nodesRankManager.nodesRankIdArr.indexOf(p.id)<0){
-                     nodesRankManager.nodesNoRankIdArr.push(p.id);
+                    nodesRankManager.nodesNoRankIdArr.push(p.id);
 
                 }
             });
@@ -1604,6 +1649,7 @@ define(['jquery'],function ($) {
             nodesRankManager.init();
         }
     }
+
     return topoManager;
 });
 

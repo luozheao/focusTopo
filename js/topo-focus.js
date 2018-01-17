@@ -3,7 +3,7 @@
  * topo-main.js中通过模块化封装的方式，提供接口和钩子，来实现拓扑图
  */
 
-define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
+define(['jtopo','topo-main'],function (JTopo,topoManager) {
     function  init() {
         /******************初始化,start***********************/
         var stateManager = topoManager.stateManager;
@@ -16,6 +16,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
         stateManager.formatNodes = ['id', 'type', 'json'];
         stateManager.formatContainers = ['id', 'type', 'json'];
         stateManager.formatLinks = ['id', 'type', 'json', 'from_id', 'to_id'];
+        stateManager.isCreateGroupByDrag=true;
         //用于搜索的属性
         toolbarManager.searchArr = ['id'];
         /******************初始化,end***********************/
@@ -40,7 +41,7 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                     {
                         "id": "100",
                         "type": 'node',
-                        "json": "{x:100,y:100,width:52,height:52,ellipsisLength:5,text:'123',textAlign:'center',elementType:'node',imgName:'apple'}"
+                        "json": "{x:100,y:100,width:52,height:52,ellipsisLength:5,text:'1232323',detailText:'我是线条名字123231423124',textAlign:'center',elementType:'node',imgName:'apple'}"
                     },
                     {
                         "id": "101",
@@ -290,11 +291,15 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
                 }
 
                 JTopo.util.nodeFlash(e.target,true,true,[255,255,255],[43,43,43]);
+
             },
             mousemove: null,
             mouseover:function(e){
                 // $('#nodeTitle').show();
                 // JTopo.util.setPopPos($('#nodeTitle'),e.target.id,0,0);
+            },
+            mousedown:function (e) {
+
             },
             mouseout: function (e) {
                 console.log(e.target);
@@ -341,8 +346,9 @@ define(['jtopo','topo-main','drag'],function (JTopo,topoManager) {
         canvasManager.sceneEvent={
             mouseup:function(e){
                  console.log(e);
+            },
+            mousedrag:function (e) {
             }
-
         }
 //自定义节点拓展，样例
         canvasManager.userDefinedNodes = [
