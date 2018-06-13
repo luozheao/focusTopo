@@ -156,7 +156,6 @@ define([],function () {
                     closed_hand: "url(./images/closedhand.cur) 8 8, default"
                 },
                 createStageFromJson: function(jsonStr, canvas) {
-
                     eval("var jsonObj = " + jsonStr);
                     var stage = new JTopo.Stage(canvas);
                     for (var k in jsonObj)
@@ -1783,7 +1782,10 @@ define([],function () {
                             this.translateY = -d
                     },
                     this.centerAndZoom = function(a, b, c) {
-
+                        if(a=='toCenter'){
+                            this.translateToCenter(c);
+                            return;
+                        }
                         if (
                             this.translateToCenter(c),
                             null == a || null == b) {
@@ -1808,8 +1810,8 @@ define([],function () {
                             var i = Math.min(g, h);
                             if (i > 1)
                                 return;
-                            this.zoom(g,h)
-                            //   this.zoom(i, i)
+                            //    this.zoom(g,h)
+                            this.zoom(i, i)
                         }
                         this.zoom(a, b)
                     },
@@ -2283,7 +2285,7 @@ define([],function () {
                         this.alarmColor="255,0,0";
                     this.fillAlarmNode=[255,0,0];
                     this.nodeOriginColor=null;
-                    this.showAlarmText=false;
+                    this.showAlarmText=false;//false
                     this.keepChangeColor=false;//true则保持改变后的颜色不变
                     this.dragable = !0,
                         this.textPosition = "Bottom_Center",
@@ -2304,11 +2306,14 @@ define([],function () {
                     this.smallImageOriginColor=[255,0,0];
                     this.smallImageChangeColor=null;
                     this.paintCallback=null;
+                    this.beforePaintCallback=null;
                     var d = "text,font,fontColor,textPosition,textOffsetX,textOffsetY,borderRadius".split(",");
                     this.serializedProperties = this.serializedProperties.concat(d)
                 },
                     this.initialize(c),
                     this.paint = function(a) {
+                        this.beforePaintCallback && this.beforePaintCallback(a);
+
                         if (this.image) {
                             var b = a.globalAlpha;
                             a.globalAlpha = this.alpha;
@@ -2343,12 +2348,14 @@ define([],function () {
 
                         }
                         a.closePath();
+
                         this.paintText(a),
                             this.paintBorder(a),
                             this.paintCtrl(a),
                             this.paintAlarmText(a),
                             this.paintAlarmImage(a),
-                        this.paintCallback && this.paintCallback(a)
+                        this.paintCallback && this.paintCallback(a);
+
                     },
                     this.paintAlarmText = function(a) {
                         if (null != this.alarm && "" != this.alarm&&this.showAlarmText) {
@@ -2390,9 +2397,11 @@ define([],function () {
                         //smallAlarmImage_w,smallAlarmImage_h   你猜这是什么
                         //this.smallAlarmImageObj 为告警图片对象
                         //this.smallAlarmImageChangeObj 为告警变色图片对象
+
+
+
                         if (null != this.smallAlarmImageObj && "" != this.smallAlarmImageObj) {
                             var b = a.globalAlpha;
-
                             a.globalAlpha = this.alpha,
                                 this.smallAlarmImageChangeObj&&this.smallAlarmImageTag
                                     ?
@@ -2553,7 +2562,6 @@ define([],function () {
                             throw new Error("Node.setImage(): 参数Image对象为空!");
                         var d = this;
                         if (b=='changeColor') {
-
                             d.image&&(d.image.alarm=a.util.getImageAlarm(d.image,null,d.fillAlarmNode,d.nodeOriginColor));//目标色,底色
                         }
                         else if(b=='changeSmallImageColor'){
@@ -2585,6 +2593,7 @@ define([],function () {
                         else if("string" == typeof b){
                             //var e = j[b];//不能用缓存，j为作用域较大，每次切换都不会清空
                             var e=null;
+
                             null == e ? (e = new Image,
                                     e.src = b,
                                     e.onload = function() {
@@ -2599,6 +2608,7 @@ define([],function () {
                                 this.image = e)
                         }
                         else{
+                            debugger
                             this.image = b,
                             1 == c && this.setSize(b.width, b.height)
                         }
@@ -2949,8 +2959,8 @@ define([],function () {
                         this.animateNodePath=null;
                         this.linkType = null;//线条类型
                         this.animateNode = null;//线条上的动画节点
-                        this.linkConnectType = 'toBorder';//连接类型，null为连接到中心点，toBorder为连接到边缘
-                        this.mergeOutLink = false;//合并出线条,多条线条从节点出去,合并成一根线条
+                        this.linkConnectType = 'toBorder为连接到边缘';//连接类型，null为连接到中心点，toBorder为连接到边缘
+                        this.mergeOutLink = true;//合并出线条,多条线条从节点出去,合并成一根线条
                         this.flexionalRadius = null;//二次折线的弧度半径
                         this.openStartRadius = true;
                         this.openEndRadius = true;
@@ -3459,7 +3469,7 @@ define([],function () {
                         var g = (f - 1) * this.bundleGap;//所占宽度
                         var h = this.bundleGap * a - g / 2;//h具体分配坐标,a为线序号
                         var outH=h;//出线的相对坐标
-                        this.mergeOutLink&&(outH=0);//如果合并,则出线的相对坐标为0
+                         this.mergeOutLink&&(outH=0);//如果合并,则出线的相对坐标为0
                         var i = this.offsetGap;
                         return "horizontal" == this.direction ? (this.nodeA.cx > this.nodeZ.cx && (i = -i),
                                 d.push({
@@ -3619,6 +3629,7 @@ define([],function () {
                             if(nodeZ.jump){
                                 ++currentPathIndex;
                                 imgnodeanime();
+                                debugger;
                                 return;
                             }
                             var L;
@@ -3888,9 +3899,9 @@ define([],function () {
 
                             null == this.borderRadius || 0 == this.borderRadius
                                 ?
-                                a.rect(this.x - b - pp, this.y - b - pp, this.width + this.borderWidth + 2 * pp, this.height + this.borderWidth + 2 * pp)
+                                a.rect(this.x - b - pp, this.y - b - pp, this.width + this.borderWidth + 2 * pp, this.height + this.borderWidth+200 )
                                 :
-                                a.JTopoRoundRect(this.x - b - pp, this.y - b - pp, this.width + this.borderWidth + 2 * pp, this.height + this.borderWidth + 2 * pp, this.borderRadius, this.borderDashed),
+                                a.JTopoRoundRect(this.x - b - pp, this.y - b - pp, this.width + this.borderWidth + 2 * pp, this.height + this.borderWidth+200 , this.borderRadius, this.borderDashed),
                                 a.stroke();
                             if (this.borderBgFillColor) {
                                 a.fillStyle = "rgba(" + this.borderBgFillColor + "," + this.borderBgAlpha + ")";

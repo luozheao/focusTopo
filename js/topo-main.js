@@ -245,7 +245,7 @@ define(['jquery',"drag"],function ($) {
                     //缩放并居中显示
                     stateManager.scene.translateX=0;
                     stateManager.scene.translateY=0;
-                    stateManager.scene.centerAndZoom();
+                    stateManager.scene.translateToCenter();
                     stateManager.stage.eagleEye.update();
                 }
                 else if ($zoom.hasClass('toolbar-overview')) {
@@ -259,13 +259,15 @@ define(['jquery',"drag"],function ($) {
                             setCanvasScreen();
                         },300);
                     },100);
+
                     function  setCanvasScreen() {
                         $('#canvas').attr('width',screenWidth).attr('height',screenHeight).css('margin-top','0px');
                         stateManager.isFullScreen=true;
 
                         stateManager.scene.translateX=0;
                         stateManager.scene.translateY=0;
-                        stateManager.scene.centerAndZoom();
+                        // stateManager.scene.centerAndZoom();
+                        stateManager.scene.translateToCenter();
                     }
                 }
             }],
@@ -626,7 +628,8 @@ define(['jquery',"drag"],function ($) {
 
             stateManager.scene.translateX = 0;
             stateManager.scene.translateY = 0;
-            stateManager.scene.centerAndZoom();
+            // stateManager.scene.centerAndZoom();
+            stateManager.scene.translateToCenter();
         },
         //初始化画布事件
         initCanvasEvent: function () {
@@ -1267,7 +1270,6 @@ define(['jquery',"drag"],function ($) {
                 containerEventObj.dbclick&&containerEventObj.dbclick(e);
             });
 
-
         },
         /******************容器处理，end***************************/
 
@@ -1292,6 +1294,7 @@ define(['jquery',"drag"],function ($) {
                 //箭头
                 link = new JTopo.Link(sNode, tNode);
                 link.arrowsRadius = 10; //箭头大小
+                link.drawanimepic("images/p.png",JTopo.flag.curScene, 100,10,  5,5 ,1,1,5000,1);
             }
             else if (linkType == 'dArrow') {
                 //双箭头
