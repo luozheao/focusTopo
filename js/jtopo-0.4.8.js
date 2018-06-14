@@ -1,7 +1,7 @@
 define([],function () {
     var JTopo={};
-//全局
-    !function(window) {
+        //全局
+        !function(window) {
         function Element() {
             this.initialize = function() {
                 this.elementType = "element",
@@ -49,7 +49,6 @@ define([],function () {
                         b += "}"
                 }
         }
-
             CanvasRenderingContext2D.prototype.JTopoRoundRect = function(a, b, c, d, e,f) {
             //f表示边框为虚线
             if(f){
